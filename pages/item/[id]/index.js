@@ -117,8 +117,9 @@ const Item = ({ name }) => {
     )
 };
 
-Item.getInitialProps = async ({ req }) => {
-    const res = await fetch(`https://directmarketaccess.ru/api/items/168487`);
+Item.getInitialProps = async ({ query }) => {
+    console.log(query.id);
+    const res = await fetch(`https://directmarketaccess.ru/api/items/${query.id}`);
     const json = await res.json();
     return { name: json.name };
 };
