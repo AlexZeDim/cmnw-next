@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
-import Header from '../../../src/Header'
 import { Container, Table, TableBody, TableCell, TableRow, Paper, Grid, Typography, Divider, Card, CardContent } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import React from "react";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -66,7 +66,6 @@ const Item = () => {
 
     return (
         <Container fixed>
-            <Header />
             <Typography variant="overline" display="block">
                 {asset_class}:{ticker}
             </Typography>
