@@ -2,13 +2,14 @@ import { useRouter } from 'next/router'
 import { Container, Table, TableBody, TableCell, TableRow, Paper, Grid, Typography, Divider, Card, CardContent } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import React from "react";
+import fetch from 'isomorphic-unfetch'
 
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
     },
     paper: {
-        marginTop: theme.spacing(3),
+        marginTop: theme.spacing(2),
         width: '100%',
         overflowX: 'auto',
         marginBottom: theme.spacing(2),
@@ -47,7 +48,7 @@ const rows = [
     {'name': 'trtr', 'calories':3423}
 ];
 
-const Item = () => {
+const Item = ({ name }) => {
     const classes = useStyles();
     const router = useRouter();
     const { id } = router.query;
@@ -69,14 +70,11 @@ const Item = () => {
             <Typography variant="overline" display="block">
                 {asset_class}:{ticker}
             </Typography>
+            <Typography variant="h2" gutterBottom>
+                h5. {name} {id}
+            </Typography>
             <Typography variant="caption" display="block">
                 timestamp
-            </Typography>
-            <Typography variant="h5" gutterBottom>
-                h5. Name {id}
-            </Typography>
-            <Typography variant="h2" gutterBottom>
-                234.00
             </Typography>
             <Divider />
                 <Grid container spacing={1}>
@@ -117,6 +115,12 @@ const Item = () => {
             </Grid>
         </Container>
     )
+};
+
+Item.getInitialProps = async ({ req }) => {
+    const res = await fetch(`https://directmarketaccess.ru/api/items/168487`);
+    const json = await res.json();
+    return { name: json.name };
 };
 
 export default Item
