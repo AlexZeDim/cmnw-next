@@ -74,7 +74,7 @@ const Item = () => {
                 timestamp
             </Typography>
             <Typography variant="h5" gutterBottom>
-                h5. Name
+                h5. Name {id}
             </Typography>
             <Typography variant="h2" gutterBottom>
                 234.00
@@ -118,6 +118,6 @@ const Item = () => {
             </Grid>
         </Container>
     )
-}
+};
 
 export default Item
