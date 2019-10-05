@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { Container, Table, TableBody, TableCell, TableRow, Paper, Grid, Typography, Divider, Card, CardContent } from '@material-ui/core';
+import { Container, Grid, Typography, Divider, Card, CardContent, Chip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import React from "react";
 import fetch from 'isomorphic-unfetch'
@@ -21,6 +21,10 @@ const useStyles = makeStyles(theme => ({
         minWidth: 275,
         margin: theme.spacing(2),
     },
+    card_seller: {
+        minWidth: 150,
+        margin: theme.spacing(2),
+    },
     bullet: {
         display: 'inline-block',
         margin: '0 2px',
@@ -32,12 +36,25 @@ const useStyles = makeStyles(theme => ({
     pos: {
         marginBottom: 12,
     },
+    cp: {
+        display: 'flex',
+        justifyContent: 'center',
+        flexWrap: 'wrap',
+        '& > *': {
+            margin: theme.spacing(0.5),
+        }
+    },
 }));
 
 const Item = ({asset_class, name, timestamp, market, counterparties}) => {
     const classes = useStyles();
     const router = useRouter();
     const { id } = router.query;
+
+    const handleClick = (e) => {
+        console.log(e);
+        alert(e.currentTarget.textContent);
+    };
 
     return (
         <Container fixed>
@@ -51,6 +68,7 @@ const Item = ({asset_class, name, timestamp, market, counterparties}) => {
                 {timestamp}
             </Typography>
             <Divider />
+            {typeof market !== 'undefined' ? (
                 <Grid container spacing={1}>
                     {market.map((element, index) => (
                         <Grid item key={index} xs={12} sm={6} md={4}>
@@ -66,24 +84,19 @@ const Item = ({asset_class, name, timestamp, market, counterparties}) => {
                             </Card>
                         </Grid>
                     ))}
-                </Grid>
-            <Divider />
-            <Grid item xs={3}>
-                <div className={classes.root}>
-                    <Paper className={classes.paper}>
-                        <Table className={classes.table} size="small">
-                            <TableBody>
-                                {counterparties.map(cp => (
-                                    <TableRow key={cp}>
-                                        <TableCell component="th" scope="row">
-                                            {cp}
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </Paper>
-                </div>
+                </Grid>) : (
+                ''
+            )}
+            <Divider className={classes.pos} />
+            <Grid container spacing={1}>
+                {counterparties.map((element, index) => (
+                    <Grid item key={index} xs={12} sm={2} md={2}>
+                        <Chip
+                            className={classes.cp}
+                            label={element}
+                            onClick={handleClick} />
+                    </Grid>
+                ))}
             </Grid>
         </Container>
     )
