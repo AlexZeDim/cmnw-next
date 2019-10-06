@@ -6,6 +6,8 @@
     "@material-ui/core": "latest",
     "@material-ui/styles": "latest",
     "clsx": "latest",
+    "highcharts": "^7.2.0",
+    "highcharts-react-official": "^2.2.2",
     "isomorphic-unfetch": "^3.0.0",
     "next": "latest",
     "prop-types": "latest",

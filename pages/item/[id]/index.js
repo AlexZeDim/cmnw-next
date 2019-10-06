@@ -3,6 +3,12 @@ import { Container, Grid, Typography, Divider, Card, CardContent, Chip } from '@
 import { makeStyles } from '@material-ui/core/styles';
 import React from "react";
 import fetch from 'isomorphic-unfetch'
+import Highcharts from 'highcharts'
+import HighchartsExporting from 'highcharts/modules/exporting'
+import HighchartsReact from 'highcharts-react-official'
+if (typeof Highcharts === 'object') {
+    HighchartsExporting(Highcharts)
+}
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -46,10 +52,20 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+
 const Item = ({asset_class, name, timestamp, market, counterparties}) => {
     const classes = useStyles();
     const router = useRouter();
     const { id } = router.query;
+    const chartOptions = {
+        title: {
+            text: ''
+        },
+        series: [{
+            data: [1,2,3],
+
+        }]
+    };
 
     const handleClick = (e) => {
         console.log(e);
@@ -87,6 +103,12 @@ const Item = ({asset_class, name, timestamp, market, counterparties}) => {
                 </Grid>) : (
                 ''
             )}
+            <Divider className={classes.pos} />
+            <HighchartsReact
+                highcharts={Highcharts}
+                constructorType={'chart'}
+                options={chartOptions}
+            />
             <Divider className={classes.pos} />
             <Grid container spacing={1}>
                 {counterparties.map((element, index) => (
