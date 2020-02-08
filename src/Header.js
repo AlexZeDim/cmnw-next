@@ -1,12 +1,11 @@
 import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
+import Link from "./Link";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -68,16 +67,20 @@ export default function Header() {
         <div className={classes.root}>
             <AppBar position="static">
                 <Toolbar>
-                    <IconButton
-                        edge="start"
-                        className={classes.menuButton}
-                        color="inherit"
-                        aria-label="open drawer"
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography className={classes.title} variant="h6" noWrap>
-                        Material-UI
+                    <Typography className={classes.title} variant="h6" color="initial" noWrap>
+                        <Link href="/about" color="inherit" underline="none">
+                            WHO WE ARE
+                        </Link>
+                    </Typography>
+                    <Typography className={classes.title} variant="h6" color="initial" noWrap>
+                        <Link href="/what-we-do" color="inherit" underline="none">
+                            WHAT WE DO
+                        </Link>
+                    </Typography>
+                    <Typography className={classes.title} variant="h6" color="initial" noWrap>
+                        <Link href="/about" color="inherit" underline="none">
+                            TEST
+                        </Link>
                     </Typography>
                     <div className={classes.search}>
                         <div className={classes.searchIcon}>

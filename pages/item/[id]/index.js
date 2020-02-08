@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const Item = ({asset_class, name, timestamp, market, counterparties}) => {
+const Item = ({name, market, counterparties}) => {
     const classes = useStyles();
     const router = useRouter();
     const { id } = router.query;
@@ -74,7 +74,6 @@ const Item = ({asset_class, name, timestamp, market, counterparties}) => {
             categories: ['Alexander', 'Marie', 'Maximilian', 'Sophia', 'Lukas', 'Maria', 'Leon', 'Anna', 'Tim', 'Laura']
         },
         yAxis:{
-            //height: '50%',
             categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
             //tickLength:150,
             opposite: true,
@@ -118,13 +117,13 @@ const Item = ({asset_class, name, timestamp, market, counterparties}) => {
     return (
         <Container fixed>
             <Typography variant="overline" display="block">
-                {asset_class}:{id}
+                {id}
             </Typography>
             <Typography variant="h2" gutterBottom>
-                {name.ru_RU}
+                {name}
             </Typography>
             <Typography variant="caption" display="block">
-                {timestamp}
+                "timestamp"
             </Typography>
             <Divider />
             {typeof market !== 'undefined' ? (
@@ -169,7 +168,7 @@ const Item = ({asset_class, name, timestamp, market, counterparties}) => {
 
 Item.getInitialProps = async ({ query }) => {
     try {
-        const res = await fetch(`http://34.90.62.42/api/test/${query.id}@Gordunni`);
+        const res = await fetch(`https://us.api.blizzard.com/data/wow/item/${query.id}?namespace=static-us&locale=en_US&access_token=EURlzC5eK2swqSoQhY2J57J4C56JueslSt`);
         const json = await res.json();
         /*
         if (typeof json.market === 'undefined') {
