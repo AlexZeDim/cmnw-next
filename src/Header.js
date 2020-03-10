@@ -68,13 +68,18 @@ export default function Header() {
             <AppBar position="static">
                 <Toolbar>
                     <Typography className={classes.title} variant="h6" color="initial" noWrap>
-                        <Link href="/about" color="inherit" underline="none">
+                        <Link href="/who-we-are" color="inherit" underline="none">
                             WHO WE ARE
                         </Link>
                     </Typography>
                     <Typography className={classes.title} variant="h6" color="initial" noWrap>
                         <Link href="/what-we-do" color="inherit" underline="none">
                             WHAT WE DO
+                        </Link>
+                    </Typography>
+                    <Typography className={classes.title} variant="h6" color="initial" noWrap>
+                        <Link href="/about" color="inherit" underline="none">
+                            TEST
                         </Link>
                     </Typography>
                     <Typography className={classes.title} variant="h6" color="initial" noWrap>

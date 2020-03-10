@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-function HomePage({ name, level, realm, character_class, gender, active_spec, race, faction, guild_name, guild_id, guild_rank, average_item_level, equipped_item_level,timestamp }) {
+function HomePage(json) {
     const classes = useStyles();
     const router = useRouter();
     const [open, setOpen] = React.useState(true);
@@ -37,28 +37,28 @@ function HomePage({ name, level, realm, character_class, gender, active_spec, ra
     return (
         <Container fixed>
             <Typography variant="h2" className={classes.h2} gutterBottom>
-                {name} @ {realm} // {level}
+                {json.name.toUpperCase()} @ {json.realm.toUpperCase()} // {json.level}
             </Typography>
             <Divider />
             <List className={classes.root}>
-                {guild_name ? (
+                {json.guild ? (
                     <ListItem>
-                        <ListItemText primary={`${guild_name} // R${guild_rank}`} secondary={guild_id} />
+                        <ListItemText primary={`${json.guild} // R${json.guild_rank}`} secondary={json.guild} />
                     </ListItem>
                 ) : (
                     ''
                 )}
                 <Divider />
                 <ListItem>
-                    <ListItemText primary={`${race} // ${gender}`} secondary={faction} />
+                    <ListItemText primary={`${json.race} // ${json.gender}`} secondary={json.faction} />
                 </ListItem>
                 <Divider />
                 <ListItem>
-                    <ListItemText primary={character_class} secondary={active_spec} />
+                    <ListItemText primary={json.class} secondary={json.spec} />
                 </ListItem>
                 <Divider />
                 <ListItem>
-                    <ListItemText primary={`ilvl A:  ${average_item_level}`} secondary={`ilvl E:  ${equipped_item_level}`} />
+                    <ListItemText primary={`ilvl A:  ${json.ilvl.avg}`} secondary={`ilvl E:  ${json.ilvl.eq}`} />
                 </ListItem>
                 <Divider />
                 <ListItem button onClick={handleClick}>
@@ -72,7 +72,7 @@ function HomePage({ name, level, realm, character_class, gender, active_spec, ra
                                 <CardActionArea>
                                     <CardMedia
                                         className={classes.media}
-                                        image="https://render-eu.worldofwarcraft.com/character/gordunni/130/196144770-main.jpg"
+                                        image={json.media.render_url}
                                     />
                                 </CardActionArea>
                             </Card>
@@ -81,16 +81,17 @@ function HomePage({ name, level, realm, character_class, gender, active_spec, ra
                 </Collapse>
             </List>
             <Typography variant="caption" display="block">
-                {timestamp}
+                {json.lastOnline}
             </Typography>
         </Container>
     )
 }
 
 HomePage.getInitialProps = async ({ req, query }) => {
-    const res = await fetch(encodeURI(`https://eu.api.blizzard.com/profile/wow/character/${query.char_realm}/${query.char_name}?namespace=profile-eu&locale=en_GB&access_token=US5v2aRVkyudk0sFVvcn69x5QcOfJ625BS`))
-    const json = await res.json();
-    console.log(query);
+    const {char_name, char_realm} = query;
+    const res = await fetch(encodeURI(`http://localhost:3030/api/characters/${(char_name)}@${char_realm}`));
+    return await res.json();
+    /*console.log(json);
     return {
         name: json.name,
         realm: json.realm.name,
@@ -106,7 +107,7 @@ HomePage.getInitialProps = async ({ req, query }) => {
         average_item_level: json.average_item_level,
         equipped_item_level: json.equipped_item_level,
         timestamp: new Date(json.last_login_timestamp).toString()
-    }
+    }*/
 };
 
 export default HomePage
