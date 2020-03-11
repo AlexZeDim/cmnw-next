@@ -1,113 +1,206 @@
 import React from "react";
-import fetch from 'isomorphic-unfetch'
+import fetch from 'node-fetch'
 import {Container, Grid, Divider, Typography, List, ListItem, ListItemText} from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
 import { useRouter } from "next/router";
-import Collapse from '@material-ui/core/Collapse';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
+import CardContent from '@material-ui/core/CardContent';
+import Card from '@material-ui/core/Card';
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        width: '100%',
-        //maxWidth: 360,
-        //backgroundColor: theme.palette.background.paper,
+    icon: {
+        marginRight: theme.spacing(2),
     },
-    h2: {
-        marginTop: theme.spacing(2),
+    heroContent: {
+        backgroundColor: theme.palette.background.paper,
+        padding: theme.spacing(6, 0, 6),
     },
-    media: {
-        height: 500,
+    heroButtons: {
+        marginTop: theme.spacing(4),
+    },
+    cardGrid: {
+        paddingTop: theme.spacing(8),
+        paddingBottom: theme.spacing(8),
+    },
+    card: {
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    cardMedia: {
+        paddingTop: '56.25%', // 16:9
+    },
+    cardContent: {
+        flexGrow: 1,
+    },
+    footer: {
+        backgroundColor: theme.palette.background.paper,
+        padding: theme.spacing(6),
     },
 }));
 
-function HomePage(json) {
+function CharacterPage({json}) {
     const classes = useStyles();
     const router = useRouter();
-    const [open, setOpen] = React.useState(true);
-    const handleClick = () => {
-        setOpen(!open);
-    };
     const { char_realm, char_name } = router.query;
     return (
-        <Container fixed>
-            <Typography variant="h2" className={classes.h2} gutterBottom>
-                {json.name.toUpperCase()} @ {json.realm.toUpperCase()} // {json.level}
-            </Typography>
-            <Divider />
-            <List className={classes.root}>
-                {json.guild ? (
-                    <ListItem>
-                        <ListItemText primary={`${json.guild} // R${json.guild_rank}`} secondary={json.guild} />
-                    </ListItem>
-                ) : (
-                    ''
-                )}
-                <Divider />
-                <ListItem>
-                    <ListItemText primary={`${json.race} // ${json.gender}`} secondary={json.faction} />
-                </ListItem>
-                <Divider />
-                <ListItem>
-                    <ListItemText primary={json.class} secondary={json.spec} />
-                </ListItem>
-                <Divider />
-                <ListItem>
-                    <ListItemText primary={`ilvl A:  ${json.ilvl.avg}`} secondary={`ilvl E:  ${json.ilvl.eq}`} />
-                </ListItem>
-                <Divider />
-                <ListItem button onClick={handleClick}>
-                    <ListItemText primary="Preview" />
-                    {open ? <ExpandLess /> : <ExpandMore />}
-                </ListItem>
-                <Collapse in={open} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding>
-                        <ListItem button>
-                            <Card className={classes.root}>
-                                <CardActionArea>
-                                    <CardMedia
-                                        className={classes.media}
-                                        image={json.media.render_url}
-                                    />
-                                </CardActionArea>
+        <React.Fragment>
+            <CssBaseline />
+            <main>
+                {/* Hero unit */}
+                <div className={classes.heroContent}>
+                    <style jsx>{`
+                    div {
+                      background-image:  url(${json.media.render_url});
+                      background-attachment: fixed;
+                      background-position: -25% 50%;
+                    }
+                  `}</style>
+                    <Container maxWidth="sm">
+                        <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
+                           {json._id}
+                        </Typography>
+                        <Typography variant="h5" align="center" color="textSecondary" paragraph>
+                            {json.level} // {json.id}
+                        </Typography>
+                        <span className={classes.heroButtons}>
+                            <Grid container spacing={2} justify="center">
+                                <Grid item>
+                                    <Button variant="contained" color="primary">
+                                        Main call to action
+                                    </Button>
+                                </Grid>
+                                <Grid item>
+                                    <Button variant="outlined" color="primary">
+                                        Secondary action
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </span>
+                    </Container>
+                </div>
+                <Container className={classes.cardGrid} maxWidth="lg">
+                    {/* End hero unit */}
+                    <Grid container spacing={4}>
+                        { (json.guild) ? (
+                            <Grid item key={1} xs={12} sm={6} md={3}>
+                                <Card className={classes.card}>
+                                    <CardContent className={classes.cardContent}>
+                                        <Typography gutterBottom variant="h5" component="h2">
+                                            {json.guild}
+                                        </Typography>
+                                        <Divider light />
+                                        <Typography>
+                                            Rank: {json.guild_rank}
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                            ) : ('')
+                        }
+                        <Grid item key={2} xs={12} sm={6} md={3}>
+                            <Card className={classes.card}>
+                                <CardContent className={classes.cardContent}>
+                                    <Typography gutterBottom variant="h5" component="h2">
+                                        ilvl
+                                    </Typography>
+                                    <Divider light />
+                                    <Typography>
+                                        A: {json.ilvl.eq}
+                                    </Typography>
+                                    <Typography>
+                                        E: {json.ilvl.avg}
+                                    </Typography>
+                                </CardContent>
                             </Card>
-                        </ListItem>
-                    </List>
-                </Collapse>
-            </List>
-            <Typography variant="caption" display="block">
-                {json.lastOnline}
-            </Typography>
-        </Container>
+                        </Grid>
+                        <Grid item key={2} xs={12} sm={6} md={3}>
+                            <Card className={classes.card}>
+                                <CardContent className={classes.cardContent}>
+                                    <Typography gutterBottom variant="h5" component="h2">
+                                        Checksum
+                                    </Typography>
+                                    <Divider light />
+                                    <Typography>
+                                        {json.checksum.pets}
+                                    </Typography>
+                                    <Typography>
+                                        {json.checksum.mounts}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item key={2} xs={12} sm={6} md={3}>
+                            <Card className={classes.card}>
+                                <CardContent className={classes.cardContent}>
+                                    <Typography gutterBottom variant="h5" component="h2">
+                                        {json.updatedBy}
+                                    </Typography>
+                                    <Divider light />
+                                    <Typography>
+                                        C: {new Date(json.createdAt).toLocaleString('en-GB')}
+                                    </Typography>
+                                    <Typography>
+                                        U: {new Date(json.updatedAt).toLocaleString('en-GB')}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item key={2} xs={12} sm={6} md={3}>
+                            <Card className={classes.card}>
+                                <CardContent className={classes.cardContent}>
+                                    <Typography gutterBottom variant="h5" component="h2">
+                                        {json.faction}
+                                    </Typography>
+                                    <Divider light />
+                                    <Typography>
+                                        {json.gender} / {json.race}
+                                    </Typography>
+                                    <Typography>
+                                        {json.class} / {json.spec}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item key={2} xs={12} sm={6} md={3}>
+                            <Card className={classes.card}>
+                                <CardContent className={classes.cardContent}>
+                                    <Typography gutterBottom variant="h5" component="h2">
+                                        Timestamps
+                                    </Typography>
+                                    <Divider light />
+                                    <Typography>
+                                        {new Date(json.lastModified).toLocaleString('en-GB')}
+                                    </Typography>
+                                    <Typography>
+                                        {new Date(json.lastOnline).toLocaleString('en-GB')}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item key={2} xs={12} sm={6} md={3}>
+                            <Card className={classes.card}>
+                                <CardMedia
+                                    className={classes.cardMedia}
+                                    image={json.media.bust_url}
+                                    title="Paella dish"
+                                />
+                            </Card>
+                        </Grid>
+                    </Grid>
+                </Container>
+            </main>
+        </React.Fragment>
     )
 }
 
-HomePage.getInitialProps = async ({ req, query }) => {
+export async function getServerSideProps({query}) {
     const {char_name, char_realm} = query;
     const res = await fetch(encodeURI(`http://localhost:3030/api/characters/${(char_name)}@${char_realm}`));
-    return await res.json();
-    /*console.log(json);
-    return {
-        name: json.name,
-        realm: json.realm.name,
-        gender: json.gender.name,
-        race: json.race.name,
-        faction: json.faction.name,
-        guild_name: json.guild.name,
-        guild_id: json.guild.id,
-        guild_rank: 1,
-        level: json.level,
-        character_class: json.character_class.name,
-        active_spec: json.active_spec.name,
-        average_item_level: json.average_item_level,
-        equipped_item_level: json.equipped_item_level,
-        timestamp: new Date(json.last_login_timestamp).toString()
-    }*/
-};
+    const json = await res.json();
+    return { props: {json} }
+}
 
-export default HomePage
+export default CharacterPage
