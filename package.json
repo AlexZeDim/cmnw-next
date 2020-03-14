@@ -13,7 +13,8 @@
     "node-fetch": "latest",
     "prop-types": "latest",
     "react": "^16.13.0",
-    "react-dom": "^16.13.0"
+    "react-dom": "^16.13.0",
+    "swr": "^0.1.18"
   },
   "scripts": {
     "dev": "next",

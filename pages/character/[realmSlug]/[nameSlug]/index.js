@@ -2,7 +2,6 @@ import React from "react";
 import fetch from 'node-fetch'
 import {Container, Grid, Divider, Typography, List, ListItem, ListItemText} from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
-import { useRouter } from "next/router";
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import Card from '@material-ui/core/Card';
@@ -41,40 +40,55 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-function CharacterPage({json}) {
+function CharacterPage(json) {
+    const {
+        _id,
+        ilvl,
+        checksum,
+        media,
+        guild_history,
+        id,
+        name,
+        gender,
+        faction,
+        race,
+        spec,
+        realm,
+        realm_slug,
+        level,
+        lastOnline,
+        lastModified,
+        statusCode,
+        guild,
+        guild_rank,
+        createdBy,
+        updatedBy,
+        createdAt,
+        updatedAt
+    } = json;
+    const { eq, avg } = ilvl;
+    const { pets, mounts } = checksum;
+    const { bust_url } = media;
     const classes = useStyles();
-    const router = useRouter();
-    const { char_realm, char_name } = router.query;
     return (
         <React.Fragment>
-            <CssBaseline />
             <main>
                 {/* Hero unit */}
                 <div className={classes.heroContent}>
-                    <style jsx>{`
-                    div {
-                      background-image:  url(${json.media.render_url});
-                      background-attachment: fixed;
-                      background-position: -25% 50%;
-                    }
-                  `}</style>
-                    <Container maxWidth="sm">
+                    <Container maxWidth="lg">
                         <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-                           {json._id}
-                        </Typography>
-                        <Typography variant="h5" align="center" color="textSecondary" paragraph>
-                            {json.level} // {json.id}
+                           {_id}
                         </Typography>
                         <span className={classes.heroButtons}>
                             <Grid container spacing={2} justify="center">
                                 <Grid item>
                                     <Button variant="contained" color="primary">
-                                        Main call to action
+                                        Find all
                                     </Button>
                                 </Grid>
                                 <Grid item>
                                     <Button variant="outlined" color="primary">
-                                        Secondary action
+                                        Guild History
                                     </Button>
                                 </Grid>
                             </Grid>
@@ -84,16 +98,48 @@ function CharacterPage({json}) {
                 <Container className={classes.cardGrid} maxWidth="lg">
                     {/* End hero unit */}
                     <Grid container spacing={4}>
-                        { (json.guild) ? (
+                        <Grid item key={2} xs={12} sm={6} md={3}>
+                            <Card className={classes.card}>
+                                <CardContent className={classes.cardContent}>
+                                    <Typography gutterBottom variant="h5" component="h2">
+                                        Summary
+                                    </Typography>
+                                    <Divider light />
+                                    <Typography>
+                                        ID: {id}
+                                    </Typography>
+                                    <Typography>
+                                        LVL: {level}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item key={2} xs={12} sm={6} md={3}>
+                            <Card className={classes.card}>
+                                <CardContent className={classes.cardContent}>
+                                    <Typography gutterBottom variant="h5" component="h2">
+                                        {faction}
+                                    </Typography>
+                                    <Divider light />
+                                    <Typography>
+                                        {gender} / {race}
+                                    </Typography>
+                                    <Typography>
+                                        {json.class} / {spec}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        { (guild) ? (
                             <Grid item key={1} xs={12} sm={6} md={3}>
                                 <Card className={classes.card}>
                                     <CardContent className={classes.cardContent}>
                                         <Typography gutterBottom variant="h5" component="h2">
-                                            {json.guild}
+                                            {guild}
                                         </Typography>
                                         <Divider light />
                                         <Typography>
-                                            Rank: {json.guild_rank}
+                                            Rank: {guild_rank}
                                         </Typography>
                                     </CardContent>
                                 </Card>
@@ -104,14 +150,14 @@ function CharacterPage({json}) {
                             <Card className={classes.card}>
                                 <CardContent className={classes.cardContent}>
                                     <Typography gutterBottom variant="h5" component="h2">
-                                        ilvl
+                                        ITEM LEVEL
                                     </Typography>
                                     <Divider light />
                                     <Typography>
-                                        A: {json.ilvl.eq}
+                                        A: {eq}
                                     </Typography>
                                     <Typography>
-                                        E: {json.ilvl.avg}
+                                        E: {avg}
                                     </Typography>
                                 </CardContent>
                             </Card>
@@ -124,10 +170,10 @@ function CharacterPage({json}) {
                                     </Typography>
                                     <Divider light />
                                     <Typography>
-                                        {json.checksum.pets}
+                                        {pets}
                                     </Typography>
                                     <Typography>
-                                        {json.checksum.mounts}
+                                        {mounts}
                                     </Typography>
                                 </CardContent>
                             </Card>
@@ -136,30 +182,14 @@ function CharacterPage({json}) {
                             <Card className={classes.card}>
                                 <CardContent className={classes.cardContent}>
                                     <Typography gutterBottom variant="h5" component="h2">
-                                        {json.updatedBy}
+                                        {updatedBy}
                                     </Typography>
                                     <Divider light />
                                     <Typography>
-                                        C: {new Date(json.createdAt).toLocaleString('en-GB')}
+                                        C: {new Date(createdAt).toLocaleString('en-GB')}
                                     </Typography>
                                     <Typography>
-                                        U: {new Date(json.updatedAt).toLocaleString('en-GB')}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
-                        </Grid>
-                        <Grid item key={2} xs={12} sm={6} md={3}>
-                            <Card className={classes.card}>
-                                <CardContent className={classes.cardContent}>
-                                    <Typography gutterBottom variant="h5" component="h2">
-                                        {json.faction}
-                                    </Typography>
-                                    <Divider light />
-                                    <Typography>
-                                        {json.gender} / {json.race}
-                                    </Typography>
-                                    <Typography>
-                                        {json.class} / {json.spec}
+                                        U: {new Date(updatedAt).toLocaleString('en-GB')}
                                     </Typography>
                                 </CardContent>
                             </Card>
@@ -172,10 +202,10 @@ function CharacterPage({json}) {
                                     </Typography>
                                     <Divider light />
                                     <Typography>
-                                        {new Date(json.lastModified).toLocaleString('en-GB')}
+                                        {new Date(lastModified).toLocaleString('en-GB')}
                                     </Typography>
                                     <Typography>
-                                        {new Date(json.lastOnline).toLocaleString('en-GB')}
+                                        {new Date(lastOnline).toLocaleString('en-GB')}
                                     </Typography>
                                 </CardContent>
                             </Card>
@@ -184,8 +214,8 @@ function CharacterPage({json}) {
                             <Card className={classes.card}>
                                 <CardMedia
                                     className={classes.cardMedia}
-                                    image={json.media.bust_url}
-                                    title="Paella dish"
+                                    image={bust_url}
+                                    title={_id}
                                 />
                             </Card>
                         </Grid>
@@ -197,10 +227,10 @@ function CharacterPage({json}) {
 }
 
 export async function getServerSideProps({query}) {
-    const {char_name, char_realm} = query;
-    const res = await fetch(encodeURI(`http://localhost:3030/api/characters/${(char_name)}@${char_realm}`));
+    const {realmSlug, nameSlug} = query;
+    const res = await fetch(encodeURI(`http://localhost:3030/api/characters/${(nameSlug)}@${realmSlug}`));
     const json = await res.json();
-    return { props: {json} }
+    return { props: json }
 }
 
 export default CharacterPage
