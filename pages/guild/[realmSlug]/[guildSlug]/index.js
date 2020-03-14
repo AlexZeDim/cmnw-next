@@ -1,16 +1,11 @@
 import React from "react";
 import fetch from 'node-fetch'
-import {Container, Grid, Divider, Typography, List, ListItem, ListItemText} from "@material-ui/core";
-import { useRouter } from "next/router";
+import {Container, Grid, Divider, Typography} from "@material-ui/core";
 import AppBar from '@material-ui/core/AppBar';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import Card from '@material-ui/core/Card';
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { lighten, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -19,15 +14,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Toolbar from '@material-ui/core/Toolbar';
 import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
 import Box from "@material-ui/core/Box";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -132,8 +119,9 @@ function a11yProps(index) {
 }
 
 const useStyles = makeStyles(theme => ({
-    test: {
+    paper: {
         width: '100%',
+        marginBottom: theme.spacing(2),
     },
     root: {
         marginTop: theme.spacing(2),
@@ -170,32 +158,32 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function GuildPage(json) {
+    let {
+        _id, id,
+        //slug, name,
+        //realm_slug, realm,
+        //createdBy,
+        updatedBy, guild_log,
+        members_latest,
+        //members_prev,
+        achievement_points, created_timestamp,
+        faction, member_count,
+        //crest, statusCode,
+        createdAt, updatedAt
+    } = json;
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('character_rank');
-    const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
-    const rows = json.members_latest;
-    const rows2 = json.guild_log.join;
-    const rows3 = json.guild_log.leave;
-    const rows4 = json.guild_log.demote;
-    const rows5 = json.guild_log.promote;
+    created_timestamp = new Date(created_timestamp).toLocaleString('en-GB');
+    const {join, leave, demote, promote} = guild_log;
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
-    };
-
-    const handleSelectAllClick = event => {
-        if (event.target.checked) {
-            const newSelecteds = rows.map(n => n.name);
-            setSelected(newSelecteds);
-            return;
-        }
-        setSelected([]);
     };
 
     const handleChangePage = (event, newPage) => {
@@ -211,7 +199,7 @@ function GuildPage(json) {
         setValue(newValue);
     };
 
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, members_latest.length - page * rowsPerPage);
 
     return (
         <React.Fragment>
@@ -220,10 +208,10 @@ function GuildPage(json) {
                 <div className={classes.heroContent}>
                     <Container maxWidth="lg">
                         <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-                            {json._id}
+                            {_id}
                         </Typography>
                         <Typography variant="h5" align="center" color="textSecondary" paragraph>
-                             {json.faction}
+                            {faction}
                         </Typography>
                     </Container>
                 </div>
@@ -238,13 +226,13 @@ function GuildPage(json) {
                                     </Typography>
                                     <Divider light />
                                     <Typography>
-                                        ID: {json.id}
+                                        ID: {id}
                                     </Typography>
                                     <Typography>
-                                        Achivements: {json.achievement_points}
+                                        Achivements: {achievement_points}
                                     </Typography>
                                     <Typography>
-                                        Members: {json.member_count}
+                                        Members: {member_count}
                                     </Typography>
                                 </CardContent>
                             </Card>
@@ -253,17 +241,17 @@ function GuildPage(json) {
                             <Card className={classes.card}>
                                 <CardContent className={classes.cardContent}>
                                     <Typography gutterBottom variant="h5" component="h2">
-                                        {json.updatedBy}
+                                        {updatedBy}
                                     </Typography>
                                     <Divider />
                                     <Typography>
-                                        Founded: {new Date(json.created_timestamp).toLocaleString('en-GB')}
+                                        Founded: {created_timestamp}
                                     </Typography>
                                     <Typography>
-                                        Indexed: {new Date(json.createdAt).toLocaleString('en-GB')}
+                                        Indexed: {new Date(createdAt).toLocaleString('en-GB')}
                                     </Typography>
                                     <Typography>
-                                        Updated: {new Date(json.updatedAt).toLocaleString('en-GB')}
+                                        Updated: {new Date(updatedAt).toLocaleString('en-GB')}
                                     </Typography>
                                 </CardContent>
                             </Card>
@@ -289,30 +277,28 @@ function GuildPage(json) {
                                 <TableContainer>
                                     <Table
                                         className={classes.table}
-                                        aria-labelledby="tableTitle"
+                                        aria-labelledby="Latest"
                                         size={'small'}
-                                        aria-label="enhanced table"
+                                        aria-label="Latest Members"
                                     >
                                         <EnhancedTableHead
                                             classes={classes}
-                                            numSelected={selected.length}
                                             order={order}
                                             orderBy={orderBy}
-                                            onSelectAllClick={handleSelectAllClick}
                                             onRequestSort={handleRequestSort}
-                                            rowCount={rows.length}
+                                            rowCount={members_latest.length}
                                         />
                                         <TableBody>
-                                            {stableSort(rows, getComparator(order, orderBy))
+                                            {stableSort(members_latest, getComparator(order, orderBy))
                                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                                .map((row) => {
+                                                .map(({character_id, character_name, character_rank, character_checksum, character_date}) => {
                                                     return (
                                                         <TableRow>
-                                                            <TableCell align="right">{row.character_id}</TableCell>
-                                                            <TableCell align="right">{row.character_name}</TableCell>
-                                                            <TableCell align="right">{row.character_rank}</TableCell>
-                                                            <TableCell align="right">{row.character_checksum}</TableCell>
-                                                            <TableCell align="right">{new Date(row.character_date).toLocaleString('en-GB')}</TableCell>
+                                                            <TableCell align="right">{character_id}</TableCell>
+                                                            <TableCell align="right">{character_name}</TableCell>
+                                                            <TableCell align="right">{character_rank}</TableCell>
+                                                            <TableCell align="right">{character_checksum}</TableCell>
+                                                            <TableCell align="right">{new Date(character_date).toLocaleString('en-GB')}</TableCell>
                                                         </TableRow>
                                                     );
                                                 })}
@@ -327,7 +313,7 @@ function GuildPage(json) {
                                 <TablePagination
                                     rowsPerPageOptions={[10, 25, 50]}
                                     component="div"
-                                    count={rows.length}
+                                    count={members_latest.length}
                                     rowsPerPage={rowsPerPage}
                                     page={page}
                                     onChangePage={handleChangePage}
@@ -340,30 +326,28 @@ function GuildPage(json) {
                                 <TableContainer>
                                     <Table
                                         className={classes.table}
-                                        aria-labelledby="tableTitle"
+                                        aria-labelledby="Joins"
                                         size={'small'}
-                                        aria-label="enhanced table"
+                                        aria-label="Members joined"
                                     >
                                         <EnhancedTableHead
                                             classes={classes}
-                                            numSelected={selected.length}
                                             order={order}
                                             orderBy={orderBy}
-                                            onSelectAllClick={handleSelectAllClick}
                                             onRequestSort={handleRequestSort}
-                                            rowCount={rows.length}
+                                            rowCount={join.length}
                                         />
                                         <TableBody>
-                                            {stableSort(rows2, getComparator(order, orderBy))
+                                            {stableSort(join, getComparator(order, orderBy))
                                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                                .map((row) => {
+                                                .map(({character_id, character_name, character_rank, character_checksum, character_date}) => {
                                                     return (
                                                         <TableRow>
-                                                            <TableCell align="right">{row.character_id}</TableCell>
-                                                            <TableCell align="right">{row.character_name}</TableCell>
-                                                            <TableCell align="right">{row.character_rank}</TableCell>
-                                                            <TableCell align="right">{row.character_checksum}</TableCell>
-                                                            <TableCell align="right">{new Date(row.character_date).toLocaleString('en-GB')}</TableCell>
+                                                            <TableCell align="right">{character_id}</TableCell>
+                                                            <TableCell align="right">{character_name}</TableCell>
+                                                            <TableCell align="right">{character_rank}</TableCell>
+                                                            <TableCell align="right">{character_checksum}</TableCell>
+                                                            <TableCell align="right">{new Date(character_date).toLocaleString('en-GB')}</TableCell>
                                                         </TableRow>
                                                     );
                                                 })}
@@ -378,7 +362,7 @@ function GuildPage(json) {
                                 <TablePagination
                                     rowsPerPageOptions={[10, 25, 50]}
                                     component="div"
-                                    count={rows2.length}
+                                    count={join.length}
                                     rowsPerPage={rowsPerPage}
                                     page={page}
                                     onChangePage={handleChangePage}
@@ -391,30 +375,28 @@ function GuildPage(json) {
                                 <TableContainer>
                                     <Table
                                         className={classes.table}
-                                        aria-labelledby="tableTitle"
+                                        aria-labelledby="Leaves"
                                         size={'small'}
-                                        aria-label="enhanced table"
+                                        aria-label="Members leaved"
                                     >
                                         <EnhancedTableHead
                                             classes={classes}
-                                            numSelected={selected.length}
                                             order={order}
                                             orderBy={orderBy}
-                                            onSelectAllClick={handleSelectAllClick}
                                             onRequestSort={handleRequestSort}
-                                            rowCount={rows2.length}
+                                            rowCount={leave.length}
                                         />
                                         <TableBody>
-                                            {stableSort(rows3, getComparator(order, orderBy))
+                                            {stableSort(leave, getComparator(order, orderBy))
                                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                                .map((row) => {
+                                                .map(({character_id, character_name, character_rank, character_checksum, character_date}) => {
                                                     return (
                                                         <TableRow>
-                                                            <TableCell align="right">{row.character_id}</TableCell>
-                                                            <TableCell align="right">{row.character_name}</TableCell>
-                                                            <TableCell align="right">{row.character_rank}</TableCell>
-                                                            <TableCell align="right">{row.character_checksum}</TableCell>
-                                                            <TableCell align="right">{new Date(row.character_date).toLocaleString('en-GB')}</TableCell>
+                                                            <TableCell align="right">{character_id}</TableCell>
+                                                            <TableCell align="right">{character_name}</TableCell>
+                                                            <TableCell align="right">{character_rank}</TableCell>
+                                                            <TableCell align="right">{character_checksum}</TableCell>
+                                                            <TableCell align="right">{new Date(character_date).toLocaleString('en-GB')}</TableCell>
                                                         </TableRow>
                                                     );
                                                 })}
@@ -429,7 +411,7 @@ function GuildPage(json) {
                                 <TablePagination
                                     rowsPerPageOptions={[10, 25, 50]}
                                     component="div"
-                                    count={rows3.length}
+                                    count={leave.length}
                                     rowsPerPage={rowsPerPage}
                                     page={page}
                                     onChangePage={handleChangePage}
@@ -442,30 +424,28 @@ function GuildPage(json) {
                                 <TableContainer>
                                     <Table
                                         className={classes.table}
-                                        aria-labelledby="tableTitle"
+                                        aria-labelledby="Demotes"
                                         size={'small'}
-                                        aria-label="enhanced table"
+                                        aria-label="Members demoted"
                                     >
                                         <EnhancedTableHead
                                             classes={classes}
-                                            numSelected={selected.length}
                                             order={order}
                                             orderBy={orderBy}
-                                            onSelectAllClick={handleSelectAllClick}
                                             onRequestSort={handleRequestSort}
-                                            rowCount={rows.length}
+                                            rowCount={demote.length}
                                         />
                                         <TableBody>
-                                            {stableSort(rows4, getComparator(order, orderBy))
+                                            {stableSort(demote, getComparator(order, orderBy))
                                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                                .map((row) => {
+                                                .map(({character_id, character_name, character_rank, character_checksum, character_date}) => {
                                                     return (
                                                         <TableRow>
-                                                            <TableCell align="right">{row.character_id}</TableCell>
-                                                            <TableCell align="right">{row.character_name}</TableCell>
-                                                            <TableCell align="right">{row.character_rank}</TableCell>
-                                                            <TableCell align="right">{row.character_checksum}</TableCell>
-                                                            <TableCell align="right">{new Date(row.character_date).toLocaleString('en-GB')}</TableCell>
+                                                            <TableCell align="right">{character_id}</TableCell>
+                                                            <TableCell align="right">{character_name}</TableCell>
+                                                            <TableCell align="right">{character_rank}</TableCell>
+                                                            <TableCell align="right">{character_checksum}</TableCell>
+                                                            <TableCell align="right">{new Date(character_date).toLocaleString('en-GB')}</TableCell>
                                                         </TableRow>
                                                     );
                                                 })}
@@ -480,7 +460,7 @@ function GuildPage(json) {
                                 <TablePagination
                                     rowsPerPageOptions={[10, 25, 50]}
                                     component="div"
-                                    count={rows4.length}
+                                    count={demote.length}
                                     rowsPerPage={rowsPerPage}
                                     page={page}
                                     onChangePage={handleChangePage}
@@ -493,30 +473,28 @@ function GuildPage(json) {
                                 <TableContainer>
                                     <Table
                                         className={classes.table}
-                                        aria-labelledby="tableTitle"
+                                        aria-labelledby="Promoted"
                                         size={'small'}
-                                        aria-label="enhanced table"
+                                        aria-label="Members promoted"
                                     >
                                         <EnhancedTableHead
                                             classes={classes}
-                                            numSelected={selected.length}
                                             order={order}
                                             orderBy={orderBy}
-                                            onSelectAllClick={handleSelectAllClick}
                                             onRequestSort={handleRequestSort}
-                                            rowCount={rows.length}
+                                            rowCount={promote.length}
                                         />
                                         <TableBody>
-                                            {stableSort(rows5, getComparator(order, orderBy))
+                                            {stableSort(promote, getComparator(order, orderBy))
                                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                                .map((row) => {
+                                                .map(({character_id, character_name, character_rank, character_checksum, character_date}) => {
                                                     return (
                                                         <TableRow>
-                                                            <TableCell align="right">{row.character_id}</TableCell>
-                                                            <TableCell align="right">{row.character_name}</TableCell>
-                                                            <TableCell align="right">{row.character_rank}</TableCell>
-                                                            <TableCell align="right">{row.character_checksum}</TableCell>
-                                                            <TableCell align="right">{new Date(row.character_date).toLocaleString('en-GB')}</TableCell>
+                                                            <TableCell align="right">{character_id}</TableCell>
+                                                            <TableCell align="right">{character_name}</TableCell>
+                                                            <TableCell align="right">{character_rank}</TableCell>
+                                                            <TableCell align="right">{character_checksum}</TableCell>
+                                                            <TableCell align="right">{new Date(character_date).toLocaleString('en-GB')}</TableCell>
                                                         </TableRow>
                                                     );
                                                 })}
@@ -531,7 +509,7 @@ function GuildPage(json) {
                                 <TablePagination
                                     rowsPerPageOptions={[10, 25, 50]}
                                     component="div"
-                                    count={rows5.length}
+                                    count={promote.length}
                                     rowsPerPage={rowsPerPage}
                                     page={page}
                                     onChangePage={handleChangePage}
