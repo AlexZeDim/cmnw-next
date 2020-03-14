@@ -169,7 +169,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-function GuildPage({json}) {
+function GuildPage(json) {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
     const [order, setOrder] = React.useState('asc');
@@ -550,7 +550,7 @@ export async function getServerSideProps({query}) {
     const {realmSlug, guildSlug} = query;
     const res = await fetch(encodeURI(`http://localhost:3030/api/guilds/${(guildSlug)}@${realmSlug}`));
     const json = await res.json();
-    return { props: {json}}
+    return { props: json}
 }
 
 export default GuildPage
