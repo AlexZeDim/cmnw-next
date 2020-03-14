@@ -177,7 +177,6 @@ function GuildPage(json) {
     const [orderBy, setOrderBy] = React.useState('character_rank');
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
-    created_timestamp = new Date(created_timestamp).toLocaleString('en-GB');
     const {join, leave, demote, promote} = guild_log;
 
     const handleRequestSort = (event, property) => {
@@ -245,7 +244,7 @@ function GuildPage(json) {
                                     </Typography>
                                     <Divider />
                                     <Typography>
-                                        Founded: {created_timestamp}
+                                        Founded: {new Date(created_timestamp).toLocaleString('en-GB')}
                                     </Typography>
                                     <Typography>
                                         Indexed: {new Date(createdAt).toLocaleString('en-GB')}
