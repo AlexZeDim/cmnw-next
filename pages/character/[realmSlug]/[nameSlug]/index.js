@@ -66,9 +66,6 @@ function CharacterPage(json) {
         createdAt,
         updatedAt
     } = json;
-    const { eq, avg } = ilvl;
-    const { pets, mounts } = checksum;
-    const { bust_url } = media;
     const classes = useStyles();
     return (
         <React.Fragment>
@@ -79,6 +76,7 @@ function CharacterPage(json) {
                         <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
                            {_id}
                         </Typography>
+                        { (statusCode === 200) ? (
                         <span className={classes.heroButtons}>
                             <Grid container spacing={2} justify="center">
                                 <Grid item>
@@ -93,10 +91,13 @@ function CharacterPage(json) {
                                 </Grid>
                             </Grid>
                         </span>
+                        ) : ('')
+                        }
                     </Container>
                 </div>
+                {/* End hero unit */}
                 <Container className={classes.cardGrid} maxWidth="lg">
-                    {/* End hero unit */}
+                { (statusCode === 200) ? (
                     <Grid container spacing={4}>
                         <Grid item key={2} xs={12} sm={6} md={3}>
                             <Card className={classes.card}>
@@ -146,38 +147,44 @@ function CharacterPage(json) {
                             </Grid>
                             ) : ('')
                         }
-                        <Grid item key={2} xs={12} sm={6} md={3}>
-                            <Card className={classes.card}>
-                                <CardContent className={classes.cardContent}>
-                                    <Typography gutterBottom variant="h5" component="h2">
-                                        ITEM LEVEL
-                                    </Typography>
-                                    <Divider light />
-                                    <Typography>
-                                        A: {eq}
-                                    </Typography>
-                                    <Typography>
-                                        E: {avg}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
-                        </Grid>
-                        <Grid item key={2} xs={12} sm={6} md={3}>
-                            <Card className={classes.card}>
-                                <CardContent className={classes.cardContent}>
-                                    <Typography gutterBottom variant="h5" component="h2">
-                                        Checksum
-                                    </Typography>
-                                    <Divider light />
-                                    <Typography>
-                                        {pets}
-                                    </Typography>
-                                    <Typography>
-                                        {mounts}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
-                        </Grid>
+                        { (ilvl) ? (
+                            <Grid item key={2} xs={12} sm={6} md={3}>
+                                <Card className={classes.card}>
+                                    <CardContent className={classes.cardContent}>
+                                        <Typography gutterBottom variant="h5" component="h2">
+                                            ilvl
+                                        </Typography>
+                                        <Divider light />
+                                        <Typography>
+                                            A: {ilvl.eq}
+                                        </Typography>
+                                        <Typography>
+                                            E: {ilvl.avg}
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                        ) : ('')
+                        }
+                        { (checksum) ? (
+                            <Grid item key={2} xs={12} sm={6} md={3}>
+                                <Card className={classes.card}>
+                                    <CardContent className={classes.cardContent}>
+                                        <Typography gutterBottom variant="h5" component="h2">
+                                            Checksum
+                                        </Typography>
+                                        <Divider light />
+                                        <Typography>
+                                            {checksum.pets}
+                                        </Typography>
+                                        <Typography>
+                                            {checksum.mounts}
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                        ) : ('')
+                        }
                         <Grid item key={2} xs={12} sm={6} md={3}>
                             <Card className={classes.card}>
                                 <CardContent className={classes.cardContent}>
@@ -210,16 +217,38 @@ function CharacterPage(json) {
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid item key={2} xs={12} sm={6} md={3}>
-                            <Card className={classes.card}>
-                                <CardMedia
-                                    className={classes.cardMedia}
-                                    image={bust_url}
-                                    title={_id}
-                                />
-                            </Card>
-                        </Grid>
+                        { (media) ? (
+                            <Grid item key={2} xs={12} sm={6} md={3}>
+                                <Card className={classes.card}>
+                                    <CardMedia
+                                        className={classes.cardMedia}
+                                        image={media.bust_url}
+                                        title={_id}
+                                    />
+                                </Card>
+                            </Grid>
+                        ) : ('')
+                        }
                     </Grid>
+                ) : (
+                    <Grid item key={2} xs={12} sm={6} md={3}>
+                        <Card className={classes.card}>
+                            <CardContent className={classes.cardContent}>
+                                <Typography gutterBottom variant="h5" component="h2">
+                                    {updatedBy}
+                                </Typography>
+                                <Divider light />
+                                <Typography>
+                                    C: {new Date(createdAt).toLocaleString('en-GB')}
+                                </Typography>
+                                <Typography>
+                                    U: {new Date(updatedAt).toLocaleString('en-GB')}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                    )
+                }
                 </Container>
             </main>
         </React.Fragment>
