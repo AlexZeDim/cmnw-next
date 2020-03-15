@@ -168,7 +168,8 @@ function GuildPage(json) {
         //members_prev,
         achievement_points, created_timestamp,
         faction, member_count,
-        //crest, statusCode,
+        //crest,
+        statusCode,
         createdAt, updatedAt
     } = json;
     const classes = useStyles();
@@ -209,13 +210,16 @@ function GuildPage(json) {
                         <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
                             {_id}
                         </Typography>
+                        { (statusCode === 200) ? (
                         <Typography variant="h5" align="center" color="textSecondary" paragraph>
                             {faction}
                         </Typography>
+                        ) : ('')}
                     </Container>
                 </div>
+                {/* End hero unit */}
+                { (statusCode === 200) ? (
                 <Container className={classes.cardGrid} maxWidth="lg">
-                    {/* End hero unit */}
                     <Grid container spacing={4}>
                         <Grid item key={2} xs={12} sm={6} md={6}>
                             <Card className={classes.card}>
@@ -518,6 +522,31 @@ function GuildPage(json) {
                         </TabPanel>
                     </div>
                 </Container>
+                ) : (
+                    <Container className={classes.cardGrid} maxWidth="lg">
+                        <Grid container spacing={4}>
+                            <Grid item key={2} xs={12} sm={6} md={6}>
+                                <Card className={classes.card}>
+                                    <CardContent className={classes.cardContent}>
+                                        <Typography gutterBottom variant="h5" component="h2">
+                                            Summary
+                                        </Typography>
+                                        <Divider light />
+                                        <Typography>
+                                            ID: {id}
+                                        </Typography>
+                                        <Typography>
+                                            Achivements: {achievement_points}
+                                        </Typography>
+                                        <Typography>
+                                            Members: {member_count}
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                        </Grid>
+                    </Container>
+                )}
             </main>
         </React.Fragment>
     )

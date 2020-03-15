@@ -313,7 +313,7 @@ function CharacterPage(json) {
                     )
                 }
                 {/* End Cards */}
-                { (guild_history && guild.length > 0) ? (
+                { (guild_history && guild_history.length > 0) ? (
                     <TableContainer className={classes.guild_history} component={Paper}>
                         <Table className={classes.table} size="small" aria-label="a dense table">
                             <TableHead>

@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { Container, Grid, Typography, Divider, Card, CardContent, Chip } from '@material-ui/core';
+import { Container, Grid, Typography, Divider, Card, CardContent } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import React from "react";
 import fetch from 'isomorphic-unfetch'
@@ -43,20 +43,12 @@ const useStyles = makeStyles(theme => ({
         fontSize: 14,
     },
     pos: {
-        marginBottom: 12,
-    },
-    cp: {
-        display: 'flex',
-        justifyContent: 'center',
-        flexWrap: 'wrap',
-        '& > *': {
-            margin: theme.spacing(0.5),
-        }
+        margin: theme.spacing(2),
     },
 }));
 
 
-const Item = ({name, market, counterparties}) => {
+const Item = ({name, market}) => {
     const classes = useStyles();
     const router = useRouter();
     const { id } = router.query;
@@ -64,7 +56,7 @@ const Item = ({name, market, counterparties}) => {
         chart: {
             type: 'heatmap',
             marginTop: 40,
-            marginBottom: 80,
+            marginBottom: 40,
             plotBorderWidth: 1,
         },
         title: {
@@ -75,7 +67,7 @@ const Item = ({name, market, counterparties}) => {
         },
         yAxis:{
             categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-            //tickLength:150,
+            tickLength: 150,
             opposite: true,
             title: null,
         },
@@ -109,13 +101,8 @@ const Item = ({name, market, counterparties}) => {
         }]
     };
 
-    const handleClick = (e) => {
-        console.log(e);
-        alert(e.currentTarget.textContent);
-    };
-
     return (
-        <Container fixed>
+        <Container maxWidth="lg">
             <Typography variant="overline" display="block">
                 {id}
             </Typography>
@@ -125,7 +112,7 @@ const Item = ({name, market, counterparties}) => {
             <Typography variant="caption" display="block">
                 "timestamp"
             </Typography>
-            <Divider />
+            <Divider className={classes.pos} />
             {typeof market !== 'undefined' ? (
                 <Grid container spacing={1}>
                     {market.map((element, index) => (
@@ -145,42 +132,23 @@ const Item = ({name, market, counterparties}) => {
                 </Grid>) : (
                 ''
             )}
-            <Divider className={classes.pos} />
             <HighchartsReact
                 highcharts={Highcharts}
                 constructorType={'chart'}
                 options={chartOptions}
             />
             <Divider className={classes.pos} />
-            <Grid container spacing={1}>
-                {counterparties.map((element, index) => (
-                    <Grid item key={index} xs={12} sm={2} md={2}>
-                        <Chip
-                            className={classes.cp}
-                            label={element}
-                            onClick={handleClick} />
-                    </Grid>
-                ))}
-            </Grid>
         </Container>
     )
 };
 
-Item.getInitialProps = async ({ query }) => {
-    try {
-        const res = await fetch(`https://us.api.blizzard.com/data/wow/item/${query.id}?namespace=static-us&locale=en_US&access_token=EURlzC5eK2swqSoQhY2J57J4C56JueslSt`);
-        const json = await res.json();
-        /*
-        if (typeof json.market === 'undefined') {
-            const err = new Error();
-            err.code = 'ENOENT';
-            throw err
-        }*/
-        console.log(json);
-        return json;
-    } catch (err) {
-        return { err: { statusCode: err.status } }
-    }
-};
+
+export async function getServerSideProps({query}) {
+    const {id} = query;
+    const res = await fetch(encodeURI(`https://us.api.blizzard.com/data/wow/item/${id}?namespace=static-us&locale=en_US&access_token=EUUFsZ2i2A1Lrp2fMWdCO24Sk9q1Hr3cP5`));
+    const json = await res.json();
+    return { props: json}
+}
+
 
 export default Item
