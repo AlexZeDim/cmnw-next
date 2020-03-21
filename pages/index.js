@@ -1,5 +1,7 @@
 import React from "react";
+import { Formik } from 'formik';
 import fetch from 'node-fetch'
+import Router from 'next/router'
 import {Container, Grid, Divider, Typography} from "@material-ui/core";
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
@@ -30,9 +32,6 @@ function Index () {
                 {/* Hero unit */}
                 <div className={classes.heroContent}>
                     <Container maxWidth="lg">
-                        <form className={classes.searchField} noValidate autoComplete="off">
-                            <TextField fullWidth id="outlined-basic" label="Input Search Query" variant="outlined" />
-                        </form>
                         <span className={classes.heroButtons}>
                             <Grid container spacing={2} justify="center">
                                 <Grid item>
@@ -51,7 +50,38 @@ function Index () {
                 </div>
                 {/* End hero unit */}
                 <Container className={classes.cardGrid} maxWidth="lg">
-                    TEST
+                    <Formik
+                        initialValues={{ searchQuery: ''}}
+                        onSubmit={async (values, { setSubmitting }) => {
+                            setTimeout(() => {
+                                Router.push(`/character/gordunni/${values.searchQuery}`);
+                                setSubmitting(false);
+                            }, 400);
+                        }}
+                    >
+                    {({
+                          values,
+                          errors,
+                          touched,
+                          handleChange,
+                          handleBlur,
+                          handleSubmit,
+                          /* and other goodies */
+                      }) => (
+                        <form className={classes.searchField} onSubmit={handleSubmit} noValidate autoComplete="off">
+                            <TextField
+                                type="text"
+                                name="searchQuery"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.searchQuery}
+                                fullWidth id="outlined-basic"
+                                label="Input Search Query"
+                                variant="outlined" />
+                            {errors.searchQuery && touched.searchQuery && errors.searchQuery}
+                        </form>
+                    )}
+                    </Formik>
                 </Container>
             </main>
         </React.Fragment>
