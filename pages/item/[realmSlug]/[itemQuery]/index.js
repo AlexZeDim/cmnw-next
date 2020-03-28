@@ -59,7 +59,10 @@ const useStyles = makeStyles(theme => ({
     large: {
         width: theme.spacing(7),
         height: theme.spacing(7),
-    }
+    },
+    container: {
+        maxHeight: 440,
+    },
 }));
 
 
@@ -106,9 +109,9 @@ const Item = ({_id, name, item, market, chart, lvl2}) => {
         },
         tooltip: {
             formatter: function () {
-                return '<b>' + this.series.xAxis.categories[this.point.x] + '</b><br><b>' +
-                    'x' + this.point.value + '</b><b> @' + this.series.yAxis.categories[this.point.y] + 'g</b><br><b>OI:' +
-                    (this.point.oi).toFixed(2) +'g Orders: ' + this.point.orders + '</b>'
+                return `<b>${this.series.xAxis.categories[this.point.x]}</b><br>
+                        <b>x${this.point.value}</b><b> @${this.series.yAxis.categories[this.point.y]}g</b><br>
+                        <b>OI:${(this.point.oi).toFixed(2)}g Orders: ${this.point.orders}</b>`
             }
         },
         series: [{
@@ -163,7 +166,7 @@ const Item = ({_id, name, item, market, chart, lvl2}) => {
             {typeof market !== 'undefined' ? (
                 <Grid container>
                     <Grid item xs={6}>
-                        <TableContainer component={Paper}>
+                        <TableContainer component={Paper} className={classes.container}>
                             <Table className={classes.table} size="small" aria-label="a dense table">
                                 <TableHead>
                                     <TableRow>

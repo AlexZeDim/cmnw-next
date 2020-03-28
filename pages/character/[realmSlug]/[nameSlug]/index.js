@@ -2,9 +2,7 @@ import React from "react";
 import fetch from 'node-fetch'
 import {Container, Grid, Divider, Typography} from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import Card from '@material-ui/core/Card';
+import Avatar from '@material-ui/core/Avatar'
 import Button from "@material-ui/core/Button";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -16,13 +14,14 @@ import Paper from '@material-ui/core/Paper';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
+import image from '../../../../src/img/a.jpg';
 
 const useStyles = makeStyles(theme => ({
     icon: {
         marginRight: theme.spacing(2),
     },
     heroContent: {
-        backgroundColor: theme.palette.background.paper,
+        backgroundImage: `url(${image})`,
         padding: theme.spacing(6, 0, 6),
     },
     heroButtons: {
@@ -36,6 +35,7 @@ const useStyles = makeStyles(theme => ({
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
+        backgroundColor: 'inherit'
     },
     cardMedia: {
         paddingTop: '56.25%', // 16:9
@@ -43,18 +43,23 @@ const useStyles = makeStyles(theme => ({
     cardContent: {
         flexGrow: 1,
     },
+    cardTitle: {
+        fontSize: '1.1em',
+        fontWeight: 600
+    },
     footer: {
         backgroundColor: theme.palette.background.paper,
         padding: theme.spacing(6),
     },
     table: {
-        minWidth: 650,
+        minWidth: 650
     },
     guild_history: {
         marginTop: theme.spacing(4),
+        maxHeight: 440,
     },
     modal: {
-        margin: theme.spacing(30, 60, 30),
+        margin: theme.spacing(15, 60, 30),
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -63,6 +68,21 @@ const useStyles = makeStyles(theme => ({
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
+    },
+    title: {
+        color: theme.palette.background.paper,
+        fontFamily: 'Fira Sans',
+        fontStyle: 'normal',
+        fontDisplay: 'swap',
+        fontWeight: 400
+    },
+    large: {
+        width: theme.spacing(36),
+        height: theme.spacing(14),
+    },
+    full: {
+        width: 'auto',
+        height: 'auto',
     },
 }));
 
@@ -106,8 +126,8 @@ function CharacterPage(json) {
                 {/* Hero unit */}
                 <div className={classes.heroContent}>
                     <Container maxWidth="lg">
-                        <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-                           {_id}
+                        <Typography component="h1" variant="h2" align="center" color="textPrimary" className={classes.title} gutterBottom>
+                            {_id.toUpperCase()}
                         </Typography>
                         { (statusCode === 200) ? (
                         <span className={classes.heroButtons}>
@@ -115,11 +135,6 @@ function CharacterPage(json) {
                                 <Grid item>
                                     <Button variant="contained" color="primary">
                                         Find all
-                                    </Button>
-                                </Grid>
-                                <Grid item>
-                                    <Button variant="outlined" color="primary">
-                                        Guild History
                                     </Button>
                                 </Grid>
                             </Grid>
@@ -134,181 +149,142 @@ function CharacterPage(json) {
                 { (statusCode === 200) ? (
                     <Grid container spacing={4}>
                         <Grid item key={2} xs={12} sm={6} md={3}>
-                            <Card className={classes.card}>
-                                <CardContent className={classes.cardContent}>
-                                    <Typography gutterBottom variant="h5" component="h2">
-                                        Summary
-                                    </Typography>
-                                    <Divider light />
-                                    <Typography>
-                                        ID: {id}
-                                    </Typography>
-                                    <Typography>
-                                        LVL: {level}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
+                            <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                                Summary
+                            </Typography>
+                            <Divider light />
+                            <Typography variant="caption" display="block">
+                                ID: {id}
+                            </Typography>
+                            <Typography variant="caption" display="block">
+                                LVL: {level}
+                            </Typography>
                         </Grid>
                         <Grid item key={2} xs={12} sm={6} md={3}>
-                            <Card className={classes.card}>
-                                <CardContent className={classes.cardContent}>
-                                    <Typography gutterBottom variant="h5" component="h2">
-                                        {faction}
-                                    </Typography>
-                                    <Divider light />
-                                    <Typography>
-                                        {gender} / {race}
-                                    </Typography>
-                                    <Typography>
-                                        {json.class} / {spec}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
+                            <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                                {faction}
+                            </Typography>
+                            <Divider light />
+                            <Typography variant="caption" display="block">
+                                {gender} / {race}
+                            </Typography>
+                            <Typography variant="caption" display="block">
+                                {json.class} / {spec}
+                            </Typography>
                         </Grid>
                         { (guild) ? (
                             <Grid item key={1} xs={12} sm={6} md={3}>
-                                <Card className={classes.card}>
-                                    <CardContent className={classes.cardContent}>
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                            Guild
-                                        </Typography>
-                                        <Divider light />
-                                        <Typography>
-                                            {guild}
-                                        </Typography>
-                                        <Typography>
-                                            Rank: {guild_rank}
-                                        </Typography>
-                                    </CardContent>
-                                </Card>
+                                <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                                    Guild
+                                </Typography>
+                                <Divider light />
+                                <Typography variant="caption" display="block">
+                                    {guild}
+                                </Typography>
+                                <Typography variant="caption" display="block">
+                                    Rank: { (guild_rank === 0) ? ('GM') : ({guild_rank})}
+                                </Typography>
                             </Grid>
                             ) : ('')
                         }
                         { (ilvl) ? (
                             <Grid item key={2} xs={12} sm={6} md={3}>
-                                <Card className={classes.card}>
-                                    <CardContent className={classes.cardContent}>
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                            ilvl
-                                        </Typography>
-                                        <Divider light />
-                                        <Typography>
-                                            A: {ilvl.eq}
-                                        </Typography>
-                                        <Typography>
-                                            E: {ilvl.avg}
-                                        </Typography>
-                                    </CardContent>
-                                </Card>
+                                <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                                    ilvl
+                                </Typography>
+                                <Divider light />
+                                <Typography variant="caption" display="block">
+                                    A: {ilvl.eq}
+                                </Typography>
+                                <Typography variant="caption" display="block">
+                                    E: {ilvl.avg}
+                                </Typography>
                             </Grid>
                         ) : ('')
                         }
                         { (checksum) ? (
                             <Grid item key={2} xs={12} sm={6} md={3}>
-                                <Card className={classes.card}>
-                                    <CardContent className={classes.cardContent}>
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                            Checksum
-                                        </Typography>
-                                        <Divider light />
-                                        <Typography>
-                                            {checksum.pets}
-                                        </Typography>
-                                        <Typography>
-                                            {checksum.mounts}
-                                        </Typography>
-                                    </CardContent>
-                                </Card>
+                                <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                                    Hash
+                                </Typography>
+                                <Divider light />
+                                { (checksum.pets) ? (
+                                    <Typography variant="caption" display="block">
+                                        A: {checksum.pets}
+                                    </Typography>
+                                ) : ('')}
+                                { (checksum.mounts) ? (
+                                    <Typography variant="caption" display="block">
+                                        B: {checksum.mounts}
+                                    </Typography>
+                                ) : ('')}
                             </Grid>
                         ) : ('')
                         }
                         <Grid item key={2} xs={12} sm={6} md={3}>
-                            <Card className={classes.card}>
-                                <CardContent className={classes.cardContent}>
-                                    <Typography gutterBottom variant="h5" component="h2">
-                                        {updatedBy}
-                                    </Typography>
-                                    <Divider light />
-                                    <Typography>
-                                        C: {new Date(createdAt).toLocaleString('en-GB')}
-                                    </Typography>
-                                    <Typography>
-                                        U: {new Date(updatedAt).toLocaleString('en-GB')}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
+                            <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                                {updatedBy}
+                            </Typography>
+                            <Divider light />
+                            <Typography variant="caption" display="block">
+                                C: {new Date(createdAt).toLocaleString('en-GB')}
+                            </Typography>
+                            <Typography variant="caption" display="block">
+                                U: {new Date(updatedAt).toLocaleString('en-GB')}
+                            </Typography>
                         </Grid>
                         <Grid item key={2} xs={12} sm={6} md={3}>
-                            <Card className={classes.card}>
-                                <CardContent className={classes.cardContent}>
-                                    <Typography gutterBottom variant="h5" component="h2">
-                                        Timestamps
-                                    </Typography>
-                                    <Divider light />
-                                    <Typography>
-                                        {new Date(lastModified).toLocaleString('en-GB')}
-                                    </Typography>
-                                    <Typography>
-                                        {new Date(lastOnline).toLocaleString('en-GB')}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
+                            <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                                Timestamps
+                            </Typography>
+                            <Divider light />
+                            <Typography variant="caption" display="block">
+                                {new Date(lastModified).toLocaleString('en-GB')}
+                            </Typography>
+                            <Typography variant="caption" display="block">
+                                {new Date(lastOnline).toLocaleString('en-GB')}
+                            </Typography>
                         </Grid>
                         { (media) ? (
                             <Grid item key={2} xs={12} sm={6} md={3}>
-                                <Card className={classes.card}>
-                                    <CardMedia
-                                        className={classes.cardMedia}
-                                        image={media.bust_url}
-                                        title={_id}
-                                        onClick={handleOpen}
-                                    />
-                                    <Modal
-                                        aria-labelledby="transition-modal-title"
-                                        aria-describedby="transition-modal-description"
-                                        className={classes.modal}
-                                        open={open}
-                                        onClose={handleClose}
-                                        closeAfterTransition
-                                        BackdropComponent={Backdrop}
-                                        BackdropProps={{
-                                            timeout: 500,
-                                        }}
-                                    >
-                                        <Fade in={open}>
-                                            <div className={classes.paper}>
-                                                <Typography gutterBottom variant="h5" component="h2">
-                                                    Preview
-                                                </Typography>
-                                                <CardMedia
-                                                    className={classes.cardMedia}
-                                                    image={media.render_url}
-                                                    title={_id}
-                                                />
-                                            </div>
-                                        </Fade>
-                                    </Modal>
-                                </Card>
+                                <Avatar variant="rounded" alt={_id} src={media.bust_url} className={classes.large} onClick={handleOpen}/>
+                                <Modal
+                                    aria-labelledby="transition-modal-title"
+                                    aria-describedby="transition-modal-description"
+                                    className={classes.modal}
+                                    open={open}
+                                    onClose={handleClose}
+                                    closeAfterTransition
+                                    BackdropComponent={Backdrop}
+                                    BackdropProps={{
+                                        timeout: 500,
+                                    }}
+                                >
+                                    <Fade in={open}>
+                                        <div className={classes.paper}>
+                                            <Typography gutterBottom variant="h5" component="h2">
+                                                Preview
+                                            </Typography>
+                                            <Avatar variant="rounded" alt={_id} src={media.render_url} className={classes.full}/>
+                                        </div>
+                                    </Fade>
+                                </Modal>
                             </Grid>
                         ) : ('')
                         }
                     </Grid>
                 ) : (
                     <Grid item key={2} xs={12} sm={6} md={3}>
-                        <Card className={classes.card}>
-                            <CardContent className={classes.cardContent}>
-                                <Typography gutterBottom variant="h5" component="h2">
-                                    {updatedBy}
-                                </Typography>
-                                <Divider light />
-                                <Typography>
-                                    C: {new Date(createdAt).toLocaleString('en-GB')}
-                                </Typography>
-                                <Typography>
-                                    U: {new Date(updatedAt).toLocaleString('en-GB')}
-                                </Typography>
-                            </CardContent>
-                        </Card>
+                        <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                            {updatedBy}
+                        </Typography>
+                        <Divider light />
+                        <Typography variant="caption" display="block">
+                            C: {new Date(createdAt).toLocaleString('en-GB')}
+                        </Typography>
+                        <Typography variant="caption" display="block">
+                            U: {new Date(updatedAt).toLocaleString('en-GB')}
+                        </Typography>
                     </Grid>
                     )
                 }
@@ -319,10 +295,10 @@ function CharacterPage(json) {
                             <TableHead>
                                 <TableRow>
                                     <TableCell>ID</TableCell>
-                                    <TableCell align="right">Name</TableCell>
-                                    <TableCell align="right">Rank</TableCell>
-                                    <TableCell align="right">Action</TableCell>
-                                    <TableCell align="right">Date</TableCell>
+                                    <TableCell align="right">NAME</TableCell>
+                                    <TableCell align="right">RANK</TableCell>
+                                    <TableCell align="right">ACTION</TableCell>
+                                    <TableCell align="right">DATE</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -332,7 +308,7 @@ function CharacterPage(json) {
                                             {row.id}
                                         </TableCell>
                                         <TableCell align="right">{row.name}</TableCell>
-                                        <TableCell align="right">{row.rank}</TableCell>
+                                        <TableCell align="right">{ (row.rank === 0) ? ('GM') : (row.rank)} </TableCell>
                                         <TableCell align="right">{row.action}</TableCell>
                                         <TableCell align="right">{new Date(row.date).toLocaleString('en-GB')}</TableCell>
                                     </TableRow>

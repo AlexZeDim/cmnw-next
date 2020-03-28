@@ -16,6 +16,12 @@ const theme = createMuiTheme({
     background: {
       default: '#eee',
     },
+  },
+  typography: {
+    caption: {
+      fontSize: '0.9rem',
+      textTransform: 'uppercase'
+    }
   }
 });
 
