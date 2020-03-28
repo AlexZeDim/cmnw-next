@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import Avatar from '@material-ui/core/Avatar';
 import { Container, Grid, Typography, Divider, Card, CardContent } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import React from "react";
@@ -48,24 +49,35 @@ const useStyles = makeStyles(theme => ({
     },
     pos: {
         margin: theme.spacing(2),
+    },
+    en_title: {
+        fontFamily: 'Fira Sans',
+        fontStyle: 'normal',
+        fontDisplay: 'swap',
+        fontWeight: 400
+    },
+    large: {
+        width: theme.spacing(7),
+        height: theme.spacing(7),
     }
 }));
 
 
-const Item = ({_id, name, market, chart, lvl2}) => {
+const Item = ({_id, name, item, market, chart, lvl2}) => {
     let {quantity, open_interest, min, avg, min_size, orders} = market;
     let {price_range, timestamps, dataset} = chart;
     const classes = useStyles();
-    const router = useRouter();
-    const { id } = router.query;
     const chartOptions = {
         chart: {
             type: 'heatmap',
-            marginTop: 0,
+            marginTop: 40,
             marginBottom: 40,
             plotBorderWidth: 1,
             height: (9 / 16 * 100) + '%',
-            backgroundColor: 'transparent'
+            backgroundColor: 'transparent',
+            style: {
+                letterSpacing: 'unset',
+            }
         },
         title: {
             text: undefined
@@ -95,7 +107,8 @@ const Item = ({_id, name, market, chart, lvl2}) => {
         tooltip: {
             formatter: function () {
                 return '<b>' + this.series.xAxis.categories[this.point.x] + '</b><br><b>' +
-                    'x' + this.point.value + '</b><b> @' + this.series.yAxis.categories[this.point.y] + 'g</b>';
+                    'x' + this.point.value + '</b><b> @' + this.series.yAxis.categories[this.point.y] + 'g</b><br><b>OI:' +
+                    (this.point.oi).toFixed(2) +'g Orders: ' + this.point.orders + '</b>'
             }
         },
         series: [{
@@ -113,32 +126,39 @@ const Item = ({_id, name, market, chart, lvl2}) => {
                     }
                 },
                 style: {
+                    fontFamily: 'Roboto',
                     color: 'contrast',
                     fontSize: '14px',
                     fontWeight: 'normal',
-                    textOutline: '0px'
+                    textOutline: '0px',
                 }
             }
         }]
     };
 
     return (
-        <Container maxWidth="lg">
-            <Typography variant="overline" display="block">
-                {_id}
-            </Typography>
-            <Typography variant="h2" gutterBottom>
-                {name["en_GB"]}
-            </Typography>
-            <Typography variant="caption" display="block">
-                {market._id}
-            </Typography>
-            <Divider className={classes.pos} />
-            <HighchartsReact
-                highcharts={Highcharts}
-                constructorType={'chart'}
-                options={chartOptions}
-            />
+        <Container maxWidth="false">
+            <Grid container spacing={1}>
+                <Grid item xs>
+                    <Typography variant="overline" display="block">
+                        {_id}
+                    </Typography>
+                    <Avatar alt="Remy Sharp" variant="rounded" src={item.icon} className={classes.large} />
+                    <Typography variant="h2" gutterBottom className={classes.en_title}>
+                        {name["en_GB"]}
+                    </Typography>
+                    <Typography variant="caption" display="block">
+                        {new Date(market._id).toLocaleString('en-GB')} :: {new Date().toLocaleString('en-GB')}
+                    </Typography>
+                </Grid>
+                <Grid item xs={9}>
+                    <HighchartsReact
+                        highcharts={Highcharts}
+                        constructorType={'chart'}
+                        options={chartOptions}
+                    />
+                </Grid>
+            </Grid>
             <Divider className={classes.pos} />
             {typeof market !== 'undefined' ? (
                 <Grid container>
@@ -174,7 +194,7 @@ const Item = ({_id, name, market, chart, lvl2}) => {
                                 <Grid item key={1} xs={6} sm={3} md={4}>
                                     <Card className={classes.card}>
                                         <CardContent>
-                                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                            <Typography variant="overline" display="block" color="textSecondary">
                                                 Quantity
                                             </Typography>
                                             <Typography variant="body2" component="p">
@@ -186,7 +206,7 @@ const Item = ({_id, name, market, chart, lvl2}) => {
                                 <Grid item key={2} xs={12} sm={6} md={4}>
                                     <Card className={classes.card}>
                                         <CardContent>
-                                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                            <Typography variant="overline" display="block" color="textSecondary">
                                                 Open Interest
                                             </Typography>
                                             <Typography variant="body2" component="p">
@@ -198,7 +218,7 @@ const Item = ({_id, name, market, chart, lvl2}) => {
                                 <Grid item key={3} xs={12} sm={6} md={4}>
                                     <Card className={classes.card}>
                                         <CardContent>
-                                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                            <Typography variant="overline" display="block" color="textSecondary">
                                                 Min Price
                                             </Typography>
                                             <Typography variant="body2" component="p">
@@ -210,7 +230,7 @@ const Item = ({_id, name, market, chart, lvl2}) => {
                                 <Grid item key={4} xs={12} sm={6} md={4}>
                                     <Card className={classes.card}>
                                         <CardContent>
-                                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                            <Typography variant="overline" display="block" color="textSecondary">
                                                 Min Size Price
                                             </Typography>
                                             <Typography variant="body2" component="p">
@@ -234,7 +254,7 @@ const Item = ({_id, name, market, chart, lvl2}) => {
                                 <Grid item key={6} xs={12} sm={6} md={4}>
                                     <Card className={classes.card}>
                                         <CardContent>
-                                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                            <Typography variant="overline" display="block" color="textSecondary">
                                                 Orders
                                             </Typography>
                                             <Typography variant="body2" component="p">
