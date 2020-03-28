@@ -65,7 +65,7 @@ export default function Header() {
 
     return (
         <div className={classes.root}>
-            <AppBar position="static">
+            <AppBar position="static" color="secondary">
                 <Toolbar>
                     <Typography className={classes.title} variant="h6" color="initial" noWrap>
                         <Link href="/who-we-are" color="inherit" underline="none">

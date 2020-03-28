@@ -240,7 +240,7 @@ function GuildPage(json) {
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid item key={2} xs={12} sm={6} md={6}>
+                        <Grid item key={3} xs={12} sm={6} md={6}>
                             <Card className={classes.card}>
                                 <CardContent className={classes.cardContent}>
                                     <Typography gutterBottom variant="h5" component="h2">
@@ -299,7 +299,7 @@ function GuildPage(json) {
                                                         <TableRow>
                                                             <TableCell align="right">{character_id}</TableCell>
                                                             <TableCell align="right">{character_name}</TableCell>
-                                                            <TableCell align="right">{character_rank}</TableCell>
+                                                            <TableCell align="right">{(character_rank === 0) ? ('GM') : (character_rank)} </TableCell>
                                                             <TableCell align="right">{character_checksum}</TableCell>
                                                             <TableCell align="right">{new Date(character_date).toLocaleString('en-GB')}</TableCell>
                                                         </TableRow>
@@ -525,7 +525,7 @@ function GuildPage(json) {
                 ) : (
                     <Container className={classes.cardGrid} maxWidth="lg">
                         <Grid container spacing={4}>
-                            <Grid item key={2} xs={12} sm={6} md={6}>
+                            <Grid item key={4} xs={12} sm={6} md={6}>
                                 <Card className={classes.card}>
                                     <CardContent className={classes.cardContent}>
                                         <Typography gutterBottom variant="h5" component="h2">

@@ -39,11 +39,6 @@ function Index () {
                                         Find all
                                     </Button>
                                 </Grid>
-                                <Grid item>
-                                    <Button variant="outlined" color="primary">
-                                        Guild History
-                                    </Button>
-                                </Grid>
                             </Grid>
                         </span>
                     </Container>

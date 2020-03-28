@@ -5,7 +5,7 @@ import { red } from '@material-ui/core/colors';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#556cd6',
+      main: '#b895d6',
     },
     secondary: {
       main: '#19857b',
@@ -22,7 +22,14 @@ const theme = createMuiTheme({
       fontSize: '0.9rem',
       textTransform: 'uppercase'
     }
-  }
+  },
+  overrides: {
+    MuiTableCell: {
+      root: {
+        textTransform: 'uppercase'
+      },
+    },
+  },
 });
 
 export default theme;

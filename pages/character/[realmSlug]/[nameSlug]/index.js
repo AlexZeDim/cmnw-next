@@ -1,28 +1,23 @@
 import React from "react";
 import fetch from 'node-fetch'
-import {Container, Grid, Divider, Typography} from "@material-ui/core";
+import Router from 'next/router'
 import { makeStyles } from '@material-ui/core/styles';
-import Avatar from '@material-ui/core/Avatar'
-import Button from "@material-ui/core/Button";
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
-import image from '../../../../src/img/a.jpg';
+import {
+    Container, Grid, Divider,
+    Typography, Avatar, Button,
+    Table, TableBody, TableCell,
+    TableContainer, TableHead,
+    TableRow, Paper, Modal,
+    Backdrop, Fade
+} from "@material-ui/core";
+
 
 const useStyles = makeStyles(theme => ({
     icon: {
         marginRight: theme.spacing(2),
     },
     heroContent: {
-        backgroundImage: `url(${image})`,
-        padding: theme.spacing(6, 0, 6),
+        padding: theme.spacing(8, 0, 8),
     },
     heroButtons: {
         marginTop: theme.spacing(4),
@@ -99,6 +94,7 @@ function CharacterPage(json) {
         faction,
         race,
         spec,
+        character_class,
         //realm,
         //realm_slug,
         level,
@@ -120,11 +116,25 @@ function CharacterPage(json) {
     const handleClose = () => {
         setOpen(false);
     };
+    let style;
+    if (faction === 'Alliance') {
+         style = {
+             backgroundImage: `url(${require(`../../../../src/img/Alliance.jpg`)})`
+        }
+    } else if (faction === 'Horde') {
+        style = {
+            backgroundImage: `url(${require(`../../../../src/img/Horde.jpg`)})`
+        }
+    } else {
+        style = {
+            backgroundImage: `url(${require(`../../../../src/img/N${~~(Math.random() * 2) + 1}.jpg`)})`,
+        }
+    }
     return (
         <React.Fragment>
             <main>
                 {/* Hero unit */}
-                <div className={classes.heroContent}>
+                <div className={classes.heroContent} style={style}>
                     <Container maxWidth="lg">
                         <Typography component="h1" variant="h2" align="center" color="textPrimary" className={classes.title} gutterBottom>
                             {_id.toUpperCase()}
@@ -133,7 +143,7 @@ function CharacterPage(json) {
                         <span className={classes.heroButtons}>
                             <Grid container spacing={2} justify="center">
                                 <Grid item>
-                                    <Button variant="contained" color="primary">
+                                    <Button variant="contained" color="primary" onClick={() => Router.push(`/find/${_id}`)}>
                                         Find all
                                     </Button>
                                 </Grid>
@@ -169,7 +179,7 @@ function CharacterPage(json) {
                                 {gender} / {race}
                             </Typography>
                             <Typography variant="caption" display="block">
-                                {json.class} / {spec}
+                                {character_class} / {spec}
                             </Typography>
                         </Grid>
                         { (guild) ? (
@@ -182,7 +192,7 @@ function CharacterPage(json) {
                                     {guild}
                                 </Typography>
                                 <Typography variant="caption" display="block">
-                                    Rank: { (guild_rank === 0) ? ('GM') : ({guild_rank})}
+                                    Rank: { (guild_rank === 0) ? ('GM') : (guild_rank)}
                                 </Typography>
                             </Grid>
                             ) : ('')
@@ -235,7 +245,7 @@ function CharacterPage(json) {
                         </Grid>
                         <Grid item key={2} xs={12} sm={6} md={3}>
                             <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                                Timestamps
+                                Timestamp
                             </Typography>
                             <Divider light />
                             <Typography variant="caption" display="block">
@@ -261,12 +271,7 @@ function CharacterPage(json) {
                                     }}
                                 >
                                     <Fade in={open}>
-                                        <div className={classes.paper}>
-                                            <Typography gutterBottom variant="h5" component="h2">
-                                                Preview
-                                            </Typography>
-                                            <Avatar variant="rounded" alt={_id} src={media.render_url} className={classes.full}/>
-                                        </div>
+                                        <Avatar variant="rounded" alt={_id} src={media.render_url} className={classes.full}/>
                                     </Fade>
                                 </Modal>
                             </Grid>

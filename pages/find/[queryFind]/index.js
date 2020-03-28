@@ -9,14 +9,24 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import Link from 'next/link'
+
+const ButtonLink = ({ className, href, hrefAs, children }) => (
+    <Link href={href} as={hrefAs}>
+        <a className={className}>
+            {children}
+        </a>
+    </Link>
+);
 
 const useStyles = makeStyles(theme => ({
     icon: {
         marginRight: theme.spacing(2),
     },
     heroContent: {
-        backgroundColor: theme.palette.background.paper,
-        padding: theme.spacing(6, 0, 6),
+        backgroundImage: `url(${require(`../../../src/img/N${~~(Math.random() * 2) + 1}.jpg`)})`,
+        padding: theme.spacing(8, 0, 8),
     },
     heroButtons: {
         marginTop: theme.spacing(4),
@@ -43,8 +53,15 @@ const useStyles = makeStyles(theme => ({
     table: {
         minWidth: 650,
     },
+    title: {
+        color: theme.palette.background.paper,
+        fontFamily: 'Fira Sans',
+        fontStyle: 'normal',
+        fontDisplay: 'swap',
+        fontWeight: 400
+    },
     findAllResult: {
-        marginTop: theme.spacing(4),
+        marginTop: theme.spacing(0),
     },
     modal: {
         margin: theme.spacing(30, 60, 30),
@@ -78,49 +95,49 @@ function CharacterPage(json) {
                 {/* Hero unit */}
                 <div className={classes.heroContent}>
                     <Container maxWidth="lg">
-                        <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-                            {_id}
+                        <Typography component="h1" variant="h2" align="center" color="textPrimary" className={classes.title} gutterBottom>
+                            {_id.toUpperCase()}
                         </Typography>
                     </Container>
                 </div>
                 {/* End hero unit */}
-                <Container className={classes.cardGrid} maxWidth="lg">
+                <Container className={classes.cardGrid} maxWidth="false">
                     { (match && match.length > 0) ? (
                         <TableContainer className={classes.findAllResult} component={Paper}>
                             <Table className={classes.table} size="small" aria-label="a dense table">
                                 <TableHead>
                                     <TableRow>
                                         <TableCell>ID</TableCell>
-                                        <TableCell align="center">Name</TableCell>
-                                        <TableCell align="center">Realm</TableCell>
-                                        <TableCell align="center">Hash A</TableCell>
-                                        <TableCell align="center">Hash B</TableCell>
-                                        <TableCell align="center">Guild</TableCell>
-                                        <TableCell align="center">Rank</TableCell>
-                                        <TableCell align="center">Class</TableCell>
-                                        <TableCell align="center">Faction</TableCell>
-                                        <TableCell align="center">Race</TableCell>
-                                        <TableCell align="center">Gender</TableCell>
-                                        <TableCell align="center">Last Online</TableCell>
+                                        <TableCell align="center">NAME</TableCell>
+                                        <TableCell align="center">REALM</TableCell>
+                                        <TableCell align="center">HASH A</TableCell>
+                                        <TableCell align="center">HASH B</TableCell>
+                                        <TableCell align="center">GUILD</TableCell>
+                                        <TableCell align="center">RANK</TableCell>
+                                        <TableCell align="center">CLASS</TableCell>
+                                        <TableCell align="center">FACTION</TableCell>
+                                        <TableCell align="center">RACE</TableCell>
+                                        <TableCell align="center">GENDER</TableCell>
+                                        <TableCell align="center">LAST ONLINE</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {match.map(row => (
-                                        <TableRow key={row.id}>
+                                    {match.map(({id, name, realm, checksum, guild, guild_rank, faction, race, character_class, gender, lastOnline}) => (
+                                        <TableRow key={id}>
                                             <TableCell component="th" scope="row">
-                                                {row.id}
+                                                {id}
                                             </TableCell>
-                                            <TableCell align="left">{row.name}</TableCell>
-                                            <TableCell align="left">{row.realm}</TableCell>
-                                            <TableCell align="left">{row.checksum.pets}</TableCell>
-                                            <TableCell align="left">{row.checksum.mounts}</TableCell>
-                                            <TableCell align="left">{row.guild}</TableCell>
-                                            <TableCell align="left">{row.guild_rank}</TableCell>
-                                            <TableCell align="left">{row.class}</TableCell>
-                                            <TableCell align="left">{row.faction}</TableCell>
-                                            <TableCell align="left">{row.race}</TableCell>
-                                            <TableCell align="left">{row.gender}</TableCell>
-                                            <TableCell align="left">{new Date(row.lastOnline).toLocaleString('en-GB')}</TableCell>
+                                            <TableCell align="left"><Button component={ButtonLink} href={`/character/${realm}/${name}`}>{name}</Button></TableCell>
+                                            <TableCell align="center">{realm}</TableCell>
+                                            <TableCell align="center">{checksum.pets}</TableCell>
+                                            <TableCell align="center">{checksum.mounts}</TableCell>
+                                            <TableCell align="left">{guild}</TableCell>
+                                            <TableCell align="center">{(guild_rank === 0) ? ('GM') : (guild_rank)}</TableCell>
+                                            <TableCell align="left">{character_class}</TableCell>
+                                            <TableCell align="center">{faction}</TableCell>
+                                            <TableCell align="left">{race}</TableCell>
+                                            <TableCell align="center">{gender}</TableCell>
+                                            <TableCell align="left">{new Date(lastOnline).toLocaleString('en-GB')}</TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
