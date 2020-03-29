@@ -1,23 +1,26 @@
 import React from "react";
 import fetch from 'node-fetch'
-import {Container, Grid, Divider, Typography} from "@material-ui/core";
-import AppBar from '@material-ui/core/AppBar';
-import CardContent from '@material-ui/core/CardContent';
-import Card from '@material-ui/core/Card';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Paper from '@material-ui/core/Paper';
-import Box from "@material-ui/core/Box";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
+import Link from 'next/link'
+import {
+    Container, Grid,
+    Divider, Typography,
+    AppBar, Table, TableBody,
+    TableCell, TableContainer,
+    TableHead, TablePagination,
+    TableRow, TableSortLabel,
+    Paper, Box, Tabs, Tab,
+    Button
+} from "@material-ui/core";
+
+const ButtonLink = ({ className, href, hrefAs, children }) => (
+    <Link href={href} as={hrefAs}>
+        <a className={className}>
+            {children}
+        </a>
+    </Link>
+);
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -131,14 +134,14 @@ const useStyles = makeStyles(theme => ({
     },
     heroContent: {
         backgroundColor: theme.palette.background.paper,
-        padding: theme.spacing(6, 0, 6),
+        padding: theme.spacing(8, 0, 8),
     },
     heroButtons: {
         marginTop: theme.spacing(4),
     },
     cardGrid: {
-        paddingTop: theme.spacing(8),
-        paddingBottom: theme.spacing(8),
+        paddingTop: theme.spacing(2),
+        paddingBottom: theme.spacing(2),
     },
     card: {
         height: '100%',
@@ -155,13 +158,25 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.background.paper,
         padding: theme.spacing(6),
     },
+    title: {
+        color: theme.palette.background.paper,
+        fontFamily: 'Fira Sans',
+        fontStyle: 'normal',
+        fontDisplay: 'swap',
+        fontWeight: 400,
+        textTransform: 'uppercase'
+    },
+    cardTitle: {
+        fontSize: '1.1em',
+        fontWeight: 600
+    },
 }));
 
 function GuildPage(json) {
     let {
         _id, id,
         //slug, name,
-        //realm_slug, realm,
+        realm_slug, realm,
         //createdBy,
         updatedBy, guild_log,
         members_latest,
@@ -192,7 +207,7 @@ function GuildPage(json) {
 
     const handleChangeRowsPerPage = event => {
         setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
+        setPage(0);8
     };
 
     const handleChange = (event, newValue) => {
@@ -201,20 +216,27 @@ function GuildPage(json) {
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, members_latest.length - page * rowsPerPage);
 
+    let style;
+    if (faction === 'Alliance') {
+        style = {
+            backgroundImage: `url(${require(`../../../../src/img/Alliance.jpg`)})`
+        }
+    }
+    if (faction === 'Horde') {
+        style = {
+            backgroundImage: `url(${require(`../../../../src/img/Horde.jpg`)})`
+        }
+    }
+
     return (
         <React.Fragment>
             <main>
                 {/* Hero unit */}
-                <div className={classes.heroContent}>
+                <div className={classes.heroContent} style={style}>
                     <Container maxWidth="lg">
-                        <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
+                        <Typography component="h1" variant="h2" align="center" color="textPrimary" className={classes.title} gutterBottom>
                             {_id}
                         </Typography>
-                        { (statusCode === 200) ? (
-                        <Typography variant="h5" align="center" color="textSecondary" paragraph>
-                            {faction}
-                        </Typography>
-                        ) : ('')}
                     </Container>
                 </div>
                 {/* End hero unit */}
@@ -222,42 +244,34 @@ function GuildPage(json) {
                 <Container className={classes.cardGrid} maxWidth="lg">
                     <Grid container spacing={4}>
                         <Grid item key={2} xs={12} sm={6} md={6}>
-                            <Card className={classes.card}>
-                                <CardContent className={classes.cardContent}>
-                                    <Typography gutterBottom variant="h5" component="h2">
-                                        Summary
-                                    </Typography>
-                                    <Divider light />
-                                    <Typography>
-                                        ID: {id}
-                                    </Typography>
-                                    <Typography>
-                                        Achivements: {achievement_points}
-                                    </Typography>
-                                    <Typography>
-                                        Members: {member_count}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
+                            <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                                Summary
+                            </Typography>
+                            <Divider light />
+                            <Typography variant="caption" display="block">
+                                ID: {id}
+                            </Typography>
+                            <Typography variant="caption" display="block">
+                                Achivements: {achievement_points}
+                            </Typography>
+                            <Typography variant="caption" display="block">
+                                Members: {member_count}
+                            </Typography>
                         </Grid>
                         <Grid item key={3} xs={12} sm={6} md={6}>
-                            <Card className={classes.card}>
-                                <CardContent className={classes.cardContent}>
-                                    <Typography gutterBottom variant="h5" component="h2">
-                                        {updatedBy}
-                                    </Typography>
-                                    <Divider />
-                                    <Typography>
-                                        Founded: {new Date(created_timestamp).toLocaleString('en-GB')}
-                                    </Typography>
-                                    <Typography>
-                                        Indexed: {new Date(createdAt).toLocaleString('en-GB')}
-                                    </Typography>
-                                    <Typography>
-                                        Updated: {new Date(updatedAt).toLocaleString('en-GB')}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
+                            <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                                {updatedBy}
+                            </Typography>
+                            <Divider />
+                            <Typography variant="caption" display="block">
+                                Founded: {new Date(created_timestamp).toLocaleString('en-GB')}
+                            </Typography>
+                            <Typography variant="caption" display="block">
+                                Indexed: {new Date(createdAt).toLocaleString('en-GB')}
+                            </Typography>
+                            <Typography variant="caption" display="block">
+                                Updated: {new Date(updatedAt).toLocaleString('en-GB')}
+                            </Typography>
                         </Grid>
                     </Grid>
                     <div className={classes.root}>
@@ -298,9 +312,9 @@ function GuildPage(json) {
                                                     return (
                                                         <TableRow>
                                                             <TableCell align="right">{character_id}</TableCell>
-                                                            <TableCell align="right">{character_name}</TableCell>
-                                                            <TableCell align="right">{(character_rank === 0) ? ('GM') : (character_rank)} </TableCell>
-                                                            <TableCell align="right">{character_checksum}</TableCell>
+                                                            <TableCell align="right"><Button component={ButtonLink} href={`/character/${realm_slug}/${character_name}`} color={'primary'}>{character_name}</Button></TableCell>
+                                                            <TableCell align="right">{(character_rank === 0) ? ('GM') : (character_rank)}</TableCell>
+                                                            <TableCell align="right">{(character_checksum === '') ? ('') : (<Button component={ButtonLink} href={`/find/${character_checksum}`} color={'primary'}>{character_checksum}</Button>)}</TableCell>
                                                             <TableCell align="right">{new Date(character_date).toLocaleString('en-GB')}</TableCell>
                                                         </TableRow>
                                                     );
@@ -347,9 +361,9 @@ function GuildPage(json) {
                                                     return (
                                                         <TableRow>
                                                             <TableCell align="right">{character_id}</TableCell>
-                                                            <TableCell align="right">{character_name}</TableCell>
-                                                            <TableCell align="right">{character_rank}</TableCell>
-                                                            <TableCell align="right">{character_checksum}</TableCell>
+                                                            <TableCell align="right"><Button component={ButtonLink} href={`/character/${realm_slug}/${character_name}`} color={'primary'}>{character_name}</Button></TableCell>
+                                                            <TableCell align="right">{(character_rank === 0) ? ('GM') : (character_rank)}</TableCell>
+                                                            <TableCell align="right">{(character_checksum === '') ? ('') : (<Button component={ButtonLink} href={`/find/${character_checksum}`} color={'primary'}>{character_checksum}</Button>)}</TableCell>
                                                             <TableCell align="right">{new Date(character_date).toLocaleString('en-GB')}</TableCell>
                                                         </TableRow>
                                                     );
@@ -396,9 +410,9 @@ function GuildPage(json) {
                                                     return (
                                                         <TableRow>
                                                             <TableCell align="right">{character_id}</TableCell>
-                                                            <TableCell align="right">{character_name}</TableCell>
-                                                            <TableCell align="right">{character_rank}</TableCell>
-                                                            <TableCell align="right">{character_checksum}</TableCell>
+                                                            <TableCell align="right"><Button component={ButtonLink} href={`/character/${realm_slug}/${character_name}`} color={'primary'}>{character_name}</Button></TableCell>
+                                                            <TableCell align="right">{(character_rank === 0) ? ('GM') : (character_rank)}</TableCell>
+                                                            <TableCell align="right">{(character_checksum === '') ? ('') : (<Button component={ButtonLink} href={`/find/${character_checksum}`} color={'primary'}>{character_checksum}</Button>)}</TableCell>
                                                             <TableCell align="right">{new Date(character_date).toLocaleString('en-GB')}</TableCell>
                                                         </TableRow>
                                                     );
@@ -445,9 +459,9 @@ function GuildPage(json) {
                                                     return (
                                                         <TableRow>
                                                             <TableCell align="right">{character_id}</TableCell>
-                                                            <TableCell align="right">{character_name}</TableCell>
-                                                            <TableCell align="right">{character_rank}</TableCell>
-                                                            <TableCell align="right">{character_checksum}</TableCell>
+                                                            <TableCell align="right"><Button component={ButtonLink} href={`/character/${realm_slug}/${character_name}`} color={'primary'}>{character_name}</Button></TableCell>
+                                                            <TableCell align="right">{(character_rank === 0) ? ('GM') : (character_rank)}</TableCell>
+                                                            <TableCell align="right">{(character_checksum === '') ? ('') : (<Button component={ButtonLink} href={`/find/${character_checksum}`} color={'primary'}>{character_checksum}</Button>)}</TableCell>
                                                             <TableCell align="right">{new Date(character_date).toLocaleString('en-GB')}</TableCell>
                                                         </TableRow>
                                                     );
@@ -494,9 +508,9 @@ function GuildPage(json) {
                                                     return (
                                                         <TableRow>
                                                             <TableCell align="right">{character_id}</TableCell>
-                                                            <TableCell align="right">{character_name}</TableCell>
+                                                            <TableCell align="right"><Button component={ButtonLink} href={`/character/${realm_slug}/${character_name}`} color={'primary'}>{character_name}</Button></TableCell>
                                                             <TableCell align="right">{character_rank}</TableCell>
-                                                            <TableCell align="right">{character_checksum}</TableCell>
+                                                            <TableCell align="right">{(character_checksum === '') ? ('') : (<Button component={ButtonLink} href={`/find/${character_checksum}`} color={'primary'}>{character_checksum}</Button>)}</TableCell>
                                                             <TableCell align="right">{new Date(character_date).toLocaleString('en-GB')}</TableCell>
                                                         </TableRow>
                                                     );
@@ -526,23 +540,19 @@ function GuildPage(json) {
                     <Container className={classes.cardGrid} maxWidth="lg">
                         <Grid container spacing={4}>
                             <Grid item key={4} xs={12} sm={6} md={6}>
-                                <Card className={classes.card}>
-                                    <CardContent className={classes.cardContent}>
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                            Summary
-                                        </Typography>
-                                        <Divider light />
-                                        <Typography>
-                                            ID: {id}
-                                        </Typography>
-                                        <Typography>
-                                            Achivements: {achievement_points}
-                                        </Typography>
-                                        <Typography>
-                                            Members: {member_count}
-                                        </Typography>
-                                    </CardContent>
-                                </Card>
+                                <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                                    Summary
+                                </Typography>
+                                <Divider light />
+                                <Typography variant="caption" display="block">
+                                    ID: {id}
+                                </Typography>
+                                <Typography variant="caption" display="block">
+                                    Achivements: {achievement_points}
+                                </Typography>
+                                <Typography variant="caption" display="block">
+                                    Members: {member_count}
+                                </Typography>
                             </Grid>
                         </Grid>
                     </Container>

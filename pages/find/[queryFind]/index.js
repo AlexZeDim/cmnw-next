@@ -1,16 +1,13 @@
 import React from "react";
 import fetch from 'node-fetch'
-import {Container, Typography} from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
 import Link from 'next/link'
+import {
+    Container, Typography,
+    Table, TableBody, TableCell,
+    TableContainer, TableHead,
+    TableRow, Paper, Button
+} from "@material-ui/core";
 
 const ButtonLink = ({ className, href, hrefAs, children }) => (
     <Link href={href} as={hrefAs}>
@@ -58,7 +55,8 @@ const useStyles = makeStyles(theme => ({
         fontFamily: 'Fira Sans',
         fontStyle: 'normal',
         fontDisplay: 'swap',
-        fontWeight: 400
+        fontWeight: 400,
+        textTransform: 'uppercase'
     },
     findAllResult: {
         marginTop: theme.spacing(0),
@@ -82,13 +80,6 @@ function CharacterPage(json) {
         match
     } = json;
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => {
-        setOpen(true);
-    };
-    const handleClose = () => {
-        setOpen(false);
-    };
     return (
         <React.Fragment>
             <main>
@@ -96,7 +87,7 @@ function CharacterPage(json) {
                 <div className={classes.heroContent}>
                     <Container maxWidth="lg">
                         <Typography component="h1" variant="h2" align="center" color="textPrimary" className={classes.title} gutterBottom>
-                            {_id.toUpperCase()}
+                            {_id}
                         </Typography>
                     </Container>
                 </div>
@@ -127,11 +118,11 @@ function CharacterPage(json) {
                                             <TableCell component="th" scope="row">
                                                 {id}
                                             </TableCell>
-                                            <TableCell align="left"><Button component={ButtonLink} href={`/character/${realm}/${name}`}>{name}</Button></TableCell>
+                                            <TableCell align="left"><Button component={ButtonLink} href={`/character/${realm}/${name}`} color={'primary'}>{name}</Button></TableCell>
                                             <TableCell align="center">{realm}</TableCell>
                                             <TableCell align="center">{checksum.pets}</TableCell>
                                             <TableCell align="center">{checksum.mounts}</TableCell>
-                                            <TableCell align="left">{guild}</TableCell>
+                                            <TableCell align="left"><Button component={ButtonLink} href={`/guild/${realm}/${guild}`} color={'primary'}>{guild}</Button></TableCell>
                                             <TableCell align="center">{(guild_rank === 0) ? ('GM') : (guild_rank)}</TableCell>
                                             <TableCell align="left">{character_class}</TableCell>
                                             <TableCell align="center">{faction}</TableCell>

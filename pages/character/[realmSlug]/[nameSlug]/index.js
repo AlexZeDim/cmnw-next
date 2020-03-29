@@ -69,7 +69,8 @@ const useStyles = makeStyles(theme => ({
         fontFamily: 'Fira Sans',
         fontStyle: 'normal',
         fontDisplay: 'swap',
-        fontWeight: 400
+        fontWeight: 400,
+        textTransform: 'uppercase'
     },
     large: {
         width: theme.spacing(36),
@@ -96,7 +97,7 @@ function CharacterPage(json) {
         spec,
         character_class,
         //realm,
-        //realm_slug,
+        realm_slug,
         level,
         lastOnline,
         lastModified,
@@ -137,7 +138,7 @@ function CharacterPage(json) {
                 <div className={classes.heroContent} style={style}>
                     <Container maxWidth="lg">
                         <Typography component="h1" variant="h2" align="center" color="textPrimary" className={classes.title} gutterBottom>
-                            {_id.toUpperCase()}
+                            {_id}
                         </Typography>
                         { (statusCode === 200) ? (
                         <span className={classes.heroButtons}>
@@ -147,6 +148,13 @@ function CharacterPage(json) {
                                         Find all
                                     </Button>
                                 </Grid>
+                                { (guild) ? (
+                                    <Grid item>
+                                        <Button variant="contained" color="primary" onClick={() => Router.push(`/guild/${realm_slug}/${guild}`)}>
+                                            Guild
+                                        </Button>
+                                    </Grid>
+                                ) : ('')}
                             </Grid>
                         </span>
                         ) : ('')
@@ -313,7 +321,7 @@ function CharacterPage(json) {
                                             {row.id}
                                         </TableCell>
                                         <TableCell align="right">{row.name}</TableCell>
-                                        <TableCell align="right">{ (row.rank === 0) ? ('GM') : (row.rank)} </TableCell>
+                                        <TableCell align="right">{(row.rank === 0) ? ('GM') : (row.rank)} </TableCell>
                                         <TableCell align="right">{row.action}</TableCell>
                                         <TableCell align="right">{new Date(row.date).toLocaleString('en-GB')}</TableCell>
                                     </TableRow>
