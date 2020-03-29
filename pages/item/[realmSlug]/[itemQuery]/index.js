@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
         marginBottom: theme.spacing(2),
     },
     table: {
-        minWidth: 300,
+        minWidth: 500,
     },
     card: {
         height: '100%',
@@ -61,7 +61,7 @@ const useStyles = makeStyles(theme => ({
         height: theme.spacing(7),
     },
     container: {
-        maxHeight: 440,
+        maxHeight: 500,
     },
 }));
 
@@ -109,13 +109,14 @@ const Item = ({_id, name, item, market, chart, lvl2}) => {
         },
         tooltip: {
             formatter: function () {
-                return `<b>${this.series.xAxis.categories[this.point.x]}</b><br>
-                        <b>x${this.point.value}</b><b> @${this.series.yAxis.categories[this.point.y]}g</b><br>
-                        <b>OI:${(this.point.oi).toFixed(2)}g Orders: ${this.point.orders}</b>`
+                return `T: ${this.series.xAxis.categories[this.point.x]}<br>
+                        Q: ${(this.point.value).toLocaleString('ru-RU')}<br>
+                        P: ${this.series.yAxis.categories[this.point.y]}+<br>
+                        O: ${this.point.orders}<br>
+                        OI: ${(this.point.oi).toLocaleString('ru-RU')}g`
             }
         },
         series: [{
-            name: 'Sales per employee',
             borderWidth: 0,
             clip: false,
             data: dataset,
@@ -124,8 +125,8 @@ const Item = ({_id, name, item, market, chart, lvl2}) => {
                 crop: true,
                 shadow: false,
                 formatter: function(){
-                    if(this.point.value !== 0){
-                        return this.point.value;
+                    if (this.point.value !== 0) {
+                        return this.point.value.toLocaleString('ru-RU');
                     }
                 },
                 style: {
@@ -141,8 +142,8 @@ const Item = ({_id, name, item, market, chart, lvl2}) => {
 
     return (
         <Container maxWidth="false">
-            <Grid container spacing={1}>
-                <Grid item xs>
+            <Grid container spacing={1} className={classes.paper}>
+                <Grid item xs={4}>
                     <Typography variant="overline" display="block">
                         {_id}
                     </Typography>
@@ -154,120 +155,120 @@ const Item = ({_id, name, item, market, chart, lvl2}) => {
                         {new Date(market._id).toLocaleString('en-GB')} :: {new Date().toLocaleString('en-GB')}
                     </Typography>
                 </Grid>
-                <Grid item xs={9}>
-                    <HighchartsReact
-                        highcharts={Highcharts}
-                        constructorType={'chart'}
-                        options={chartOptions}
-                    />
+                <Grid item xs={4}>
+                    <TableContainer component={Paper} className={classes.container}>
+                        <Table className={classes.table} size="small" aria-label="a dense table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>P</TableCell>
+                                    <TableCell align="left">Q</TableCell>
+                                    <TableCell align="right">OI</TableCell>
+                                    <TableCell align="right">Orders</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {lvl2.map(({_id, quantity, open_interest, orders}) => (
+                                    <TableRow key={_id}>
+                                        <TableCell component="th" scope="row">
+                                            {_id.toFixed(2)}
+                                        </TableCell>
+                                        <TableCell align="left">{quantity.toLocaleString('ru-RU')}</TableCell>
+                                        <TableCell align="right">{open_interest.toLocaleString('ru-RU')}</TableCell>
+                                        <TableCell align="right">{orders.length}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Grid>
+                <Grid item xs={4}>
+                    <Container>
+                        <Grid container spacing={4}>
+                            <Grid item key={1} xs={6} sm={3} md={4}>
+                                <Card className={classes.card}>
+                                    <CardContent>
+                                        <Typography variant="overline" display="block" color="textSecondary">
+                                            Quantity
+                                        </Typography>
+                                        <Typography variant="body2" component="p">
+                                            {market.quantity}
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                            <Grid item key={2} xs={12} sm={6} md={4}>
+                                <Card className={classes.card}>
+                                    <CardContent>
+                                        <Typography variant="overline" display="block" color="textSecondary">
+                                            Open Interest
+                                        </Typography>
+                                        <Typography variant="body2" component="p">
+                                            {market.open_interest}
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                            <Grid item key={3} xs={12} sm={6} md={4}>
+                                <Card className={classes.card}>
+                                    <CardContent>
+                                        <Typography variant="overline" display="block" color="textSecondary">
+                                            Min Price
+                                        </Typography>
+                                        <Typography variant="body2" component="p">
+                                            {market.min}
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                            <Grid item key={4} xs={12} sm={6} md={4}>
+                                <Card className={classes.card}>
+                                    <CardContent>
+                                        <Typography variant="overline" display="block" color="textSecondary">
+                                            Min Size Price
+                                        </Typography>
+                                        <Typography variant="body2" component="p">
+                                            {market.min_size}
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                            <Grid item key={5} xs={12} sm={6} md={4}>
+                                <Card className={classes.card}>
+                                    <CardContent>
+                                        <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                            Avg Price
+                                        </Typography>
+                                        <Typography variant="body2" component="p">
+                                            {market.avg}
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                            <Grid item key={6} xs={12} sm={6} md={4}>
+                                <Card className={classes.card}>
+                                    <CardContent>
+                                        <Typography variant="overline" display="block" color="textSecondary">
+                                            Orders
+                                        </Typography>
+                                        <Typography variant="body2" component="p">
+                                            {market.orders.length}
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                        </Grid>
+                    </Container>
                 </Grid>
             </Grid>
             <Divider className={classes.pos} />
             {typeof market !== 'undefined' ? (
                 <Grid container>
-                    <Grid item xs={6}>
-                        <TableContainer component={Paper} className={classes.container}>
-                            <Table className={classes.table} size="small" aria-label="a dense table">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>P</TableCell>
-                                        <TableCell align="left">Q</TableCell>
-                                        <TableCell align="right">OI</TableCell>
-                                        <TableCell align="right">Orders</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {lvl2.map(row => (
-                                        <TableRow key={row._id}>
-                                            <TableCell component="th" scope="row">
-                                                {row._id.toFixed(2)}
-                                            </TableCell>
-                                            <TableCell align="left">{row.quantity}</TableCell>
-                                            <TableCell align="right">{row.open_interest.toFixed(2)} g</TableCell>
-                                            <TableCell align="right">{row.orders.length}</TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Container>
-                            <Grid container spacing={4}>
-                                <Grid item key={1} xs={6} sm={3} md={4}>
-                                    <Card className={classes.card}>
-                                        <CardContent>
-                                            <Typography variant="overline" display="block" color="textSecondary">
-                                                Quantity
-                                            </Typography>
-                                            <Typography variant="body2" component="p">
-                                                {market.quantity}
-                                            </Typography>
-                                        </CardContent>
-                                    </Card>
-                                </Grid>
-                                <Grid item key={2} xs={12} sm={6} md={4}>
-                                    <Card className={classes.card}>
-                                        <CardContent>
-                                            <Typography variant="overline" display="block" color="textSecondary">
-                                                Open Interest
-                                            </Typography>
-                                            <Typography variant="body2" component="p">
-                                                {market.open_interest}
-                                            </Typography>
-                                        </CardContent>
-                                    </Card>
-                                </Grid>
-                                <Grid item key={3} xs={12} sm={6} md={4}>
-                                    <Card className={classes.card}>
-                                        <CardContent>
-                                            <Typography variant="overline" display="block" color="textSecondary">
-                                                Min Price
-                                            </Typography>
-                                            <Typography variant="body2" component="p">
-                                                {market.min}
-                                            </Typography>
-                                        </CardContent>
-                                    </Card>
-                                </Grid>
-                                <Grid item key={4} xs={12} sm={6} md={4}>
-                                    <Card className={classes.card}>
-                                        <CardContent>
-                                            <Typography variant="overline" display="block" color="textSecondary">
-                                                Min Size Price
-                                            </Typography>
-                                            <Typography variant="body2" component="p">
-                                                {market.min_size}
-                                            </Typography>
-                                        </CardContent>
-                                    </Card>
-                                </Grid>
-                                <Grid item key={5} xs={12} sm={6} md={4}>
-                                    <Card className={classes.card}>
-                                        <CardContent>
-                                            <Typography className={classes.title} color="textSecondary" gutterBottom>
-                                                Avg Price
-                                            </Typography>
-                                            <Typography variant="body2" component="p">
-                                                {market.avg}
-                                            </Typography>
-                                        </CardContent>
-                                    </Card>
-                                </Grid>
-                                <Grid item key={6} xs={12} sm={6} md={4}>
-                                    <Card className={classes.card}>
-                                        <CardContent>
-                                            <Typography variant="overline" display="block" color="textSecondary">
-                                                Orders
-                                            </Typography>
-                                            <Typography variant="body2" component="p">
-                                                {market.orders.length}
-                                            </Typography>
-                                        </CardContent>
-                                    </Card>
-                                </Grid>
-                            </Grid>
-                        </Container>
+                    <Grid item xs={12}>
+                        <HighchartsReact
+                            highcharts={Highcharts}
+                            constructorType={'chart'}
+                            options={chartOptions}
+                        />
                     </Grid>
                 </Grid>) : (
                 ''
