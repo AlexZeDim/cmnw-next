@@ -134,7 +134,7 @@ const useStyles = makeStyles(theme => ({
     },
     heroContent: {
         backgroundColor: theme.palette.background.paper,
-        padding: theme.spacing(8, 0, 8),
+        padding: theme.spacing(6, 0, 6),
     },
     heroButtons: {
         marginTop: theme.spacing(4),
@@ -174,10 +174,11 @@ const useStyles = makeStyles(theme => ({
 
 function GuildPage(json) {
     let {
-        _id, id,
-        //slug, name,
+        //_id,
+        id,
+        name,
         realm_slug, realm,
-        //createdBy,
+        //createdBy, slug
         updatedBy, guild_log,
         members_latest,
         //members_prev,
@@ -191,9 +192,12 @@ function GuildPage(json) {
     const [value, setValue] = React.useState(0);
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('character_rank');
+    const [orderTS, setOrderTS] = React.useState('desc');
+    const [orderByTS, setOrderByTS] = React.useState('character_date');
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
-    const {join, leave, demote, promote} = guild_log;
+    let join, leave, demote, promote;
+    if (guild_log) ({join, leave, demote, promote} = guild_log);
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -207,7 +211,7 @@ function GuildPage(json) {
 
     const handleChangeRowsPerPage = event => {
         setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);8
+        setPage(0);
     };
 
     const handleChange = (event, newValue) => {
@@ -235,7 +239,7 @@ function GuildPage(json) {
                 <div className={classes.heroContent} style={style}>
                     <Container maxWidth="lg">
                         <Typography component="h1" variant="h2" align="center" color="textPrimary" className={classes.title} gutterBottom>
-                            {_id}
+                            {name}@{realm}
                         </Typography>
                     </Container>
                 </div>
@@ -349,8 +353,8 @@ function GuildPage(json) {
                                     >
                                         <EnhancedTableHead
                                             classes={classes}
-                                            order={order}
-                                            orderBy={orderBy}
+                                            order={orderTS}
+                                            orderBy={orderByTS}
                                             onRequestSort={handleRequestSort}
                                             rowCount={join.length}
                                         />
@@ -398,8 +402,8 @@ function GuildPage(json) {
                                     >
                                         <EnhancedTableHead
                                             classes={classes}
-                                            order={order}
-                                            orderBy={orderBy}
+                                            order={orderTS}
+                                            orderBy={orderByTS}
                                             onRequestSort={handleRequestSort}
                                             rowCount={leave.length}
                                         />
@@ -447,8 +451,8 @@ function GuildPage(json) {
                                     >
                                         <EnhancedTableHead
                                             classes={classes}
-                                            order={order}
-                                            orderBy={orderBy}
+                                            order={orderTS}
+                                            orderBy={orderByTS}
                                             onRequestSort={handleRequestSort}
                                             rowCount={demote.length}
                                         />
@@ -496,8 +500,8 @@ function GuildPage(json) {
                                     >
                                         <EnhancedTableHead
                                             classes={classes}
-                                            order={order}
-                                            orderBy={orderBy}
+                                            order={orderTS}
+                                            orderBy={orderByTS}
                                             onRequestSort={handleRequestSort}
                                             rowCount={promote.length}
                                         />

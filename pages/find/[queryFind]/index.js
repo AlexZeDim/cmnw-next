@@ -23,14 +23,14 @@ const useStyles = makeStyles(theme => ({
     },
     heroContent: {
         backgroundImage: `url(${require(`../../../src/img/N${~~(Math.random() * 2) + 1}.jpg`)})`,
-        padding: theme.spacing(8, 0, 8),
+        padding: theme.spacing(6, 0, 6),
     },
     heroButtons: {
         marginTop: theme.spacing(4),
     },
     cardGrid: {
-        paddingTop: theme.spacing(8),
-        paddingBottom: theme.spacing(8),
+        paddingTop: theme.spacing(4),
+        paddingBottom: theme.spacing(4),
     },
     card: {
         height: '100%',
@@ -105,6 +105,7 @@ function CharacterPage(json) {
                                         <TableCell align="center">HASH B</TableCell>
                                         <TableCell align="center">GUILD</TableCell>
                                         <TableCell align="center">RANK</TableCell>
+                                        <TableCell align="center">LEVEL</TableCell>
                                         <TableCell align="center">CLASS</TableCell>
                                         <TableCell align="center">FACTION</TableCell>
                                         <TableCell align="center">RACE</TableCell>
@@ -113,7 +114,7 @@ function CharacterPage(json) {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {match.map(({id, name, realm, checksum, guild, guild_rank, faction, race, character_class, gender, lastOnline}) => (
+                                    {match.map(({id, name, realm, checksum, guild, guild_rank, faction, race, character_class, gender, level, lastOnline}) => (
                                         <TableRow key={id}>
                                             <TableCell component="th" scope="row">
                                                 {id}
@@ -123,7 +124,8 @@ function CharacterPage(json) {
                                             <TableCell align="center">{checksum.pets}</TableCell>
                                             <TableCell align="center">{checksum.mounts}</TableCell>
                                             <TableCell align="left"><Button component={ButtonLink} href={`/guild/${realm}/${guild}`} color={'primary'}>{guild}</Button></TableCell>
-                                            <TableCell align="center">{(guild_rank === 0) ? ('GM') : (guild_rank)}</TableCell>
+                                            <TableCell align="center">{(guild_rank === 99) ? ('') : ((guild_rank === 0) ? ('GM') : (guild_rank))}</TableCell>
+                                            <TableCell align="center">{level}</TableCell>
                                             <TableCell align="left">{character_class}</TableCell>
                                             <TableCell align="center">{faction}</TableCell>
                                             <TableCell align="left">{race}</TableCell>
