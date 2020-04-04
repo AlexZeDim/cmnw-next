@@ -295,7 +295,7 @@ const Contract = ({_id, code, realmName, open_interest, price, price_size, quant
                                 </TableBody>
                             ) : (
                                 <TableBody>
-                                    {Array.from(sellers.sellers).map((value, i) => (
+                                    {sellers.sellers.map((value, i) => (
                                         <TableRow key={i}>
                                             <TableCell component="th" scope="row">
                                                 {value}

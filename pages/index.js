@@ -8,78 +8,73 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles(theme => ({
+    root: {
+        height: '93vh',
+    },
     searchField: {
         margin: theme.spacing(6, 0, 6),
     },
-    heroContent: {
-        backgroundColor: theme.palette.background.paper,
-        padding: theme.spacing(6, 0, 6),
-    },
-    heroButtons: {
-        marginTop: theme.spacing(4),
-    },
-    cardGrid: {
-        paddingTop: theme.spacing(8),
-        paddingBottom: theme.spacing(8),
+    search: {
+        paddingTop: theme.spacing(2),
+        paddingBottom: theme.spacing(2),
+        height: '100%'
     },
 }));
 
 function Index () {
     const classes = useStyles();
     return (
-        <React.Fragment>
-            <main>
-                {/* Hero unit */}
-                <div className={classes.heroContent}>
-                    <Container maxWidth="lg">
-                        <span className={classes.heroButtons}>
-                            <Grid container spacing={2} justify="center">
-                                <Grid item>
-                                    <Button variant="contained" color="primary">
-                                        Find all
-                                    </Button>
-                                </Grid>
-                            </Grid>
-                        </span>
-                    </Container>
-                </div>
-                {/* End hero unit */}
-                <Container className={classes.cardGrid} maxWidth="lg">
-                    <Formik
-                        initialValues={{ searchQuery: ''}}
-                        onSubmit={async (values, { setSubmitting }) => {
-                            setTimeout(() => {
-                                Router.push(`/character/gordunni/${values.searchQuery}`);
-                                setSubmitting(false);
-                            }, 400);
-                        }}
-                    >
-                    {({
-                          values,
-                          errors,
-                          touched,
-                          handleChange,
-                          handleBlur,
-                          handleSubmit,
-                          /* and other goodies */
-                      }) => (
-                        <form className={classes.searchField} onSubmit={handleSubmit} noValidate autoComplete="off">
-                            <TextField
-                                type="text"
-                                name="searchQuery"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.searchQuery}
-                                fullWidth id="outlined-basic"
-                                label="Input Search Query"
-                                variant="outlined" />
-                            {errors.searchQuery && touched.searchQuery && errors.searchQuery}
-                        </form>
-                    )}
-                    </Formik>
-                </Container>
-            </main>
-        </React.Fragment>
+        <Grid container component="main" className={classes.root}>
+            <Container className={classes.search} maxWidth="lg">
+                <Formik
+                    initialValues={{ searchQuery: ''}}
+                    onSubmit={async (values, { setSubmitting }) => {
+                        const [command, query] = values.searchQuery.split(/[ ]+/);
+                        await setSubmitting(false);
+                        if (['CHAR', 'C'].includes(command.toUpperCase())) {
+                            let [nameSlug, realmSlug] = query.split('@');
+                            await Router.push(`/character/${realmSlug}/${nameSlug}`);
+                        } else if (['ALTS', 'ALT', 'A'].includes(command.toUpperCase())) {
+                            await Router.push(`/find/${query}`);
+                        } else if (['GUILD', 'G'].includes(command.toUpperCase())) {
+                            let [guildSlug, realmSlug] = query.split('@');
+                            await Router.push(`/guild/${realmSlug}/${guildSlug}`);
+                        } else if (['MARKET', 'M'].includes(command.toUpperCase())) {
+                            let [itemSlug, realmSlug] = query.split('@');
+                            await Router.push(`/item/${realmSlug}/${itemSlug}`);
+                        } else if (['HELP', 'H'].includes(command.toUpperCase())) {
+                            await Router.push(`/help`);
+                        } else if (['CONTRACT', 'CON'].includes(command.toUpperCase())) {
+                            let [codeSlug, realmSlug] = query.split('@');
+                            await Router.push(`/contract/${realmSlug}/${codeSlug}`);
+                        }
+                    }}
+                >
+                {({
+                      values,
+                      errors,
+                      touched,
+                      handleChange,
+                      handleBlur,
+                      handleSubmit,
+                      /* and other goodies */
+                  }) => (
+                    <form className={classes.searchField} onSubmit={handleSubmit} noValidate autoComplete="off">
+                        <TextField
+                            type="text"
+                            name="searchQuery"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.searchQuery}
+                            fullWidth id="outlined-basic"
+                            label="Input Search Query"
+                            variant="outlined" />
+                        {errors.searchQuery && touched.searchQuery && errors.searchQuery}
+                    </form>
+                )}
+                </Formik>
+            </Container>
+        </Grid>
     )
 }
 

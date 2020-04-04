@@ -1,21 +1,19 @@
 import React from "react";
 import fetch from 'isomorphic-unfetch'
-import { useRouter } from 'next/router'
 import { makeStyles } from '@material-ui/core/styles';
 import Highcharts from 'highcharts'
 import HighchartsExporting from 'highcharts/modules/exporting'
 import HighchartsReact from 'highcharts-react-official'
 import HC_heatmap from "highcharts/modules/heatmap";
-import Link from 'next/link'
+import Link from "../../../../src/Link";
 import {
     Container, Grid,
     Typography, Divider,
-    Card, CardContent,
     Avatar, Table,
     TableContainer,
     TableHead, TableRow,
     TableCell, TableBody,
-    Paper, Box, Button
+    Paper, Chip, Button
 } from '@material-ui/core';
 
 if (typeof Highcharts === 'object') {
@@ -69,15 +67,10 @@ const useStyles = makeStyles(theme => ({
         fontSize: '0.9em',
         fontWeight: 600
     },
+    chip: {
+        margin: theme.spacing(0.5)
+    }
 }));
-
-const ButtonLink = ({ className, href, hrefAs, children }) => (
-    <Link href={href} as={hrefAs}>
-        <a className={className}>
-            {children}
-        </a>
-    </Link>
-);
 
 const T = props => {
     const [date, setDate] = React.useState(new Date());
@@ -106,8 +99,6 @@ const T = props => {
 };
 
 const Item = ({item, market, chart, quotes, contracts_d}) => {
-    let quantity, open_interest, min, min_size, orders;
-    if (market) ({quantity, open_interest, min, min_size, orders} = market);
     let chartOptions;
     if (typeof chart !== 'undefined') {
         const { price_range, timestamps, dataset } = chart;
@@ -184,22 +175,22 @@ const Item = ({item, market, chart, quotes, contracts_d}) => {
     const {_id, name, is_auctionable, is_commdty, quality, item_class, item_subclass, is_equippable, is_stackable, ilvl, inventory_type, level, ticker, asset_class, sell_price, derivative, expansion} = item;
     const classes = useStyles();
     return (
-        <Container maxWidth="false">
+        <Container maxWidth={false} alignContent={'center'} justify={'center'}>
             <Grid container spacing={1} className={classes.paper}>
                 <Grid item xs={4}>
                     <Grid container wrap="nowrap" spacing={2}>
                         <Grid item>
                             <Avatar alt="Item Icon" variant="rounded" src={item.icon} className={classes.large} />
                         </Grid>
-                        <Grid item xs>
+                        <Grid item>
                             <Typography variant="h2" className={classes.en_title}>
                                 {(ticker) ? (ticker) : (name["en_GB"])}
                             </Typography>
                         </Grid>
                     </Grid>
                     {(market) ? (
-                        <Grid item xs alignContent={'center'} justify={'center'}>
-                            <T time={market._id}/>
+                        <Grid item xs>
+                            <T time={market.timestamp}/>
                         </Grid>
                     ) : ('')}
                     <TableContainer>
@@ -266,9 +257,9 @@ const Item = ({item, market, chart, quotes, contracts_d}) => {
                                     {(sell_price !== 0) ? (
                                     <TableRow key={7}>
                                         <TableCell component="th" scope="row">
-                                            Margin Deposit 12H 24H 48H
+                                            Margin Deposit
                                         </TableCell>
-                                        <TableCell align="right" style={{textTransform: 'lowercase'}}>{sell_price*0.15} // {sell_price*0.30} // {sell_price*0.60} g</TableCell>
+                                        <TableCell align="right" style={{textTransform: 'lowercase'}}> 12:{sell_price*0.15} 24:{sell_price*0.30} 48:{sell_price*0.60} g</TableCell>
                                     </TableRow>
                                     ) : ('')}
                                     <TableRow key={8}>
@@ -298,7 +289,7 @@ const Item = ({item, market, chart, quotes, contracts_d}) => {
                 {(quotes) ? (
                 <Grid item xs={4}>
                     <TableContainer component={Paper} className={classes.container}>
-                        <Table className={classes.table} size="small" aria-label="a dense table">
+                        <Table stickyHeader className={classes.table} size="small" aria-label="Quotes">
                             <TableHead>
                                 <TableRow>
                                     <TableCell>P</TableCell>
@@ -308,8 +299,8 @@ const Item = ({item, market, chart, quotes, contracts_d}) => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {quotes.map(({_id, quantity, open_interest, orders}) => (
-                                    <TableRow key={_id}>
+                                {quotes.map(({_id, quantity, open_interest, orders}, i) => (
+                                    <TableRow key={i}>
                                         <TableCell component="th" scope="row">
                                             {_id.toLocaleString('ru-RU')}
                                         </TableCell>
@@ -329,75 +320,30 @@ const Item = ({item, market, chart, quotes, contracts_d}) => {
                 <Grid item xs={4}>
                     <Container>
                         <Grid container spacing={4}>
-                            <Grid item key={1} xs={12} sm={6} md={4}>
-                                <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                                    (OTC) Price - 5%
-                                </Typography>
-                                <Divider light />
-                                <Typography variant="caption" display="block">
-                                    {(min*0.95).toLocaleString('ru-RU')}
-                                </Typography>
-                            </Grid>
-                            <Grid item key={2} xs={12} sm={6} md={4}>
-                                <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                                    Min Price
-                                </Typography>
-                                <Divider light />
-                                <Typography variant="caption" display="block">
-                                    {min.toLocaleString('ru-RU')}
-                                </Typography>
-                            </Grid>
-                            <Grid item key={3} xs={12} sm={6} md={4}>
-                                <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                                    Min Size Price
-                                </Typography>
-                                <Divider light />
-                                <Typography variant="caption" display="block">
-                                    {min_size.toLocaleString('ru-RU')}
-                                </Typography>
-                            </Grid>
-                            <Grid item key={4} xs={6} sm={3} md={4}>
-                                <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                                    Quantity
-                                </Typography>
-                                <Divider light />
-                                <Typography variant="caption" display="block">
-                                    {quantity.toLocaleString('ru-RU')}
-                                </Typography>
-                            </Grid>
-                            <Grid item key={5} xs={12} sm={6} md={4}>
-                                <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                                    Open Interest
-                                </Typography>
-                                <Divider light />
-                                <Typography variant="caption" display="block">
-                                    {open_interest.toLocaleString('ru-RU')}
-                                </Typography>
-                            </Grid>
-                            <Grid item key={6} xs={12} sm={6} md={4}>
-                                <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                                    Orders
-                                </Typography>
-                                <Divider light />
-                                <Typography variant="caption" display="block">
-                                    {orders.length}
-                                </Typography>
-                            </Grid>
-                            <Grid item key={7} xs={12} sm={12} md={12}>
-                                <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                                    contracts
-                                </Typography>
-                                <Divider light />
-                                <Typography variant="caption" display="block">
-                                    DAY
-                                </Typography>
-                                {contracts_d.map(({_id, code}) => (
-                                    <Button component={ButtonLink} href={`/contract/${_id.split('@')[1].toLowerCase()}/${code}`} color={'primary'}>{code}</Button>
-                                ))}
-                                <Typography variant="caption" display="block">
-                                    M: {market.orders.length}
-                                </Typography>
-                            </Grid>
+                            {Object.entries(market).map(([key, value],i) => (
+                                (key !== 'timestamp') ? (
+                                    <Grid item key={i} xs={12} sm={6} md={4}>
+                                        <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                                            {(key === 'otc') ? ('(OTC) price-5%') : (key.replace(/_/g, ' '))}
+                                        </Typography>
+                                        <Divider light />
+                                        <Typography variant="caption" display="block">
+                                            {value.toLocaleString('ru-RU')}
+                                        </Typography>
+                                    </Grid>
+                                ) : ('')
+                            ))}
+                            {(contracts_d) ? (
+                                <Grid item xs={12} sm={12} md={12}>
+                                    <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                                        Contracts
+                                    </Typography>
+                                    <Divider light />
+                                    {contracts_d.map(({_id, code}) => (
+                                        <Chip clickable color="primary" variant="default" className={classes.chip} label={<Link href={`/contract/${_id.split('@')[1].toLowerCase()}/${code}`} color="inherit" underline="none">{code}</Link>} avatar={<Avatar>D</Avatar>} />
+                                    ))}
+                                </Grid>
+                            ) : ('')}
                         </Grid>
                     </Container>
                 </Grid>

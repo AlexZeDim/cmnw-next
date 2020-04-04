@@ -166,7 +166,7 @@ function CharacterPage(json) {
                 {/* Cards */}
                 { (statusCode === 200) ? (
                     <Grid container spacing={4}>
-                        <Grid item key={2} xs={12} sm={6} md={3}>
+                        <Grid item key={1} xs={12} sm={6} md={3}>
                             <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
                                 Summary
                             </Typography>
@@ -191,7 +191,7 @@ function CharacterPage(json) {
                             </Typography>
                         </Grid>
                         { (guild) ? (
-                            <Grid item key={1} xs={12} sm={6} md={3}>
+                            <Grid item key={3} xs={12} sm={6} md={3}>
                                 <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
                                     Guild
                                 </Typography>
@@ -206,7 +206,7 @@ function CharacterPage(json) {
                             ) : ('')
                         }
                         { (ilvl) ? (
-                            <Grid item key={2} xs={12} sm={6} md={3}>
+                            <Grid item key={4} xs={12} sm={6} md={3}>
                                 <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
                                     ilvl
                                 </Typography>
@@ -221,7 +221,7 @@ function CharacterPage(json) {
                         ) : ('')
                         }
                         { (checksum) ? (
-                            <Grid item key={2} xs={12} sm={6} md={3}>
+                            <Grid item key={5} xs={12} sm={6} md={3}>
                                 <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
                                     Hash
                                 </Typography>
@@ -239,7 +239,7 @@ function CharacterPage(json) {
                             </Grid>
                         ) : ('')
                         }
-                        <Grid item key={2} xs={12} sm={6} md={3}>
+                        <Grid item key={6} xs={12} sm={6} md={3}>
                             <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
                                 {updatedBy}
                             </Typography>
@@ -251,7 +251,7 @@ function CharacterPage(json) {
                                 U: {new Date(updatedAt).toLocaleString('en-GB')}
                             </Typography>
                         </Grid>
-                        <Grid item key={2} xs={12} sm={6} md={3}>
+                        <Grid item key={7} xs={12} sm={6} md={3}>
                             <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
                                 Timestamp
                             </Typography>
@@ -264,7 +264,7 @@ function CharacterPage(json) {
                             </Typography>
                         </Grid>
                         { (media) ? (
-                            <Grid item key={2} xs={12} sm={6} md={3}>
+                            <Grid item key={8} xs={12} sm={6} md={3}>
                                 <Avatar variant="rounded" alt={_id} src={media.bust_url} className={classes.large} onClick={handleOpen}/>
                                 <Modal
                                     aria-labelledby="transition-modal-title"
@@ -287,7 +287,7 @@ function CharacterPage(json) {
                         }
                     </Grid>
                 ) : (
-                    <Grid item key={2} xs={12} sm={6} md={3}>
+                    <Grid item key={9} xs={12} sm={6} md={3}>
                         <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
                             {updatedBy}
                         </Typography>
