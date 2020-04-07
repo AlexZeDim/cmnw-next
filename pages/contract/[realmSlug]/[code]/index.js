@@ -71,14 +71,6 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const ButtonLink = ({ className, href, hrefAs, children }) => (
-    <Link href={href} as={hrefAs}>
-        <a className={className}>
-            {children}
-        </a>
-    </Link>
-);
-
 const T = props => {
     const [date, setDate] = React.useState(new Date());
     React.useEffect(() => {
@@ -128,7 +120,7 @@ const Contract = ({_id, code, realmName, open_interest, price, price_size, quant
         },
     };
     return (
-        <Container maxWidth="false">
+        <Container maxWidth={false}>
             <Grid container wrap="nowrap" spacing={2}>
                 <Grid item xs>
                     <Typography variant="h2" className={classes.en_title} style={{textTransform: 'uppercase'}}>
@@ -136,7 +128,7 @@ const Contract = ({_id, code, realmName, open_interest, price, price_size, quant
                     </Typography>
                 </Grid>
             </Grid>
-            <Grid item xs alignContent={'center'} justify={'center'}>
+            <Grid item xs>
                 <T time={updatedAt}/>
             </Grid>
             <Grid container spacing={1} className={classes.paper}>

@@ -68,7 +68,7 @@ const useStyles = makeStyles(theme => ({
         fontWeight: 600
     },
     chip: {
-        margin: theme.spacing(0.5)
+        margin: theme.spacing(1)
     }
 }));
 
@@ -305,7 +305,7 @@ const Item = ({item, market, chart, quotes, contracts_d}) => {
                                             {_id.toLocaleString('ru-RU')}
                                         </TableCell>
                                         <TableCell align="left">{quantity.toLocaleString('ru-RU')}</TableCell>
-                                        <TableCell align="right">{open_interest.toLocaleString('ru-RU')}</TableCell>
+                                        <TableCell align="right">{Math.round(open_interest).toLocaleString('ru-RU')}</TableCell>
                                         <TableCell align="right">{orders.length}</TableCell>
                                     </TableRow>
                                 ))}
