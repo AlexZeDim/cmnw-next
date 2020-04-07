@@ -13,7 +13,7 @@ import {
     TableContainer,
     TableHead, TableRow,
     TableCell, TableBody,
-    Paper, Chip, Button
+    Paper, Chip
 } from '@material-ui/core';
 
 if (typeof Highcharts === 'object') {
