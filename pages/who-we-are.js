@@ -5,17 +5,25 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
+import fetch from 'isomorphic-unfetch'
 import { makeStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
+import InboxIcon from '@material-ui/icons/Inbox';
+import DraftsIcon from '@material-ui/icons/Drafts';
+import Link from "../src/Link";
 
 const useStyles = makeStyles(theme => ({
     root: {
-        height: '100vh',
+
     },
     image: {
         backgroundImage: 'url(https://source.unsplash.com/random)',
@@ -24,92 +32,73 @@ const useStyles = makeStyles(theme => ({
             theme.palette.type === 'dark' ? theme.palette.grey[900] : theme.palette.grey[50],
         backgroundSize: 'cover',
         backgroundPosition: 'center',
+        height: '100vh',
     },
     paper: {
         margin: theme.spacing(8, 4),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(1),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
+    }
 }));
 
-export default function SignInSide() {
+const ListItemLink = props => <ListItem button component="a" {...props} />;
+
+function SignInSide({media}) {
     const classes = useStyles();
 
     return (
         <Grid container component="main" className={classes.root}>
-            <CssBaseline />
-            <Grid item xs={false} sm={4} md={7} className={classes.image} />
-            <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+            <Grid item xs={false} sm={5} md={5} className={classes.image} style={{backgroundImage: `url(${media.render_url})`}}/>
+            <Grid item xs={12} sm={7} md={7} component={Paper} elevation={6} square>
                 <div className={classes.paper}>
-                    <Avatar className={classes.avatar}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign in
-                    </Typography>
-                    <form className={classes.form} noValidate>
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
-                            autoFocus
-                        />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                        />
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
-                        />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                        >
-                            Sign In
-                        </Button>
-                        <Grid container>
-                            <Grid item xs>
-                                <Link href="#" variant="body2">
-                                    Forgot password?
-                                </Link>
-                            </Grid>
-                            <Grid item>
-                                <Link href="#" variant="body2">
-                                    {"Don't have an account? Sign Up"}
-                                </Link>
-                            </Grid>
-                        </Grid>
-                    </form>
+                    <Grid>
+                        <Typography variant="h1" component="h2" gutterBottom>
+                            h1. Heading
+                        </Typography>
+                        <Typography variant="body1" gutterBottom>
+                            body1. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur
+                            unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam
+                            dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.
+                        </Typography>
+                        <Divider />
+                        <List component="nav" aria-label="secondary mailbox folders">
+                            <ListItem>
+                                <ListItemText primary={`Twitter:`}/><Link href={`/`} color="inherit" underline="none">TEST</Link>
+                            </ListItem>
+                            <ListItem>
+                                <ListItemText primary="Discord:" />
+                            </ListItem>
+                            <ListItem>
+                                <ListItemText primary="BNet:" />
+                            </ListItem>
+                            <ListItem>
+                                <ListItemText primary="Main Character:" />
+                            </ListItem>
+                        </List>
+                    </Grid>
                 </div>
             </Grid>
+            <Grid item xs={12} sm={7} md={7} component={Paper} elevation={6} square>
+                <div className={classes.paper}>
+                    <Grid container>
+                        <Typography component="h1" variant="h5">
+                            Sign in
+                        </Typography>
+                    </Grid>
+                </div>
+            </Grid>
+            <Grid item xs={false} sm={5} md={5} className={classes.image} />
         </Grid>
     );
 }
+
+export async function getServerSideProps() {
+    const res = await fetch(encodeURI(`http://localhost:3030/api/characters/инициатива@gordunni`));
+    //const res1 = await fetch(encodeURI(`http://localhost:3030/api/characters/блюрателла@gordunni`));
+    //console.log(res,res1)
+    const json = await res.json();
+    return { props: json }
+}
+
+export default SignInSide

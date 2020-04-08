@@ -74,11 +74,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-function CharacterPage(json) {
-    const {
-        _id,
-        match
-    } = json;
+function CharacterPage({ _id, match }) {
     const classes = useStyles();
     return (
         <React.Fragment>
@@ -92,7 +88,7 @@ function CharacterPage(json) {
                     </Container>
                 </div>
                 {/* End hero unit */}
-                <Container className={classes.cardGrid} maxWidth="false">
+                <Container className={classes.cardGrid} maxWidth={false}>
                     { (match && match.length > 0) ? (
                         <TableContainer className={classes.findAllResult} component={Paper}>
                             <Table className={classes.table} size="small" aria-label="a dense table">
