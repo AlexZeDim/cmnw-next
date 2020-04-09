@@ -37,54 +37,68 @@ const useStyles = makeStyles(theme => ({
     paper: {
         margin: theme.spacing(8, 4),
         display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
+        flexDirection: 'column'
     }
 }));
 
 const ListItemLink = props => <ListItem button component="a" {...props} />;
 
-function SignInSide({media}) {
+export default function SignInSide() {
     const classes = useStyles();
-
     return (
         <Grid container component="main" className={classes.root}>
-            <Grid item xs={false} sm={5} md={5} className={classes.image} style={{backgroundImage: `url(${media.render_url})`}}/>
+            <Grid item xs={false} sm={5} md={5} className={classes.image} style={{backgroundImage: `url(https://render-eu.worldofwarcraft.com/character/gordunni/38/188747814-main.jpg)`}}/>
             <Grid item xs={12} sm={7} md={7} component={Paper} elevation={6} square>
-                <div className={classes.paper}>
+                <div className={classes.paper} style={{alignItems: 'left'}}>
                     <Grid>
                         <Typography variant="h1" component="h2" gutterBottom>
-                            h1. Heading
+                            Initiative
                         </Typography>
                         <Typography variant="body1" gutterBottom>
-                            body1. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur
-                            unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam
-                            dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.
+                            I started to play this game since WotLK release (ru_RU). My very first character was a druid on a god-forgotten realm like Ashenvale.
+                            Then I created this rogue, that outlived all inactive periods and deletion. I have been played on EU-Outland during WoD, and pre-LGN.
+                            Some moment after I was invited to russian #2 PvE guild: <Link href={`/guild/soulflayer/фьюжн`} color="primary" underline="none">Фьюжн@Свежеватель-Душ</Link> (<Link href={`https://www.wowprogress.com/pve/ru/rating.tier19`} color="primary" underline="none">WoWProgress</Link>) as a treasurer.
+                            Thanks to <Link href={`/character/gordunni/йошх`} color="primary" underline="none">Йош</Link> (founder of RU druid-class discord) and <Link href={`/character/gordunni/лапочка`} color="primary" underline="none">Лапочка</Link> (<Link href={`https://www.twitch.tv/holy_moley`} color="primary" underline="none">HolyMoley</Link>, co-founder of RU Pala Discord).
+                            As for now, I represent <Link href={`/guild/gordunni/депортация`} color="primary" underline="none">Депортация@Гордунни</Link> as Head of Treasury.
                         </Typography>
                         <Divider />
-                        <List component="nav" aria-label="secondary mailbox folders">
+                        <List component="nav" aria-label="initiative">
+                            <ListItemLink href="/character/gordunni/инициатива">
+                                <ListItemText primary="Main Character: инициатива@гордунни" />
+                            </ListItemLink>
+                            <ListItemLink href="https://twitter.com/alexzedim2812">
+                                <ListItemText primary="Twitter: @alexzedim2812" />
+                            </ListItemLink>
                             <ListItem>
-                                <ListItemText primary={`Twitter:`}/><Link href={`/`} color="inherit" underline="none">TEST</Link>
+                                <ListItemText primary="Discord: AlexZeDim#2645" />
                             </ListItem>
                             <ListItem>
-                                <ListItemText primary="Discord:" />
-                            </ListItem>
-                            <ListItem>
-                                <ListItemText primary="BNet:" />
-                            </ListItem>
-                            <ListItem>
-                                <ListItemText primary="Main Character:" />
+                                <ListItemText primary="BNet: AlexZeDim#2812" />
                             </ListItem>
                         </List>
                     </Grid>
                 </div>
             </Grid>
             <Grid item xs={12} sm={7} md={7} component={Paper} elevation={6} square>
-                <div className={classes.paper}>
-                    <Grid container>
-                        <Typography component="h1" variant="h5">
-                            Sign in
+                <div className={classes.paper} style={{alignItems: 'right'}}>
+                    <Grid>
+                        <Typography variant="h1" component="h2" gutterBottom>
+                            Bluratella
                         </Typography>
+                        <Typography variant="body1" gutterBottom>
+                            «Всё что вам надо знать о ней: она как я, только женщина»<br />
+                            <br />
+                            Playing World of Mountcraft since Cataclysm. Author of various algo patterns across many functions inside Conglomerat. Been here all along. Remembers OSINT as VOLUSPA...
+                        </Typography>
+                        <Divider />
+                        <List component="nav" aria-label="initiative">
+                            <ListItemLink href="/character/gordunni/блюрателла">
+                                <ListItemText primary="Main Character: блюрателла@гордунни" />
+                            </ListItemLink>
+                            <ListItem>
+                                <ListItemText primary="Someother" />
+                            </ListItem>
+                        </List>
                     </Grid>
                 </div>
             </Grid>
@@ -92,13 +106,3 @@ function SignInSide({media}) {
         </Grid>
     );
 }
-
-export async function getServerSideProps() {
-    const res = await fetch(encodeURI(`http://localhost:3030/api/characters/инициатива@gordunni`));
-    //const res1 = await fetch(encodeURI(`http://localhost:3030/api/characters/блюрателла@gordunni`));
-    //console.log(res,res1)
-    const json = await res.json();
-    return { props: json }
-}
-
-export default SignInSide
