@@ -10,6 +10,7 @@
     "highcharts": "^7.2.1",
     "highcharts-react-official": "^2.2.2",
     "isomorphic-unfetch": "^3.0.0",
+    "material-table": "^1.57.2",
     "next": "^9.3.2",
     "next-compose-plugins": "^2.2.0",
     "next-fonts": "^1.0.3",

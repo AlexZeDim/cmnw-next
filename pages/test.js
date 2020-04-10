@@ -8,6 +8,34 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import MaterialTable from 'material-table';
+import {
+    AddBox, ArrowDownward, Check,
+    ChevronLeft, ChevronRight,
+    Clear, DeleteOutline, Edit,
+    FilterList, FirstPage, LastPage,
+    Remove, SaveAlt, Search, ViewColumn
+} from '@material-ui/icons';
+
+const tableIcons = {
+    Add: React.forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
+    Check: React.forwardRef((props, ref) => <Check {...props} ref={ref} />),
+    Clear: React.forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+    Delete: React.forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+    DetailPanel: React.forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+    Edit: React.forwardRef((props, ref) => <Edit {...props} ref={ref} />),
+    Export: React.forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
+    Filter: React.forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
+    FirstPage: React.forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
+    LastPage: React.forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
+    NextPage: React.forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+    PreviousPage: React.forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
+    ResetSearch: React.forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+    Search: React.forwardRef((props, ref) => <Search {...props} ref={ref} />),
+    SortArrow: React.forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
+    ThirdStateCheck: React.forwardRef((props, ref) => <Remove {...props} ref={ref} />),
+    ViewColumn: React.forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
+};
 
 const useStyles = makeStyles(theme => ({
     icon: {
@@ -41,11 +69,43 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const cards = [1, 2, 3, 4, 5];
+const addTotal = (data, byColumn) => {
+    let keys = Object.keys(data[0]);
+    let total = data.reduce((acc, el) => {
+        return acc += +(el[byColumn]);
+    }, 0);
+
+    let totalRow = {};
+    for (let key of keys) {
+        if (key === keys[0]) {
+            totalRow[key] = 'Total';
+        } else if (key === byColumn) {
+            totalRow[key] = total;
+        } else {
+            totalRow[key] = '';
+        }
+    }
+    return [...data, totalRow];
+};
 
 export default function Album() {
     const classes = useStyles();
-
+    const [state, setState] = React.useState({
+        columns: [
+            { title: 'Name', field: 'name', editable: 'never' },
+            { title: 'P', field: 'p', type: 'numeric' },
+            { title: 'Q', field: 'q', type: 'numeric', editable: 'never' },
+            { title: 'V', field: 'v', type: 'numeric', editable: 'never' },
+        ],
+        data: [
+            { name: 'ANCR', p: 2, q: 3, v: 1231 },
+            {
+                p: 8,
+                q: 2,
+                v: 2017,
+            }
+        ],
+    });
     return (
         <React.Fragment>
             <CssBaseline />
@@ -77,29 +137,33 @@ export default function Album() {
                 </div>
                 <Container className={classes.cardGrid} maxWidth="md">
                     {/* End hero unit */}
-                    <Grid container spacing={4}>
-                        {cards.map(card => (
-                            <Grid item key={card} xs={12} sm={6} md={4}>
-                                <Card className={classes.card}>
-                                    <CardContent className={classes.cardContent}>
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                            {card}
-                                        </Typography>
-                                        <Typography>
-                                            Депортация
-                                        </Typography>
-                                    </CardContent>
-                                    <CardActions>
-                                        <Button size="small" color="primary">
-                                            View
-                                        </Button>
-                                        <Button size="small" color="primary">
-                                            Edit
-                                        </Button>
-                                    </CardActions>
-                                </Card>
-                            </Grid>
-                        ))}
+                    <Grid container>
+                        <Grid xs={12}>
+                            <MaterialTable
+                                icons={tableIcons}
+                                title="TEST"
+                                columns={state.columns}
+                                data={addTotal(state.data,'v')}
+                                options={{search: false}}
+                                editable={{
+                                    onRowUpdate: (newData, oldData) =>
+                                        new Promise((resolve) => {
+                                            setTimeout(() => {
+                                                resolve();
+                                                if (oldData) {
+                                                    //console.log(parseInt(newData.name), oldData);
+                                                    newData.v = parseFloat(newData.p)+newData.q;
+                                                    setState((prevState) => {
+                                                        const data = [...prevState.data];
+                                                        data[data.indexOf(oldData)] = newData;
+                                                        return { ...prevState, data };
+                                                    });
+                                                }
+                                            }, 600);
+                                        }),
+                                }}
+                            />
+                        </Grid>
                     </Grid>
                 </Container>
             </main>
