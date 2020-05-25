@@ -86,25 +86,23 @@ function CharacterPage(json) {
     const {
         _id,
         ilvl,
-        checksum,
+        hash,
         media,
-        guild_history,
+        logs,
         id,
-        //name,
+        name,
         gender,
         faction,
         race,
         spec,
         character_class,
-        //realm,
-        realm_slug,
+        realm,
         level,
         lastOnline,
         lastModified,
         statusCode,
         guild,
-        guild_rank,
-        //createdBy,
+        createdBy,
         updatedBy,
         createdAt,
         updatedAt
@@ -150,7 +148,7 @@ function CharacterPage(json) {
                                 </Grid>
                                 { (guild) ? (
                                     <Grid item>
-                                        <Button variant="contained" color="primary" onClick={() => Router.push(`/guild/${realm_slug}/${guild}`)}>
+                                        <Button variant="contained" color="primary" onClick={() => Router.push(`/guild/${realm.name}/${guild.name}`)}>
                                             Guild
                                         </Button>
                                     </Grid>
@@ -197,10 +195,10 @@ function CharacterPage(json) {
                                 </Typography>
                                 <Divider light />
                                 <Typography variant="caption" display="block">
-                                    {guild}
+                                    {guild.name}
                                 </Typography>
                                 <Typography variant="caption" display="block">
-                                    Rank: { (guild_rank === 0) ? ('GM') : (guild_rank)}
+                                    Rank: { (guild.rank === 0) ? ('GM') : (guild.rank)}
                                 </Typography>
                             </Grid>
                             ) : ('')
@@ -211,37 +209,31 @@ function CharacterPage(json) {
                                     ilvl
                                 </Typography>
                                 <Divider light />
-                                <Typography variant="caption" display="block">
-                                    A: {ilvl.eq}
-                                </Typography>
-                                <Typography variant="caption" display="block">
-                                    E: {ilvl.avg}
-                                </Typography>
+                                {Object.keys(ilvl).map((key, index) => (
+                                    <Typography variant="caption" display="block">
+                                        {`${key[0]}: ${ilvl[key]}`}
+                                    </Typography>
+                                ))}
                             </Grid>
                         ) : ('')
                         }
-                        { (checksum) ? (
+                        { (hash) ? (
                             <Grid item key={5} xs={12} sm={6} md={3}>
                                 <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
                                     Hash
                                 </Typography>
                                 <Divider light />
-                                { (checksum.pets) ? (
+                                {Object.keys(hash).map((key, index) => (
                                     <Typography variant="caption" display="block">
-                                        A: {checksum.pets}
+                                        {`${key}: ${hash[key]}`}
                                     </Typography>
-                                ) : ('')}
-                                { (checksum.mounts) ? (
-                                    <Typography variant="caption" display="block">
-                                        B: {checksum.mounts}
-                                    </Typography>
-                                ) : ('')}
+                                ))}
                             </Grid>
                         ) : ('')
                         }
                         <Grid item key={6} xs={12} sm={6} md={3}>
                             <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                                {updatedBy}
+                                {updatedBy || 'OSINT-indexCharacters'}
                             </Typography>
                             <Divider light />
                             <Typography variant="caption" display="block">
@@ -302,28 +294,24 @@ function CharacterPage(json) {
                     )
                 }
                 {/* End Cards */}
-                { (guild_history && guild_history.length > 0) ? (
+                { (logs && logs.length > 0) ? (
                     <TableContainer className={classes.guild_history} component={Paper}>
                         <Table className={classes.table} size="small" aria-label="a dense table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>ID</TableCell>
-                                    <TableCell align="right">NAME</TableCell>
-                                    <TableCell align="right">RANK</TableCell>
-                                    <TableCell align="right">ACTION</TableCell>
-                                    <TableCell align="right">DATE</TableCell>
+                                    <TableCell  align="center">MESSAGE</TableCell>
+                                    <TableCell align="center">AFTER</TableCell>
+                                    <TableCell align="center">BEFORE</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {guild_history.map(row => (
-                                    <TableRow key={row.id}>
-                                        <TableCell component="th" scope="row">
-                                            {row.id}
+                                {logs.map(({message, after, before}) => (
+                                    <TableRow key={message}>
+                                        <TableCell component="th" scope="row" align="center">
+                                            {message}
                                         </TableCell>
-                                        <TableCell align="right">{row.name}</TableCell>
-                                        <TableCell align="right">{(row.rank === 0) ? ('GM') : (row.rank)} </TableCell>
-                                        <TableCell align="right">{row.action}</TableCell>
-                                        <TableCell align="right">{new Date(row.date).toLocaleString('en-GB')}</TableCell>
+                                        <TableCell align="center">{new Date(after).toLocaleString('en-GB')}</TableCell>
+                                        <TableCell align="center">{new Date(before).toLocaleString('en-GB')}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
