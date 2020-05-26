@@ -198,7 +198,7 @@ function CharacterPage(json) {
                                     {guild.name}
                                 </Typography>
                                 <Typography variant="caption" display="block">
-                                    Rank: { (guild.rank === 0) ? ('GM') : (guild.rank)}
+                                    Rank { (guild.rank === 0) ? ('GM') : (guild.rank)}
                                 </Typography>
                             </Grid>
                             ) : ('')
