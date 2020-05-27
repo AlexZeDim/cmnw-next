@@ -262,23 +262,19 @@ const Item = ({item, market, chart, quotes, contracts_d, valuation}) => {
         }
     }
     const [value, setValue] = React.useState(defaultValuationTab);
-    const [state, setState] = React.useState({
-        columns: [
-            { title: 'Name', field: '_id', editable: 'never' },
-            { title: 'P', field: 'price', type: 'numeric' },
-            { title: 'Q', field: 'quantity', type: 'numeric', editable: 'never' },
-            { title: 'V', field: 'value', type: 'numeric', editable: 'never' },
-        ],
-        data: [
-            { _id: 'ANCR', price: 2, quantity: 3, value: 1231 },
-            {
-                price: 8,
-                quantity: 2,
-                value: 2017,
-            }
-        ],
-    });
-
+    const [state, setState] = React.useState(
+        valuation.derivative.map(x => ({
+            columns:
+                [
+                    {title: 'Name', field: '_id', editable: 'never'},
+                    {title: 'P', field: 'price', type: 'numeric'},
+                    {title: 'Q', field: 'quantity', type: 'numeric', editable: 'never'},
+                    {title: 'V', field: 'value', type: 'numeric', editable: 'never'},
+                ],
+            data: x
+        }))
+    );
+    console.log(state);
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -461,17 +457,17 @@ const Item = ({item, market, chart, quotes, contracts_d, valuation}) => {
                             {(valuation.derivative && valuation.derivative.length) ? (
                                 <AppBar position="static" color="default">
                                     <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-                                    {valuation.derivative.map(({_id}, i) => (
-                                        <Tab label={_id} {...a11yProps(i)} />
+                                    {state.map((x, i) => (
+                                        <Tab label={i} {...a11yProps(i)} />
                                     ))}
                                     </Tabs>
-                                    {valuation.derivative.map((method, i) => (
+                                    {state.map((x, i) => (
                                         <TabPanel value={value} index={i}>
                                             <MaterialTable
                                                 icons={tableIcons}
                                                 title={false}
-                                                columns={state.columns}
-                                                data={addTotal(state.data,'value')}
+                                                columns={x.columns}
+                                                data={x.data.reagent_items}
                                                 options={{search: false}}
                                                 editable={{
                                                     onRowUpdate: (newData, oldData) =>
@@ -479,12 +475,12 @@ const Item = ({item, market, chart, quotes, contracts_d, valuation}) => {
                                                             setTimeout(() => {
                                                                 resolve();
                                                                 if (oldData) {
-                                                                    //console.log(parseInt(newData.name), oldData);
                                                                     newData.v = parseFloat(newData.p)+newData.q;
                                                                     setState((prevState) => {
-                                                                        const data = [...prevState.data];
-                                                                        data[data.indexOf(oldData)] = newData;
-                                                                        return { ...prevState, data };
+                                                                        const state = [...prevState];
+                                                                        state[state.indexOf(oldData)] = newData;
+                                                                        console.log(oldData, newData);
+                                                                        return { ...prevState, state };
                                                                     });
                                                                 }
                                                             }, 600);
