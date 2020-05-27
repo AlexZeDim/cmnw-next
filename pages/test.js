@@ -138,7 +138,7 @@ export default function Album() {
                 <Container className={classes.cardGrid} maxWidth="md">
                     {/* End hero unit */}
                     <Grid container>
-                        <Grid xs={12}>
+                        <Grid>
                             <MaterialTable
                                 icons={tableIcons}
                                 title="TEST"

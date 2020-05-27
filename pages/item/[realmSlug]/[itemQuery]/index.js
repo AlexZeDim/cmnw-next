@@ -13,13 +13,47 @@ import {
     TableContainer,
     TableHead, TableRow,
     TableCell, TableBody,
-    Paper, Chip
+    Paper, Chip, AppBar,
+    Tabs, Tab, Box
 } from '@material-ui/core';
+import PropTypes from "prop-types";
+import MaterialTable from 'material-table';
+import {
+    AddBox, ArrowDownward,
+    Check, ChevronLeft,
+    ChevronRight,
+    Clear,
+    DeleteOutline,
+    Edit,
+    FilterList,
+    FirstPage, LastPage, Remove,
+    SaveAlt, Search, ViewColumn
+} from "@material-ui/icons";
 
 if (typeof Highcharts === 'object') {
     HC_heatmap(Highcharts);
     HighchartsExporting(Highcharts)
 }
+
+const tableIcons = {
+    Add: React.forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
+    Check: React.forwardRef((props, ref) => <Check {...props} ref={ref} />),
+    Clear: React.forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+    Delete: React.forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+    DetailPanel: React.forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+    Edit: React.forwardRef((props, ref) => <Edit {...props} ref={ref} />),
+    Export: React.forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
+    Filter: React.forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
+    FirstPage: React.forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
+    LastPage: React.forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
+    NextPage: React.forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+    PreviousPage: React.forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
+    ResetSearch: React.forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+    Search: React.forwardRef((props, ref) => <Search {...props} ref={ref} />),
+    SortArrow: React.forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
+    ThirdStateCheck: React.forwardRef((props, ref) => <Remove {...props} ref={ref} />),
+    ViewColumn: React.forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
+};
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -72,6 +106,34 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+const TabPanel = props => {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <Typography
+            component="div"
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && <Box p={3}>{children}</Box>}
+        </Typography>
+    );
+};
+
+TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.any.isRequired,
+    value: PropTypes.any.isRequired,
+};
+
+const a11yProps = index => ({
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+});
+
 const T = props => {
     const [date, setDate] = React.useState(new Date());
     React.useEffect(() => {
@@ -98,7 +160,26 @@ const T = props => {
     );
 };
 
-const Item = ({item, market, chart, quotes, contracts_d}) => {
+const addTotal = (data, byColumn) => {
+    let keys = Object.keys(data[0]);
+    let total = data.reduce((acc, el) => {
+        return acc += +(el[byColumn]);
+    }, 0);
+
+    let totalRow = {};
+    for (let key of keys) {
+        if (key === keys[0]) {
+            totalRow[key] = 'Total';
+        } else if (key === byColumn) {
+            totalRow[key] = total;
+        } else {
+            totalRow[key] = '';
+        }
+    }
+    return [...data, totalRow];
+};
+
+const Item = ({item, market, chart, quotes, contracts_d, valuation}) => {
     let chartOptions;
     if (typeof chart !== 'undefined') {
         const { price_range, timestamps, dataset } = chart;
@@ -172,8 +253,35 @@ const Item = ({item, market, chart, quotes, contracts_d}) => {
             }]
         };
     }
-    const {_id, name, is_auctionable, is_commdty, quality, item_class, item_subclass, is_equippable, is_stackable, ilvl, inventory_type, level, ticker, asset_class, sell_price, derivative, expansion} = item;
+    const {_id, name, is_auctionable, is_commdty, quality, item_class, item_subclass, is_equippable, is_stackable, ilvl, inventory_type, level, ticker, asset_class, v_class, sell_price, derivative, expansion} = item;
     const classes = useStyles();
+    let defaultValuationTab = 0
+    if (valuation && valuation.reagent) {
+        if ("index" in valuation.reagent) {
+            defaultValuationTab = valuation.reagent.index;
+        }
+    }
+    const [value, setValue] = React.useState(defaultValuationTab);
+    const [state, setState] = React.useState({
+        columns: [
+            { title: 'Name', field: '_id', editable: 'never' },
+            { title: 'P', field: 'price', type: 'numeric' },
+            { title: 'Q', field: 'quantity', type: 'numeric', editable: 'never' },
+            { title: 'V', field: 'value', type: 'numeric', editable: 'never' },
+        ],
+        data: [
+            { _id: 'ANCR', price: 2, quantity: 3, value: 1231 },
+            {
+                price: 8,
+                quantity: 2,
+                value: 2017,
+            }
+        ],
+    });
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
     return (
         <Container maxWidth={false} alignContent={'center'} justify={'center'}>
             <Grid container spacing={1} className={classes.paper}>
@@ -266,15 +374,9 @@ const Item = ({item, market, chart, quotes, contracts_d}) => {
                                         <TableCell component="th" scope="row">
                                             Asset Class
                                         </TableCell>
-                                        <TableCell align="right">{asset_class}</TableCell>
+                                        <TableCell align="right">{v_class.toString().replace(/,/g, ' ')}</TableCell>
                                     </TableRow>
                                     <TableRow key={9}>
-                                        <TableCell component="th" scope="row">
-                                            Derivative
-                                        </TableCell>
-                                        <TableCell align="right">{derivative}</TableCell>
-                                    </TableRow>
-                                    <TableRow key={10}>
                                         <TableCell component="th" scope="row">
                                             Expansion
                                         </TableCell>
@@ -333,7 +435,7 @@ const Item = ({item, market, chart, quotes, contracts_d}) => {
                                     </Grid>
                                 ) : ('')
                             ))}
-                            {(contracts_d) ? (
+                            {(contracts_d && contracts_d.length) ? (
                                 <Grid item xs={12} sm={12} md={12}>
                                     <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
                                         Contracts
@@ -351,9 +453,59 @@ const Item = ({item, market, chart, quotes, contracts_d}) => {
                 ''
             )}
             </Grid>
-            <Divider className={classes.pos} />
+            {(valuation) ? (
+                <React.Fragment>
+                    <Divider className={classes.pos} />
+                    <Grid container>
+                        <Grid item xs={12}>
+                            {(valuation.derivative && valuation.derivative.length) ? (
+                                <AppBar position="static" color="default">
+                                    <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+                                    {valuation.derivative.map(({_id}, i) => (
+                                        <Tab label={_id} {...a11yProps(i)} />
+                                    ))}
+                                    </Tabs>
+                                    {valuation.derivative.map((method, i) => (
+                                        <TabPanel value={value} index={i}>
+                                            <MaterialTable
+                                                icons={tableIcons}
+                                                title={false}
+                                                columns={state.columns}
+                                                data={addTotal(state.data,'value')}
+                                                options={{search: false}}
+                                                editable={{
+                                                    onRowUpdate: (newData, oldData) =>
+                                                        new Promise((resolve) => {
+                                                            setTimeout(() => {
+                                                                resolve();
+                                                                if (oldData) {
+                                                                    //console.log(parseInt(newData.name), oldData);
+                                                                    newData.v = parseFloat(newData.p)+newData.q;
+                                                                    setState((prevState) => {
+                                                                        const data = [...prevState.data];
+                                                                        data[data.indexOf(oldData)] = newData;
+                                                                        return { ...prevState, data };
+                                                                    });
+                                                                }
+                                                            }, 600);
+                                                        }),
+                                                }}
+                                            />
+                                        </TabPanel>
+                                    ))}
+                                </AppBar>
+                            ) : (
+                            ''
+                            )}
+                        </Grid>
+                    </Grid>
+                </React.Fragment>
+            ) : (
+                ''
+            )}
             {(chart) ? (
                 <React.Fragment>
+                <Divider className={classes.pos} />
                 <Grid container>
                     <Grid item xs={12}>
                         <HighchartsReact
