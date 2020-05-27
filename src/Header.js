@@ -20,7 +20,6 @@ const useStyles = makeStyles(theme => ({
     title: {
         flexGrow: 1,
         display: 'none',
-        color: 'white',
         [theme.breakpoints.up('sm')]: {
             display: 'block',
         },
@@ -71,17 +70,17 @@ export default function Header() {
         <div className={classes.root}>
             <AppBar className={classes.appBar} color="transparent" position="absolute">
                 <Toolbar>
-                    <Typography className={classes.title} variant="h6" color="initial" noWrap>
+                    <Typography className={classes.title} variant="h6" color="textPrimary" noWrap>
                         <Link href="/" color="inherit" underline="none">
                             TERMINAL
                         </Link>
                     </Typography>
-                    <Typography className={classes.title} variant="h6" color="initial" noWrap>
+                    <Typography className={classes.title} variant="h6" color="textSecondary" noWrap>
                         <Link href="/help" color="inherit" underline="none">
                             HELP
                         </Link>
                     </Typography>
-                    <Typography className={classes.title} variant="h6" color="initial" noWrap>
+                    <Typography className={classes.title} variant="h6" color="primary" noWrap>
                         <Link href="/who-we-are" color="inherit" underline="none">
                             WHO WE ARE
                         </Link>
