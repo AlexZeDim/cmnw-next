@@ -223,12 +223,12 @@ function GuildPage(json) {
     let style;
     if (faction === 'Alliance') {
         style = {
-            backgroundImage: `url(${require(`../../../../src/img/Alliance.jpg`)})`
+            backgroundImage: `url(${require(`src/img/alliance.jpg`)})`
         }
     }
     if (faction === 'Horde') {
         style = {
-            backgroundImage: `url(${require(`../../../../src/img/Horde.jpg`)})`
+            backgroundImage: `url(${require(`src/img/horde.jpg`)})`
         }
     }
 

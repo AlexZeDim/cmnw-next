@@ -115,25 +115,11 @@ function CharacterPage(json) {
     const handleClose = () => {
         setOpen(false);
     };
-    let style;
-    if (faction === 'Alliance') {
-         style = {
-             backgroundImage: `url(${require(`../../../../src/img/Alliance.jpg`)})`
-        }
-    } else if (faction === 'Horde') {
-        style = {
-            backgroundImage: `url(${require(`../../../../src/img/Horde.jpg`)})`
-        }
-    } else {
-        style = {
-            backgroundImage: `url(${require(`../../../../src/img/N${~~(Math.random() * 2) + 1}.jpg`)})`,
-        }
-    }
     return (
         <React.Fragment>
             <main>
                 {/* Hero unit */}
-                <div className={classes.heroContent} style={style}>
+                <div className={classes.heroContent}>
                     <Container maxWidth="lg">
                         <Typography component="h1" variant="h2" align="center" color="textPrimary" className={classes.title} gutterBottom>
                             {_id}

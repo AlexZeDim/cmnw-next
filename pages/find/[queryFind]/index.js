@@ -22,7 +22,6 @@ const useStyles = makeStyles(theme => ({
         marginRight: theme.spacing(2),
     },
     heroContent: {
-        backgroundImage: `url(${require(`../../../src/img/N${~~(Math.random() * 2) + 1}.jpg`)})`,
         padding: theme.spacing(6, 0, 6),
     },
     heroButtons: {

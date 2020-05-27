@@ -11,12 +11,16 @@ const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
     },
+    appBar: {
+        backgroundColor: fade(theme.palette.common.black, 0.75),
+    },
     menuButton: {
         marginRight: theme.spacing(2),
     },
     title: {
         flexGrow: 1,
         display: 'none',
+        color: 'white',
         [theme.breakpoints.up('sm')]: {
             display: 'block',
         },
@@ -65,7 +69,7 @@ export default function Header() {
 
     return (
         <div className={classes.root}>
-            <AppBar position="static" color="primary">
+            <AppBar className={classes.appBar} color="transparent" position="absolute">
                 <Toolbar>
                     <Typography className={classes.title} variant="h6" color="initial" noWrap>
                         <Link href="/" color="inherit" underline="none">
