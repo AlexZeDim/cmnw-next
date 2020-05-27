@@ -1,24 +1,12 @@
 import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import fetch from 'isomorphic-unfetch'
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
-import InboxIcon from '@material-ui/icons/Inbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
 import Link from "../src/Link";
 
 const useStyles = makeStyles(theme => ({
@@ -57,8 +45,8 @@ export default function SignInSide() {
                         <Typography variant="body1" gutterBottom>
                             I started to play this game since WotLK release (ru_RU). My very first character was a druid on a god-forgotten realm like Ashenvale.
                             Then I created this rogue, that outlived all inactive periods and deletion. I have been played on EU-Outland during WoD, and pre-LGN.
-                            Some moment after I was invited to russian #2 PvE guild: <Link href={`/guild/soulflayer/фьюжн`} color="primary" underline="none">Фьюжн@Свежеватель-Душ</Link> (<Link href={`https://www.wowprogress.com/pve/ru/rating.tier19`} color="primary" underline="none">WoWProgress</Link>) as a treasurer.
-                            Thanks to <Link href={`/character/gordunni/йошх`} color="primary" underline="none">Йош</Link> (founder of RU druid-class discord) and <Link href={`/character/gordunni/лапочка`} color="primary" underline="none">Лапочка</Link> (<Link href={`https://www.twitch.tv/holy_moley`} color="primary" underline="none">HolyMoley</Link>, co-founder of RU Pala Discord).
+                            Some moment after I was invited to russian #2 PvE guild: <Link href={`/guild/soulflayer/фьюжн`} color="primary" underline="none">Фьюжн@Свежеватель-Душ</Link> (<Link href="https://www.wowprogress.com/pve/ru/rating.tier19" prefetch={false} color="primary" underline="none">WoWProgress</Link>) as a treasurer.
+                            Thanks to <Link href={`/character/gordunni/йошх`} color="primary" underline="none">Йош</Link> (founder of RU druid-class discord) and <Link href={`/character/gordunni/лапочка`} color="primary" underline="none">Лапочка</Link> (<Link href="https://www.twitch.tv/holy_moley" prefetch={false} color="primary" underline="none">HolyMoley</Link>, co-founder of RU Pala Discord).
                             As for now, I represent <Link href={`/guild/gordunni/депортация`} color="primary" underline="none">Депортация@Гордунни</Link> as Head of Treasury.
                         </Typography>
                         <Divider />
