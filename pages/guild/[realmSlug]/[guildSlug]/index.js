@@ -2,94 +2,42 @@ import React from "react";
 import fetch from 'node-fetch'
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import Link from 'next/link'
+import Link from "../../../../src/Link";
+import MaterialTable from 'material-table';
 import {
     Container, Grid,
     Divider, Typography,
-    AppBar, Table, TableBody,
-    TableCell, TableContainer,
-    TableHead, TablePagination,
-    TableRow, TableSortLabel,
-    Paper, Box, Tabs, Tab,
-    Button
+    AppBar, Paper, Box, Tabs, Tab,
 } from "@material-ui/core";
 
-const ButtonLink = ({ className, href, hrefAs, children }) => (
-    <Link href={href} as={hrefAs}>
-        <a className={className}>
-            {children}
-        </a>
-    </Link>
-);
+import {
+    AddBox, ArrowDownward, Check,
+    ChevronLeft, ChevronRight, Clear,
+    DeleteOutline, Edit, FilterList,
+    FirstPage, LastPage, Remove,
+    SaveAlt, Search, ViewColumn
+} from '@material-ui/icons';
 
-function descendingComparator(a, b, orderBy) {
-    if (b[orderBy] < a[orderBy]) {
-        return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-        return 1;
-    }
-    return 0;
-}
-
-function getComparator(order, orderBy) {
-    return order === 'desc'
-        ? (a, b) => descendingComparator(a, b, orderBy)
-        : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort(array, comparator) {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-        const order = comparator(a[0], b[0]);
-        if (order !== 0) return order;
-        return a[1] - b[1];
-    });
-    return stabilizedThis.map(el => el[0]);
-}
-
-const headCells = [
-    { id: 'character_id', numeric: false, disablePadding: true, label: 'ID' },
-    { id: 'character_name', numeric: false, disablePadding: false, label: 'NAME' },
-    { id: 'character_rank', numeric: true, disablePadding: false, label: 'RANK' },
-    { id: 'character_checksum', numeric: false, disablePadding: false, label: 'CHECKSUM' },
-    { id: 'character_date', numeric: true, disablePadding: false, label: 'LAST UPDATED' },
-];
-
-function EnhancedTableHead(props) {
-    const { order, orderBy, onRequestSort } = props;
-    const createSortHandler = property => event => {
-        onRequestSort(event, property);
-    };
-
-    return (
-        <TableHead>
-            <TableRow>
-                {headCells.map(headCell => (
-                    <TableCell
-                        key={headCell.id}
-                        align={'right'}
-                        sortDirection={orderBy === headCell.id ? order : false}
-                    >
-                        <TableSortLabel
-                            active={orderBy === headCell.id}
-                            direction={orderBy === headCell.id ? order : 'asc'}
-                            onClick={createSortHandler(headCell.id)}
-                        >
-                            {headCell.label}
-                        </TableSortLabel>
-                    </TableCell>
-                ))}
-            </TableRow>
-        </TableHead>
-    );
-}
-
-EnhancedTableHead.propTypes = {
-    onRequestSort: PropTypes.func.isRequired,
-    order: PropTypes.oneOf(['asc', 'desc']).isRequired,
-    orderBy: PropTypes.string.isRequired,
+const tableIcons = {
+    Add: React.forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
+    Check: React.forwardRef((props, ref) => <Check {...props} ref={ref} />),
+    Clear: React.forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+    Delete: React.forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+    DetailPanel: React.forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+    Edit: React.forwardRef((props, ref) => <Edit {...props} ref={ref} />),
+    Export: React.forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
+    Filter: React.forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
+    FirstPage: React.forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
+    LastPage: React.forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
+    NextPage: React.forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+    PreviousPage: React.forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
+    ResetSearch: React.forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+    Search: React.forwardRef((props, ref) => <Search {...props} ref={ref} />),
+    SortArrow: React.forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
+    ThirdStateCheck: React.forwardRef((props, ref) => <Remove {...props} ref={ref} />),
+    ViewColumn: React.forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
 };
+
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -133,7 +81,7 @@ const useStyles = makeStyles(theme => ({
         marginRight: theme.spacing(2),
     },
     heroContent: {
-        backgroundColor: theme.palette.background.paper,
+        marginTop: theme.spacing(10),
         padding: theme.spacing(6, 0, 6),
     },
     heroButtons: {
@@ -159,7 +107,6 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(6),
     },
     title: {
-        color: theme.palette.background.paper,
         fontFamily: 'Fira Sans',
         fontStyle: 'normal',
         fontDisplay: 'swap',
@@ -172,397 +119,170 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-function GuildPage(json) {
-    let {
-        //_id,
-        id,
-        name,
-        realm_slug, realm,
-        //createdBy, slug
-        updatedBy, guild_log,
-        members_latest,
-        //members_prev,
-        achievement_points, created_timestamp,
-        faction, member_count,
-        //crest,
-        statusCode,
-        createdAt, updatedAt
-    } = json;
+function GuildPage({
+       id,
+       name,
+       realm,
+       updatedBy, guild_log,
+       members,
+       achievement_points, created_timestamp, member_count,
+       //crest,
+       createdAt, updatedAt
+    }) {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
-    const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState('character_rank');
-    const [orderTS, setOrderTS] = React.useState('desc');
-    const [orderByTS, setOrderByTS] = React.useState('character_date');
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
     let join, leave, demote, promote;
     if (guild_log) ({join, leave, demote, promote} = guild_log);
-
-    const handleRequestSort = (event, property) => {
-        const isAsc = orderBy === property && order === 'asc';
-        setOrder(isAsc ? 'desc' : 'asc');
-        setOrderBy(property);
-    };
-
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = event => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-    };
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
 
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, members_latest.length - page * rowsPerPage);
-
-    let style;
-    if (faction === 'Alliance') {
-        style = {
-            backgroundImage: `url(${require(`src/img/alliance.jpg`)})`
-        }
-    }
-    if (faction === 'Horde') {
-        style = {
-            backgroundImage: `url(${require(`src/img/horde.jpg`)})`
-        }
-    }
-
     return (
-        <React.Fragment>
-            <main>
-                {/* Hero unit */}
-                <div className={classes.heroContent} style={style}>
-                    <Container maxWidth="lg">
-                        <Typography component="h1" variant="h2" align="center" color="textPrimary" className={classes.title} gutterBottom>
-                            {name}@{realm}
-                        </Typography>
-                    </Container>
-                </div>
-                {/* End hero unit */}
-                { (statusCode === 200) ? (
-                <Container className={classes.cardGrid} maxWidth="lg">
-                    <Grid container spacing={4}>
-                        <Grid item key={2} xs={12} sm={6} md={6}>
-                            <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                                Summary
-                            </Typography>
-                            <Divider light />
-                            <Typography variant="caption" display="block">
-                                ID: {id}
-                            </Typography>
-                            <Typography variant="caption" display="block">
-                                Achivements: {achievement_points}
-                            </Typography>
-                            <Typography variant="caption" display="block">
-                                Members: {member_count}
-                            </Typography>
-                        </Grid>
-                        <Grid item key={3} xs={12} sm={6} md={6}>
-                            <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                                {updatedBy}
-                            </Typography>
-                            <Divider />
-                            <Typography variant="caption" display="block">
-                                Founded: {new Date(created_timestamp).toLocaleString('en-GB')}
-                            </Typography>
-                            <Typography variant="caption" display="block">
-                                Indexed: {new Date(createdAt).toLocaleString('en-GB')}
-                            </Typography>
-                            <Typography variant="caption" display="block">
-                                Updated: {new Date(updatedAt).toLocaleString('en-GB')}
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                    <div className={classes.root}>
-                        <AppBar position="static" color="primary">
-                            <Tabs
-                                value={value}
-                                onChange={handleChange}
-                                aria-label="simple tabs example"
-                                centered
-                            >
-                                <Tab label="MEMBERS" {...a11yProps(0)} />
-                                <Tab label="JOINS" {...a11yProps(1)} />
-                                <Tab label="LEAVES" {...a11yProps(2)} />
-                                <Tab label="DEMOTES" {...a11yProps(3)} />
-                                <Tab label="PROMOTES" {...a11yProps(4)} />
-                            </Tabs>
-                        </AppBar>
-                        <TabPanel value={value} index={0}>
-                            <Paper className={classes.paper}>
-                                <TableContainer>
-                                    <Table
-                                        className={classes.table}
-                                        aria-labelledby="Latest"
-                                        size={'small'}
-                                        aria-label="Latest Members"
-                                    >
-                                        <EnhancedTableHead
-                                            classes={classes}
-                                            order={order}
-                                            orderBy={orderBy}
-                                            onRequestSort={handleRequestSort}
-                                            rowCount={members_latest.length}
-                                        />
-                                        <TableBody>
-                                            {stableSort(members_latest, getComparator(order, orderBy))
-                                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                                .map(({character_id, character_name, character_rank, character_checksum, character_date}) => {
-                                                    return (
-                                                        <TableRow>
-                                                            <TableCell align="right">{character_id}</TableCell>
-                                                            <TableCell align="right"><Button component={ButtonLink} href={`/character/${realm_slug}/${character_name}`} color={'primary'}>{character_name}</Button></TableCell>
-                                                            <TableCell align="right">{(character_rank === 0) ? ('GM') : (character_rank)}</TableCell>
-                                                            <TableCell align="right">{(character_checksum === '') ? ('') : (<Button component={ButtonLink} href={`/find/${character_checksum}`} color={'primary'}>{character_checksum}</Button>)}</TableCell>
-                                                            <TableCell align="right">{new Date(character_date).toLocaleString('en-GB')}</TableCell>
-                                                        </TableRow>
-                                                    );
-                                                })}
-                                            {emptyRows > 0 && (
-                                                <TableRow style={{ height: 33 * emptyRows }}>
-                                                    <TableCell colSpan={6} />
-                                                </TableRow>
-                                            )}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                                <TablePagination
-                                    rowsPerPageOptions={[10, 25, 50]}
-                                    component="div"
-                                    count={members_latest.length}
-                                    rowsPerPage={rowsPerPage}
-                                    page={page}
-                                    onChangePage={handleChangePage}
-                                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                                />
-                            </Paper>
-                        </TabPanel>
-                        <TabPanel value={value} index={1}>
-                            <Paper className={classes.paper}>
-                                <TableContainer>
-                                    <Table
-                                        className={classes.table}
-                                        aria-labelledby="Joins"
-                                        size={'small'}
-                                        aria-label="Members joined"
-                                    >
-                                        <EnhancedTableHead
-                                            classes={classes}
-                                            order={orderTS}
-                                            orderBy={orderByTS}
-                                            onRequestSort={handleRequestSort}
-                                            rowCount={join.length}
-                                        />
-                                        <TableBody>
-                                            {stableSort(join, getComparator(order, orderBy))
-                                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                                .map(({character_id, character_name, character_rank, character_checksum, character_date}) => {
-                                                    return (
-                                                        <TableRow>
-                                                            <TableCell align="right">{character_id}</TableCell>
-                                                            <TableCell align="right"><Button component={ButtonLink} href={`/character/${realm_slug}/${character_name}`} color={'primary'}>{character_name}</Button></TableCell>
-                                                            <TableCell align="right">{(character_rank === 0) ? ('GM') : (character_rank)}</TableCell>
-                                                            <TableCell align="right">{(character_checksum === '') ? ('') : (<Button component={ButtonLink} href={`/find/${character_checksum}`} color={'primary'}>{character_checksum}</Button>)}</TableCell>
-                                                            <TableCell align="right">{new Date(character_date).toLocaleString('en-GB')}</TableCell>
-                                                        </TableRow>
-                                                    );
-                                                })}
-                                            {emptyRows > 0 && (
-                                                <TableRow style={{ height: 33 * emptyRows }}>
-                                                    <TableCell colSpan={6} />
-                                                </TableRow>
-                                            )}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                                <TablePagination
-                                    rowsPerPageOptions={[10, 25, 50]}
-                                    component="div"
-                                    count={join.length}
-                                    rowsPerPage={rowsPerPage}
-                                    page={page}
-                                    onChangePage={handleChangePage}
-                                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                                />
-                            </Paper>
-                        </TabPanel>
-                        <TabPanel value={value} index={2}>
-                            <Paper className={classes.paper}>
-                                <TableContainer>
-                                    <Table
-                                        className={classes.table}
-                                        aria-labelledby="Leaves"
-                                        size={'small'}
-                                        aria-label="Members leaved"
-                                    >
-                                        <EnhancedTableHead
-                                            classes={classes}
-                                            order={orderTS}
-                                            orderBy={orderByTS}
-                                            onRequestSort={handleRequestSort}
-                                            rowCount={leave.length}
-                                        />
-                                        <TableBody>
-                                            {stableSort(leave, getComparator(order, orderBy))
-                                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                                .map(({character_id, character_name, character_rank, character_checksum, character_date}) => {
-                                                    return (
-                                                        <TableRow>
-                                                            <TableCell align="right">{character_id}</TableCell>
-                                                            <TableCell align="right"><Button component={ButtonLink} href={`/character/${realm_slug}/${character_name}`} color={'primary'}>{character_name}</Button></TableCell>
-                                                            <TableCell align="right">{(character_rank === 0) ? ('GM') : (character_rank)}</TableCell>
-                                                            <TableCell align="right">{(character_checksum === '') ? ('') : (<Button component={ButtonLink} href={`/find/${character_checksum}`} color={'primary'}>{character_checksum}</Button>)}</TableCell>
-                                                            <TableCell align="right">{new Date(character_date).toLocaleString('en-GB')}</TableCell>
-                                                        </TableRow>
-                                                    );
-                                                })}
-                                            {emptyRows > 0 && (
-                                                <TableRow style={{ height: 33 * emptyRows }}>
-                                                    <TableCell colSpan={6} />
-                                                </TableRow>
-                                            )}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                                <TablePagination
-                                    rowsPerPageOptions={[10, 25, 50]}
-                                    component="div"
-                                    count={leave.length}
-                                    rowsPerPage={rowsPerPage}
-                                    page={page}
-                                    onChangePage={handleChangePage}
-                                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                                />
-                            </Paper>
-                        </TabPanel>
-                        <TabPanel value={value} index={3}>
-                            <Paper className={classes.paper}>
-                                <TableContainer>
-                                    <Table
-                                        className={classes.table}
-                                        aria-labelledby="Demotes"
-                                        size={'small'}
-                                        aria-label="Members demoted"
-                                    >
-                                        <EnhancedTableHead
-                                            classes={classes}
-                                            order={orderTS}
-                                            orderBy={orderByTS}
-                                            onRequestSort={handleRequestSort}
-                                            rowCount={demote.length}
-                                        />
-                                        <TableBody>
-                                            {stableSort(demote, getComparator(order, orderBy))
-                                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                                .map(({character_id, character_name, character_rank, character_checksum, character_date}) => {
-                                                    return (
-                                                        <TableRow>
-                                                            <TableCell align="right">{character_id}</TableCell>
-                                                            <TableCell align="right"><Button component={ButtonLink} href={`/character/${realm_slug}/${character_name}`} color={'primary'}>{character_name}</Button></TableCell>
-                                                            <TableCell align="right">{(character_rank === 0) ? ('GM') : (character_rank)}</TableCell>
-                                                            <TableCell align="right">{(character_checksum === '') ? ('') : (<Button component={ButtonLink} href={`/find/${character_checksum}`} color={'primary'}>{character_checksum}</Button>)}</TableCell>
-                                                            <TableCell align="right">{new Date(character_date).toLocaleString('en-GB')}</TableCell>
-                                                        </TableRow>
-                                                    );
-                                                })}
-                                            {emptyRows > 0 && (
-                                                <TableRow style={{ height: 33 * emptyRows }}>
-                                                    <TableCell colSpan={6} />
-                                                </TableRow>
-                                            )}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                                <TablePagination
-                                    rowsPerPageOptions={[10, 25, 50]}
-                                    component="div"
-                                    count={demote.length}
-                                    rowsPerPage={rowsPerPage}
-                                    page={page}
-                                    onChangePage={handleChangePage}
-                                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                                />
-                            </Paper>
-                        </TabPanel>
-                        <TabPanel value={value} index={4}>
-                            <Paper className={classes.paper}>
-                                <TableContainer>
-                                    <Table
-                                        className={classes.table}
-                                        aria-labelledby="Promoted"
-                                        size={'small'}
-                                        aria-label="Members promoted"
-                                    >
-                                        <EnhancedTableHead
-                                            classes={classes}
-                                            order={orderTS}
-                                            orderBy={orderByTS}
-                                            onRequestSort={handleRequestSort}
-                                            rowCount={promote.length}
-                                        />
-                                        <TableBody>
-                                            {stableSort(promote, getComparator(order, orderBy))
-                                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                                .map(({character_id, character_name, character_rank, character_checksum, character_date}) => {
-                                                    return (
-                                                        <TableRow>
-                                                            <TableCell align="right">{character_id}</TableCell>
-                                                            <TableCell align="right"><Button component={ButtonLink} href={`/character/${realm_slug}/${character_name}`} color={'primary'}>{character_name}</Button></TableCell>
-                                                            <TableCell align="right">{character_rank}</TableCell>
-                                                            <TableCell align="right">{(character_checksum === '') ? ('') : (<Button component={ButtonLink} href={`/find/${character_checksum}`} color={'primary'}>{character_checksum}</Button>)}</TableCell>
-                                                            <TableCell align="right">{new Date(character_date).toLocaleString('en-GB')}</TableCell>
-                                                        </TableRow>
-                                                    );
-                                                })}
-                                            {emptyRows > 0 && (
-                                                <TableRow style={{ height: 33 * emptyRows }}>
-                                                    <TableCell colSpan={6} />
-                                                </TableRow>
-                                            )}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                                <TablePagination
-                                    rowsPerPageOptions={[10, 25, 50]}
-                                    component="div"
-                                    count={promote.length}
-                                    rowsPerPage={rowsPerPage}
-                                    page={page}
-                                    onChangePage={handleChangePage}
-                                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                                />
-                            </Paper>
-                        </TabPanel>
-                    </div>
+        <main>
+            {/* Hero unit */}
+            <div className={classes.heroContent}>
+                <Container maxWidth="lg">
+                    <Typography component="h1" variant="h2" align="center" color="secondary" className={classes.title} gutterBottom>
+                        {name}@{realm.name}
+                    </Typography>
                 </Container>
-                ) : (
-                    <Container className={classes.cardGrid} maxWidth="lg">
-                        <Grid container spacing={4}>
-                            <Grid item key={4} xs={12} sm={6} md={6}>
-                                <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                                    Summary
-                                </Typography>
-                                <Divider light />
-                                <Typography variant="caption" display="block">
-                                    ID: {id}
-                                </Typography>
-                                <Typography variant="caption" display="block">
-                                    Achivements: {achievement_points}
-                                </Typography>
-                                <Typography variant="caption" display="block">
-                                    Members: {member_count}
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                    </Container>
-                )}
-            </main>
-        </React.Fragment>
+            </div>
+            {/* End hero unit */}
+            <Container className={classes.cardGrid} maxWidth="lg">
+                <Grid container spacing={4}>
+                    <Grid item key={0} xs={12} sm={6} md={6}>
+                        <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                            Summary
+                        </Typography>
+                        <Divider light />
+                        <Typography variant="caption" display="block">
+                            ID: {id}
+                        </Typography>
+                        <Typography variant="caption" display="block">
+                            Achievements: {achievement_points}
+                        </Typography>
+                        <Typography variant="caption" display="block">
+                            Members: {member_count}
+                        </Typography>
+                    </Grid>
+                    <Grid item key={1} xs={12} sm={6} md={6}>
+                        <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                            {updatedBy}
+                        </Typography>
+                        <Divider />
+                        <Typography variant="caption" display="block">
+                            Founded: {new Date(created_timestamp).toLocaleString('en-GB')}
+                        </Typography>
+                        <Typography variant="caption" display="block">
+                            Indexed: {new Date(createdAt).toLocaleString('en-GB')}
+                        </Typography>
+                        <Typography variant="caption" display="block">
+                            Updated: {new Date(updatedAt).toLocaleString('en-GB')}
+                        </Typography>
+                    </Grid>
+                </Grid>
+                <div className={classes.root}>
+                    <AppBar position="static" color="primary">
+                        <Tabs
+                            value={value}
+                            onChange={handleChange}
+                            aria-label="GuildLog"
+                            centered
+                        >
+                            <Tab label="Members" {...a11yProps(0)} />
+                        </Tabs>
+                    </AppBar>
+                    <TabPanel value={value} index={0}>
+                        <Paper className={classes.paper}>
+                            <MaterialTable
+                                title="Basic Sorting Preview"
+                                icons={tableIcons}
+                                columns={[
+                                    {
+                                        field: 'url_id',
+                                        title: 'Name',
+                                        render: rowData => <Link href={rowData.url_id} color="secondary" underline="hover">{rowData._id}</Link>
+                                    },
+                                    {
+                                        title: 'Rank',
+                                        field: 'rank',
+                                        type: 'numeric',
+                                        render: rowData => (parseInt(rowData.rank) === 0) ? ('GM') : (rowData.rank)
+                                    },
+                                    {
+                                        field: 'url_a',
+                                        title: 'Hash A',
+                                        render: rowData => <Link href={rowData.url_a} color="secondary" underline="hover">{rowData.a}</Link>
+                                    },
+                                    {
+                                        field: 'url_b',
+                                        title: 'Hash B',
+                                        render: rowData => <Link href={rowData.url_b} color="secondary" underline="hover">{rowData.b}</Link>
+                                    },
+                                    {
+                                        field: 'url_c',
+                                        title: 'Hash C',
+                                        render: rowData => <Link href={rowData.url_c} color="secondary" underline="hover">{rowData.c}</Link>
+                                    },
+                                    {
+                                        field: 'url_ex',
+                                        title: 'Hash EX',
+                                        render: rowData => <Link href={rowData.url_ex} color="secondary" underline="hover">{rowData.ex}</Link>
+                                    },
+                                    {
+                                        title: 'Last Modified',
+                                        field: 'lastModified',
+                                        render: rowData => new Date(rowData.lastModified).toLocaleString('en-GB')
+                                    },
+                                ]}
+                                data={members.map(({_id, name, realm, guild, hash, lastModified}) => {
+                                    let row = {
+                                        _id: _id,
+                                        url_id: `/character/${realm.name}/${name}`,
+                                        rank: `${guild.rank}`,
+                                        a: 0,
+                                        url_a: ``,
+                                        b: 0,
+                                        url_b: ``,
+                                        c: 0,
+                                        url_c: ``,
+                                        ex: 0,
+                                        url_ex: ``,
+                                        lastModified: lastModified
+                                    };
+                                    if (hash) {
+                                        if ("a" in hash) {
+                                            row.a = hash.a;
+                                            row.url_a = `/find/${hash.a}`;
+                                        }
+                                        if ("b" in hash) {
+                                            row.b = hash.b;
+                                            row.url_b = `/find/${hash.b}`;
+                                        }
+                                        if ("c" in hash) {
+                                            row.c = hash.c;
+                                            row.url_c = `/find/${hash.c}`;
+                                        }
+                                        if ("ex" in hash) {
+                                            row.ex = hash.ex;
+                                            row.url_ex = `/find/${hash.ex}`;
+                                        }
+                                    }
+                                    return row
+                                })}
+                                options={{
+                                    sorting: true,
+                                    pageSize: 20,
+                                    pageSizeOptions: [10,25,50],
+                                    showTitle: false,
+                                }}
+                            />
+                        </Paper>
+                    </TabPanel>
+                </div>
+            </Container>
+        </main>
     )
 }
 
