@@ -91,7 +91,7 @@ export default function Method(props) {
         ]
     });
     const [data, setData] = React.useState({
-        data: [],
+        data: props.data,
     });
     return (
         <MaterialTable
@@ -106,7 +106,6 @@ export default function Method(props) {
                     setTimeout(() => {
                         resolve();
                         if (oldData) {
-                            //console.log(parseInt(newData.name), oldData);
                             newData.v = parseFloat(newData.p)+newData.q;
                             setState((prevState) => {
                                 const data = [...prevState.data];
