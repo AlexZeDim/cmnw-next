@@ -6,6 +6,7 @@ import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import Link from "./Link";
+import { palette } from '@material-ui/system';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -70,12 +71,12 @@ export default function Header() {
         <div className={classes.root}>
             <AppBar className={classes.appBar} color="transparent" position="absolute">
                 <Toolbar>
-                    <Typography className={classes.title} variant="h6" color="textPrimary" noWrap>
+                    <Typography className={classes.title} variant="h6" color="primary" noWrap>
                         <Link href="/" color="inherit" underline="none">
                             TERMINAL
                         </Link>
                     </Typography>
-                    <Typography className={classes.title} variant="h6" color="textSecondary" noWrap>
+                    <Typography className={classes.title} variant="h6" color="primary" noWrap>
                         <Link href="/help" color="inherit" underline="none">
                             HELP
                         </Link>
@@ -85,7 +86,7 @@ export default function Header() {
                             WHO WE ARE
                         </Link>
                     </Typography>
-                    <Typography className={classes.title} variant="h6" color="initial" noWrap>
+                    <Typography className={classes.title} variant="h6" color="primary" noWrap>
                         <Link href="/about" color="inherit" underline="none">
                             TEST
                         </Link>
