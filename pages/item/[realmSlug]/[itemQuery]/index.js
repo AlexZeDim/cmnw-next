@@ -159,8 +159,8 @@ const Item = ({item, market, chart, quotes, contracts_d, valuation}) => {
             },
             colorAxis: {
                 min: 0,
-                minColor: '#FFFFFF',
-                maxColor: '#D50000'
+                minColor: '#ebe7ee',
+                maxColor: '#241c18'
             },
             legend: {
                 align: 'right',
@@ -219,23 +219,21 @@ const Item = ({item, market, chart, quotes, contracts_d, valuation}) => {
     };
     return (
         <Container maxWidth={false} alignContent={'center'} justify={'center'}>
+            <Grid container wrap="nowrap" spacing={2}>
+                <Grid item>
+                    <Avatar alt="Item Icon" variant="rounded" src={item.icon} className={classes.large} />
+                </Grid>
+                <Grid item>
+                    <Typography variant="h2" className={classes.en_title}>
+                        {(ticker) ? (ticker) : (name["en_GB"])}
+                    </Typography>
+                    {(market) ? (
+                        <T time={market.timestamp}/>
+                    ) : ('')}
+                </Grid>
+            </Grid>
             <Grid container spacing={1} className={classes.paper}>
                 <Grid item xs={4}>
-                    <Grid container wrap="nowrap" spacing={2}>
-                        <Grid item>
-                            <Avatar alt="Item Icon" variant="rounded" src={item.icon} className={classes.large} />
-                        </Grid>
-                        <Grid item>
-                            <Typography variant="h2" className={classes.en_title}>
-                                {(ticker) ? (ticker) : (name["en_GB"])}
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                    {(market) ? (
-                        <Grid item xs>
-                            <T time={market.timestamp}/>
-                        </Grid>
-                    ) : ('')}
                     <TableContainer>
                         <Table className={classes.table} size="small" aria-label="Quotes">
                             <TableBody>
