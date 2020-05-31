@@ -6,7 +6,7 @@ import Highcharts from 'highcharts'
 import HighchartsExporting from 'highcharts/modules/exporting'
 import HighchartsReact from 'highcharts-react-official'
 import HC_heatmap from "highcharts/modules/heatmap";
-import Link from 'next/link'
+import Clock from "../../../../src/Clock";
 import {
     Container, Grid,
     Typography, Divider,
@@ -71,32 +71,6 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const T = props => {
-    const [date, setDate] = React.useState(new Date());
-    React.useEffect(() => {
-        let timerID = setInterval( () => tick(), 1000 );
-        return function cleanup() {
-            clearInterval(timerID);
-        };
-    });
-    const tick = () => {
-        setDate(new Date());
-    };
-    return (
-        (props.time) ? (
-            <React.Fragment>
-                <Typography align="center" variant="caption" display="block">
-                    NOW: {new Date().toLocaleString('en-GB')} LAST UPD: {new Date(props.time).toLocaleString('en-GB')}
-                </Typography>
-            </React.Fragment>
-        ) : (
-            <Typography variant="caption" display="block">
-                NOW: {new Date().toLocaleString('en-GB')}
-            </Typography>
-        )
-    );
-};
-
 const Contract = ({_id, code, realmName, open_interest, price, price_size, quantity, risk, sellers, orders, type, createdAt, data, updatedAt}) => {
     const classes = useStyles();
     let tableSet = new Set();
@@ -129,7 +103,7 @@ const Contract = ({_id, code, realmName, open_interest, price, price_size, quant
                 </Grid>
             </Grid>
             <Grid item xs>
-                <T time={updatedAt}/>
+                <Clock time={updatedAt}/>
             </Grid>
             <Grid container spacing={1} className={classes.paper}>
                 <Grid item xs={3}>
