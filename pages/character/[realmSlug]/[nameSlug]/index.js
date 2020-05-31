@@ -1,5 +1,4 @@
 import React from "react";
-import fetch from 'node-fetch'
 import Router from 'next/router'
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -196,7 +195,7 @@ function CharacterPage(json) {
                             </Typography>
                             <Divider light />
                             {Object.keys(ilvl).map((key, index) => (
-                                <Typography variant="caption" display="block">
+                                <Typography key={index} variant="caption" display="block">
                                     {`${key[0]}: ${ilvl[key]}`}
                                 </Typography>
                             ))}
@@ -311,9 +310,8 @@ function CharacterPage(json) {
 }
 
 export async function getServerSideProps({query}) {
-    console.log(query);
     const {realmSlug, nameSlug} = query;
-    const res = await fetch(encodeURI(`http://localhost:3030/api/characters/${(nameSlug)}@${realmSlug}`));
+    const res = await fetch(encodeURI(`http://${process.env.api}/characters/${(nameSlug)}@${realmSlug}`));
     const json = await res.json();
     return { props: json }
 }
