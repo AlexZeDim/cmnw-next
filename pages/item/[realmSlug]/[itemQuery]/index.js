@@ -1,11 +1,11 @@
 import React from "react";
-import fetch from 'isomorphic-unfetch'
 import { makeStyles } from '@material-ui/core/styles';
 import Highcharts from 'highcharts'
 import HighchartsExporting from 'highcharts/modules/exporting'
 import HighchartsReact from 'highcharts-react-official'
 import HC_heatmap from "highcharts/modules/heatmap";
 import Link from "../../../../src/Link";
+import Clock from "../../../../src/Clock";
 import PropTypes from "prop-types";
 import {
     Container, Grid,
@@ -102,32 +102,6 @@ const a11yProps = index => ({
     id: `simple-tab-${index}`,
     'aria-controls': `simple-tabpanel-${index}`,
 });
-
-const T = props => {
-    const [date, setDate] = React.useState(new Date());
-    React.useEffect(() => {
-        let timerID = setInterval( () => tick(), 1000 );
-        return function cleanup() {
-            clearInterval(timerID);
-        };
-    });
-    const tick = () => {
-        setDate(new Date());
-    };
-    return (
-        (props.time) ? (
-            <React.Fragment>
-                <Typography align="center" variant="caption" display="block">
-                    NOW: {new Date().toLocaleString('en-GB')} LAST UPD: {new Date(props.time).toLocaleString('en-GB')}
-                </Typography>
-            </React.Fragment>
-        ) : (
-            <Typography variant="caption" display="block">
-                NOW: {new Date().toLocaleString('en-GB')}
-            </Typography>
-        )
-    );
-};
 
 const Item = ({item, market, chart, quotes, contracts_d, valuation}) => {
     let chartOptions;
@@ -228,7 +202,7 @@ const Item = ({item, market, chart, quotes, contracts_d, valuation}) => {
                         {(ticker) ? (ticker) : (name["en_GB"])}
                     </Typography>
                     {(market) ? (
-                        <T time={market.timestamp}/>
+                        <Clock time={market.timestamp}/>
                     ) : ('')}
                 </Grid>
             </Grid>
