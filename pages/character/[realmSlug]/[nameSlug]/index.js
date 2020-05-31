@@ -285,9 +285,9 @@ function CharacterPage(json) {
                     <Table className={classes.table} size="small" aria-label="a dense table">
                         <TableHead>
                             <TableRow>
-                                <TableCell  align="center">MESSAGE</TableCell>
-                                <TableCell align="center">AFTER</TableCell>
-                                <TableCell align="center">BEFORE</TableCell>
+                                <TableCell align="center">Message</TableCell>
+                                <TableCell align="center">After</TableCell>
+                                <TableCell align="center">Before</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -311,6 +311,7 @@ function CharacterPage(json) {
 }
 
 export async function getServerSideProps({query}) {
+    console.log(query);
     const {realmSlug, nameSlug} = query;
     const res = await fetch(encodeURI(`http://localhost:3030/api/characters/${(nameSlug)}@${realmSlug}`));
     const json = await res.json();
