@@ -1,5 +1,4 @@
 import React from "react";
-import fetch from 'node-fetch'
 import { makeStyles } from '@material-ui/core/styles';
 import Link from "../../../../src/Link";
 import {
@@ -88,7 +87,7 @@ function CharacterPage({ _id, match }) {
 
 export async function getServerSideProps({query}) {
     const {type, query} = query;
-    const res = await fetch(encodeURI(`http://localhost:3030/api/find/${type}/${query}`));
+    const res = await fetch(encodeURI(`http://${process.env.api}/find/${type}/${query}`));
     const json = await res.json();
     return { props: json }
 }
