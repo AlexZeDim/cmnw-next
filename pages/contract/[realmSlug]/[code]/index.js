@@ -1,5 +1,4 @@
 import React from "react";
-import fetch from 'isomorphic-unfetch'
 import { useRouter } from 'next/router'
 import { makeStyles } from '@material-ui/core/styles';
 import Highcharts from 'highcharts'
@@ -288,13 +287,11 @@ const Contract = ({_id, code, realmName, open_interest, price, price_size, quant
     )
 };
 
-
 export async function getServerSideProps({query}) {
     const {realmSlug, code} = query;
-    const res = await fetch(encodeURI(`http://localhost:3030/api/contracts/${code}@${realmSlug}`));
+    const res = await fetch(encodeURI(`http://${process.env.api}/contracts/${code}@${realmSlug}`));
     const json = await res.json();
     return { props: json}
 }
-
 
 export default Contract
