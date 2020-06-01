@@ -106,85 +106,94 @@ const a11yProps = index => ({
 });
 
 const Item = ({item, realm, valuation, quotes, chart, contracts_day}) => {
-    let chartOptions, d_chartOptions;
+    let clusterChartOptions, columnsChartOptions;
     if (valuation && valuation.derivative && valuation.derivative.length) {
-        let {derivative} = valuation
-/*        console.log(derivative.map(({_id, reagent_items}) => ({name: _id, id: _id, data: reagent_items.map((reagent_item) => ([reagent_item._id, reagent_item.value]))})))
-        console.log(derivative[0].reagent_items.map((reagent_item) => ([reagent_item._id, reagent_item.value])))*/
-        const getData = (value, name) => {
-            return [[`First ${name}`, value], [`Second ${name}`, value * 2]];
-        };
-        let data = []
-        if (valuation.market) {
-            data.push({
-                name: "Market",
-                data: [
-                    {
-                        name: "Market",
-                        y: valuation.market.price,
-                        drilldown: false
-                    }
-                ]
-            })
-        }
-        data = [...data, ...derivative.map(({_id, nominal_value}) => ({name: _id, data: [{name: _id, y: nominal_value, drilldown: true}]}))]
 
-        const drilldownData = (point) => {
-            const [findData] = derivative.map(({_id, reagent_items}) => {
+        const compareColumnsData = (valuation) => {
+            let data = []
+            if ("market" in valuation) {
+                let {market} = valuation;
+                data.push({
+                    name: "Market",
+                    color: '#241c18',
+                    data: [
+                        {
+                            name: "MARKET",
+                            y: market.price,
+                            drilldown: false
+                        }
+                    ]
+                })
+            }
+            if ("derivative" in valuation) {
+                let {derivative} = valuation;
+                data = [...data, ...derivative.map(({_id, nominal_value}) => ({name: _id, color: '#c1aa82', data: [{name: _id, y: nominal_value, drilldown: true}]}))]
+            }
+            return data
+        }
+
+        const dropdownData = (point) => {
+            const [findData] = valuation.derivative.map(({_id, reagent_items}) => {
                 if (_id === point) {
                     return {
                         name: _id,
-                        color: "black",
-                        data: reagent_items.map(item => [item._id, item.value])
+                        color: '#c1aa82',
+                        data: reagent_items.map(item => [item.name.en_GB, item.value])
                     }
                 }
             })
             return findData
         }
 
-        d_chartOptions = {
+        columnsChartOptions = {
             chart: {
                 type: "column",
+                plotBorderWidth: 1,
+                backgroundColor: 'transparent',
+                style: {
+                    letterSpacing: 'unset',
+                },
                 events: {
                     drilldown: function(e) {
                         if (!e.seriesOptions) {
                             let chart = this;
-                            let dd = drilldownData(e.point.name)
-                            chart.addSingleSeriesAsDrilldown(e.point, dd);
+                            chart.addSingleSeriesAsDrilldown(e.point, dropdownData(e.point.name));
                             chart.applyDrilldown();
                         }
                     }
                 }
             },
             title: {
-                text: "Testing Chart",
+                text: "Cheapest to Delivery",
                 style: {
-                    fontSize: "15px",
-                    fontWeight: "bold",
-                    color: "#123E69"
+                    fontFamily: 'Roboto',
+                    color: 'contrast',
+                    fontSize: '14px',
+                    fontWeight: 'normal',
+                    textOutline: '0px',
                 }
             },
             subtitle: {
-                text: "Click the columns to drilldown to each region"
+                text: "Click the columns to drilldown every method"
             },
             xAxis: {
                 type: "category"
             },
             yAxis: {
-                min: 0, // Lowest value to show on the yAxis
+                min: 0,
                 title: {
-                    text: "Counts" // Title for the yAxis
+                    text: "Value"
                 }
             },
             legend: {
-                enabled: true // Enable/Disable the legend
+                enabled: false
             },
-            series: data
+            series: compareColumnsData(valuation)
         }
     }
     if (typeof chart !== 'undefined') {
         const { price_range, timestamps, dataset } = chart;
-        chartOptions = {
+        clusterChartOptions = {
             chart: {
                 type: 'heatmap',
                 marginTop: 40,
@@ -397,13 +406,15 @@ const Item = ({item, realm, valuation, quotes, chart, contracts_day}) => {
             {(valuation) ? (
                 <React.Fragment>
                     <Divider className={classes.pos} />
-                    <Grid container>
+                    <Grid container alignItems="center" alignContent="center">
                         <Grid item xs={4}>
-                            <HighchartsReact
-                                highcharts={Highcharts}
-                                constructorType={'chart'}
-                                options={d_chartOptions}
-                            />
+                            <Grid container spacing={1}>
+                                <HighchartsReact
+                                    highcharts={Highcharts}
+                                    constructorType={'chart'}
+                                    options={columnsChartOptions}
+                                />
+                            </Grid>
                         </Grid>
                         <Grid item xs={8}>
                             {(valuation.derivative && valuation.derivative.length) ? (
@@ -464,7 +475,8 @@ const Item = ({item, realm, valuation, quotes, chart, contracts_day}) => {
             {(chart && quotes) ? (
                 <React.Fragment>
                 <Divider className={classes.pos} />
-                <Grid container spacing={2} maxWidth="lg" alignContent="center">
+                <Container maxWidth="lg">
+                    <Grid container spacing={2} direction="row" justify="space-evenly" alignItems="center">
                     {Object.entries(valuation.market).map(([key, value],i, array) => {
                         if (key === "price") {
                             return (
@@ -518,13 +530,14 @@ const Item = ({item, realm, valuation, quotes, chart, contracts_day}) => {
                             </Grid>
                         )
                     })}
-                </Grid>
+                    </Grid>
+                </Container>
                 <Grid container>
                     <Grid item xs={9}>
                         <HighchartsReact
                             highcharts={Highcharts}
                             constructorType={'chart'}
-                            options={chartOptions}
+                            options={clusterChartOptions}
                         />
                     </Grid>
                     <Grid item xs={3}>
