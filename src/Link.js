@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-has-content */
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -22,8 +21,10 @@ NextComposed.propTypes = {
   prefetch: PropTypes.bool,
 };
 
-// A styled version of the Next.js Link component:
-// https://nextjs.org/docs/#with-link
+/**
+ * A styled version of the Next.js Link component
+ * https://nextjs.org/docs/#with-link
+ */
 function Link(props) {
   const {
     activeClassName = 'active',
