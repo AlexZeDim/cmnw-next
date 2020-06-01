@@ -109,8 +109,8 @@ const Item = ({item, realm, valuation, quotes, chart, contracts_day}) => {
     let chartOptions, d_chartOptions;
     if (valuation && valuation.derivative && valuation.derivative.length) {
         let {derivative} = valuation
-        console.log(derivative.map(({_id, reagent_items}) => ({name: _id, id: _id, data: reagent_items.map((reagent_item) => ([reagent_item._id, reagent_item.value]))})))
-        console.log(derivative[0].reagent_items.map((reagent_item) => ([reagent_item._id, reagent_item.value])))
+/*        console.log(derivative.map(({_id, reagent_items}) => ({name: _id, id: _id, data: reagent_items.map((reagent_item) => ([reagent_item._id, reagent_item.value]))})))
+        console.log(derivative[0].reagent_items.map((reagent_item) => ([reagent_item._id, reagent_item.value])))*/
         const getData = (value, name) => {
             return [[`First ${name}`, value], [`Second ${name}`, value * 2]];
         };
@@ -129,6 +129,19 @@ const Item = ({item, realm, valuation, quotes, chart, contracts_day}) => {
         }
         data = [...data, ...derivative.map(({_id, nominal_value}) => ({name: _id, data: [{name: _id, y: nominal_value, drilldown: true}]}))]
 
+        const drilldownData = (point) => {
+            const [findData] = derivative.map(({_id, reagent_items}) => {
+                if (_id === point) {
+                    return {
+                        name: _id,
+                        color: "black",
+                        data: reagent_items.map(item => [item._id, item.value])
+                    }
+                }
+            })
+            return findData
+        }
+
         d_chartOptions = {
             chart: {
                 type: "column",
@@ -136,11 +149,8 @@ const Item = ({item, realm, valuation, quotes, chart, contracts_day}) => {
                     drilldown: function(e) {
                         if (!e.seriesOptions) {
                             let chart = this;
-                            chart.addSingleSeriesAsDrilldown(e.point, {
-                                name: "In Progress",
-                                color: "blue",
-                                data: getData(2, "Marry")
-                            });
+                            let dd = drilldownData(e.point.name)
+                            chart.addSingleSeriesAsDrilldown(e.point, dd);
                             chart.applyDrilldown();
                         }
                     }
