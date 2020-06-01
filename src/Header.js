@@ -14,6 +14,7 @@ const useStyles = makeStyles(theme => ({
     },
     appBar: {
         backgroundColor: fade(theme.palette.common.black, 0.75),
+        position: 'relative',
     },
     menuButton: {
         marginRight: theme.spacing(2),
@@ -84,11 +85,6 @@ export default function Header() {
                     <Typography className={classes.title} variant="h6" color="primary" noWrap>
                         <Link href="/who-we-are" color="inherit" underline="none">
                             WHO WE ARE
-                        </Link>
-                    </Typography>
-                    <Typography className={classes.title} variant="h6" color="primary" noWrap>
-                        <Link href="/about" color="inherit" underline="none">
-                            TEST
                         </Link>
                     </Typography>
                     <div className={classes.search}>
