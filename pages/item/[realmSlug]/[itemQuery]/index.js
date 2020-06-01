@@ -4,6 +4,7 @@ import Highcharts from 'highcharts'
 import HighchartsExporting from 'highcharts/modules/exporting'
 import HighchartsReact from 'highcharts-react-official'
 import HC_heatmap from "highcharts/modules/heatmap";
+import HC_column from "highcharts/modules/drilldown";
 import Link from "../../../../src/Link";
 import Clock from "../../../../src/Clock";
 import PropTypes from "prop-types";
@@ -21,6 +22,7 @@ import {
 
 if (typeof Highcharts === 'object') {
     HC_heatmap(Highcharts);
+    HC_column(Highcharts)
     HighchartsExporting(Highcharts)
 }
 
@@ -35,7 +37,7 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(2),
     },
     table: {
-        minWidth: 500,
+        minWidth: 400,
     },
     card: {
         height: '100%',
@@ -64,10 +66,10 @@ const useStyles = makeStyles(theme => ({
         height: theme.spacing(7),
     },
     container: {
-        maxHeight: 500,
+        maxHeight: "100%",
     },
     cardTitle: {
-        fontSize: '0.9em',
+        fontSize: '0.85em',
         fontWeight: 600
     },
     chip: {
@@ -103,8 +105,73 @@ const a11yProps = index => ({
     'aria-controls': `simple-tabpanel-${index}`,
 });
 
-const Item = ({item, market, chart, quotes, contracts_d, valuation}) => {
-    let chartOptions;
+const Item = ({item, realm, valuation, quotes, chart, contracts_day}) => {
+    let chartOptions, d_chartOptions;
+    if (valuation && valuation.derivative && valuation.derivative.length) {
+        let {derivative} = valuation
+        console.log(derivative.map(({_id, reagent_items}) => ({name: _id, id: _id, data: reagent_items.map((reagent_item) => ([reagent_item._id, reagent_item.value]))})))
+        console.log(derivative[0].reagent_items.map((reagent_item) => ([reagent_item._id, reagent_item.value])))
+        const getData = (value, name) => {
+            return [[`First ${name}`, value], [`Second ${name}`, value * 2]];
+        };
+        let data = []
+        if (valuation.market) {
+            data.push({
+                name: "Market",
+                data: [
+                    {
+                        name: "Market",
+                        y: valuation.market.price,
+                        drilldown: false
+                    }
+                ]
+            })
+        }
+        data = [...data, ...derivative.map(({_id, nominal_value}) => ({name: _id, data: [{name: _id, y: nominal_value, drilldown: true}]}))]
+
+        d_chartOptions = {
+            chart: {
+                type: "column",
+                events: {
+                    drilldown: function(e) {
+                        if (!e.seriesOptions) {
+                            let chart = this;
+                            chart.addSingleSeriesAsDrilldown(e.point, {
+                                name: "In Progress",
+                                color: "blue",
+                                data: getData(2, "Marry")
+                            });
+                            chart.applyDrilldown();
+                        }
+                    }
+                }
+            },
+            title: {
+                text: "Testing Chart",
+                style: {
+                    fontSize: "15px",
+                    fontWeight: "bold",
+                    color: "#123E69"
+                }
+            },
+            subtitle: {
+                text: "Click the columns to drilldown to each region"
+            },
+            xAxis: {
+                type: "category"
+            },
+            yAxis: {
+                min: 0, // Lowest value to show on the yAxis
+                title: {
+                    text: "Counts" // Title for the yAxis
+                }
+            },
+            legend: {
+                enabled: true // Enable/Disable the legend
+            },
+            series: data
+        }
+    }
     if (typeof chart !== 'undefined') {
         const { price_range, timestamps, dataset } = chart;
         chartOptions = {
@@ -201,8 +268,8 @@ const Item = ({item, market, chart, quotes, contracts_d, valuation}) => {
                     <Typography variant="h2" className={classes.en_title}>
                         {(ticker) ? (ticker) : (name["en_GB"])}
                     </Typography>
-                    {(market) ? (
-                        <Clock time={market.timestamp}/>
+                    {(valuation) ? (
+                        <Clock time={valuation.lastModified}/>
                     ) : ('')}
                 </Grid>
             </Grid>
@@ -295,61 +362,18 @@ const Item = ({item, market, chart, quotes, contracts_d, valuation}) => {
                         </Table>
                     </TableContainer>
                 </Grid>
-                {(quotes) ? (
-                <Grid item xs={4}>
-                    <TableContainer component={Paper} className={classes.container}>
-                        <Table stickyHeader className={classes.table} size="small" aria-label="Quotes">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>P</TableCell>
-                                    <TableCell align="left">Q</TableCell>
-                                    <TableCell align="right">OI</TableCell>
-                                    <TableCell align="right">Orders</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {quotes.map(({_id, quantity, open_interest, orders}, i) => (
-                                    <TableRow key={i}>
-                                        <TableCell component="th" scope="row">
-                                            {_id.toLocaleString('ru-RU')}
-                                        </TableCell>
-                                        <TableCell align="left">{quantity.toLocaleString('ru-RU')}</TableCell>
-                                        <TableCell align="right">{Math.round(open_interest).toLocaleString('ru-RU')}</TableCell>
-                                        <TableCell align="right">{orders.length}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </Grid>
-                ) : (
-                    ''
-                )}
-                {(market) ? (
+                {(valuation && valuation.market) ? (
                 <Grid item xs={4}>
                     <Container>
                         <Grid container spacing={4}>
-                            {Object.entries(market).map(([key, value],i) => (
-                                (key !== 'timestamp') ? (
-                                    <Grid item key={i} xs={12} sm={6} md={4}>
-                                        <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                                            {(key === 'otc') ? ('(OTC) price-5%') : (key.replace(/_/g, ' '))}
-                                        </Typography>
-                                        <Divider light />
-                                        <Typography variant="caption" display="block">
-                                            {value.toLocaleString('ru-RU')}
-                                        </Typography>
-                                    </Grid>
-                                ) : ('')
-                            ))}
-                            {(contracts_d && contracts_d.length) ? (
+                            {(contracts_day && contracts_day.length) ? (
                                 <Grid item xs={12} sm={12} md={12}>
                                     <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                                        Contracts
+                                        Day Contracts
                                     </Typography>
                                     <Divider light />
-                                    {contracts_d.map(({_id, code}) => (
-                                        <Chip clickable color="primary" variant="default" className={classes.chip} label={<Link href={`/contract/${_id.split('@')[1].toLowerCase()}/${code}`} color="inherit" underline="none">{code}</Link>} avatar={<Avatar>D</Avatar>} />
+                                    {contracts_day.map(({_id, code, connected_realm_id}) => (
+                                        <Chip clickable color="primary" variant="default" className={classes.chip} label={<Link href={`/contract/${connected_realm_id}/${code}`} color="inherit" underline="none">{code}</Link>} avatar={<Avatar>D</Avatar>} />
                                     ))}
                                 </Grid>
                             ) : ('')}
@@ -364,7 +388,14 @@ const Item = ({item, market, chart, quotes, contracts_d, valuation}) => {
                 <React.Fragment>
                     <Divider className={classes.pos} />
                     <Grid container>
-                        <Grid item xs={12}>
+                        <Grid item xs={4}>
+                            <HighchartsReact
+                                highcharts={Highcharts}
+                                constructorType={'chart'}
+                                options={d_chartOptions}
+                            />
+                        </Grid>
+                        <Grid item xs={8}>
                             {(valuation.derivative && valuation.derivative.length) ? (
                                 <AppBar position="static" color="default">
                                     <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
@@ -387,7 +418,7 @@ const Item = ({item, market, chart, quotes, contracts_d, valuation}) => {
                                                     <TableBody>
                                                         {method.reagent_items.map((row) => (
                                                             <TableRow key={row._id}>
-                                                                <TableCell>{row.name.ru_RU}</TableCell>
+                                                                <TableCell>{row.name.en_GB}</TableCell>
                                                                 <TableCell align="right">{row.price}</TableCell>
                                                                 <TableCell align="right">{row.quantity}</TableCell>
                                                                 <TableCell align="right">{row.value}</TableCell>
@@ -420,16 +451,97 @@ const Item = ({item, market, chart, quotes, contracts_d, valuation}) => {
             ) : (
                 ''
             )}
-            {(chart) ? (
+            {(chart && quotes) ? (
                 <React.Fragment>
                 <Divider className={classes.pos} />
+                <Grid container spacing={2} maxWidth="lg" alignContent="center">
+                    {Object.entries(valuation.market).map(([key, value],i, array) => {
+                        if (key === "price") {
+                            return (
+                                <React.Fragment>
+                                    <Grid item key={array.length+1} xs={1}>
+                                        <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                                            {"OTC (Price-5%)"}
+                                        </Typography>
+                                        <Divider light />
+                                        <Typography variant="caption" display="block">
+                                            {(value * 0.95).toLocaleString('ru-RU')}
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item key={i} xs={1}>
+                                        <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                                            {key.replace(/_/g, ' ')}
+                                        </Typography>
+                                        <Divider light />
+                                        <Typography variant="caption" display="block">
+                                            {value.toLocaleString('ru-RU')}
+                                        </Typography>
+                                    </Grid>
+                                </React.Fragment>
+                            )
+                        }
+                        if (key === "orders") {
+                            return (
+                                <Grid item key={i} xs={1}>
+                                    <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                                        {key.replace(/_/g, ' ')}
+                                    </Typography>
+                                    <Divider light />
+                                    <Typography variant="caption" display="block">
+                                        {value.length.toLocaleString('ru-RU')}
+                                    </Typography>
+                                </Grid>
+                            )
+                        }
+                        if (key === "lastModified") {
+                            return ('')
+                        }
+                        return (
+                            <Grid item key={i} xs={1}>
+                                <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                                    {key.replace(/_/g, ' ')}
+                                </Typography>
+                                <Divider light />
+                                <Typography variant="caption" display="block">
+                                    {value.toLocaleString('ru-RU')}
+                                </Typography>
+                            </Grid>
+                        )
+                    })}
+                </Grid>
                 <Grid container>
-                    <Grid item xs={12}>
+                    <Grid item xs={9}>
                         <HighchartsReact
                             highcharts={Highcharts}
                             constructorType={'chart'}
                             options={chartOptions}
                         />
+                    </Grid>
+                    <Grid item xs={3}>
+                        <TableContainer component={Paper} className={classes.container}>
+                            <Table stickyHeader className={classes.table} size="small" aria-label="Quotes">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>P</TableCell>
+                                        <TableCell align="left">Q</TableCell>
+                                        <TableCell align="right">OI</TableCell>
+                                        <TableCell align="right">Orders</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {quotes.map(({_id, quantity, open_interest, orders}, i) => (
+                                        <TableRow key={i}>
+                                            <TableCell component="th" scope="row">
+                                                {_id.toLocaleString('ru-RU')}
+                                            </TableCell>
+                                            <TableCell align="left">{quantity.toLocaleString('ru-RU')}</TableCell>
+                                            <TableCell align="right">{Math.round(open_interest).toLocaleString('ru-RU')}</TableCell>
+                                            <TableCell align="right">{orders.length}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
                     </Grid>
                 </Grid>
                 <Divider className={classes.pos} />
