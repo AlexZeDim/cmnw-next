@@ -5,6 +5,7 @@ import HighchartsExporting from 'highcharts/modules/exporting'
 import HighchartsReact from 'highcharts-react-official'
 import HC_heatmap from "highcharts/modules/heatmap";
 import HC_column from "highcharts/modules/drilldown";
+import HC_variwide from "highcharts/modules/variwide";
 import Link from "../../../../src/Link";
 import Clock from "../../../../src/Clock";
 import PropTypes from "prop-types";
@@ -23,6 +24,7 @@ import {
 if (typeof Highcharts === 'object') {
     HC_heatmap(Highcharts);
     HC_column(Highcharts)
+    HC_variwide(Highcharts)
     HighchartsExporting(Highcharts)
 }
 
@@ -106,7 +108,54 @@ const a11yProps = index => ({
 });
 
 const Item = ({item, realm, valuation, quotes, chart, contracts_day}) => {
-    let clusterChartOptions, columnsChartOptions;
+    let clusterChartOptions, columnsChartOptions, variwideChart;
+
+    if (valuation && valuation.reagent) {
+        let {reagent} = valuation;
+        if (reagent.premium && reagent.premium.length) {
+            variwideChart = {
+                chart: {
+                    type: 'variwide'
+                },
+
+                title: {
+                    text: 'Labor Costs in Europe, 2016'
+                },
+
+                subtitle: {
+                    text: 'Source: <a href="http://ec.europa.eu/eurostat/web/' +
+                        'labour-market/labour-costs/main-tables">eurostat</a>'
+                },
+
+                xAxis: {
+                    type: 'category'
+                },
+
+                caption: {
+                    text: 'Column widths are proportional to GDP'
+                },
+
+                legend: {
+                    enabled: false
+                },
+
+                series: [{
+                    name: 'Labor Costs',
+                    data: valuation.reagent.premium.filter(({wi}) => wi > 10).map(({_id, value, wi}) => [_id, wi, value]),
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.0f}'
+                    },
+                    tooltip: {
+                        pointFormat: 'Value: <b>{point.y}</b><br>' +
+                            'WI: <b>{point.z}</b><br>'
+                    },
+                    colorByPoint: true
+                }]
+            }
+        }
+    }
+
     if (valuation && valuation.derivative && valuation.derivative.length) {
 
         const compareColumnsData = (valuation) => {
@@ -276,6 +325,7 @@ const Item = ({item, realm, valuation, quotes, chart, contracts_day}) => {
     };
     return (
         <Container maxWidth={false} alignContent={'center'} justify={'center'}>
+            {/** TITLE BLOCK */}
             <Grid container wrap="nowrap" spacing={2}>
                 <Grid item>
                     <Avatar alt="Item Icon" variant="rounded" src={item.icon} className={classes.large} />
@@ -289,6 +339,7 @@ const Item = ({item, realm, valuation, quotes, chart, contracts_day}) => {
                     ) : ('')}
                 </Grid>
             </Grid>
+            {/** ITEM BLOCK */}
             <Grid container spacing={1} className={classes.paper}>
                 <Grid item xs={4}>
                     <TableContainer>
@@ -400,75 +451,77 @@ const Item = ({item, realm, valuation, quotes, chart, contracts_day}) => {
                 ''
             )}
             </Grid>
+            {/** DERIVATIVE BLOCK */}
             {(valuation) ? (
                 <React.Fragment>
-                    <Divider className={classes.pos} />
-                    <Grid container alignItems="center" alignContent="center">
-                        <Grid item xs={4}>
-                            <Grid container spacing={1}>
-                                <HighchartsReact
-                                    highcharts={Highcharts}
-                                    constructorType={'chart'}
-                                    options={columnsChartOptions}
-                                />
-                            </Grid>
-                        </Grid>
-                        <Grid item xs={8}>
-                            {(valuation.derivative && valuation.derivative.length) ? (
-                                <AppBar position="static" color="default">
-                                    <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-                                    {valuation.derivative.map(({_id}, i) => (
-                                        <Tab label={_id} {...a11yProps(i)} />
-                                    ))}
-                                    </Tabs>
-                                    {valuation.derivative.map((method, i) => (
-                                        <TabPanel value={value} index={i}>
-                                            <TableContainer component={Paper}>
-                                                <Table className={classes.table} aria-label="spanning table">
-                                                    <TableHead>
-                                                        <TableRow>
-                                                            <TableCell>Item</TableCell>
-                                                            <TableCell align="right">Price</TableCell>
-                                                            <TableCell align="right">Quantity</TableCell>
-                                                            <TableCell align="right">Value</TableCell>
-                                                        </TableRow>
-                                                    </TableHead>
-                                                    <TableBody>
-                                                        {method.reagent_items.map((row) => (
-                                                            <TableRow key={row._id}>
-                                                                <TableCell>{row.name.en_GB}</TableCell>
-                                                                <TableCell align="right">{row.price}</TableCell>
-                                                                <TableCell align="right">{row.quantity}</TableCell>
-                                                                <TableCell align="right">{row.value}</TableCell>
-                                                            </TableRow>
-                                                        ))}
-                                                        <TableRow>
-                                                            <TableCell>Method</TableCell>
-                                                            <TableCell align="right">Nominal Value</TableCell>
-                                                            <TableCell align="right">Queue Quantity</TableCell>
-                                                            <TableCell align="right">Queue Cost</TableCell>
-                                                        </TableRow>
-                                                        <TableRow key={method._id}>
-                                                            <TableCell>{method._id}</TableCell>
-                                                            <TableCell align="right">{method.nominal_value}</TableCell>
-                                                            <TableCell align="right">{method.queue_quantity}</TableCell>
-                                                            <TableCell align="right">{method.queue_cost}</TableCell>
-                                                        </TableRow>
-                                                    </TableBody>
-                                                </Table>
-                                            </TableContainer>
-                                        </TabPanel>
-                                    ))}
-                                </AppBar>
-                            ) : (
-                            ''
-                            )}
+                <Divider className={classes.pos} />
+                <Grid container alignItems="center" alignContent="center">
+                    <Grid item xs={4}>
+                        <Grid container spacing={1}>
+                            <HighchartsReact
+                                highcharts={Highcharts}
+                                constructorType={'chart'}
+                                options={columnsChartOptions}
+                            />
                         </Grid>
                     </Grid>
+                    <Grid item xs={8}>
+                        {(valuation.derivative && valuation.derivative.length) ? (
+                            <AppBar position="static" color="default">
+                                <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+                                {valuation.derivative.map(({_id}, i) => (
+                                    <Tab label={_id} {...a11yProps(i)} />
+                                ))}
+                                </Tabs>
+                                {valuation.derivative.map((method, i) => (
+                                    <TabPanel value={value} index={i}>
+                                        <TableContainer component={Paper}>
+                                            <Table className={classes.table} aria-label="spanning table">
+                                                <TableHead>
+                                                    <TableRow>
+                                                        <TableCell>Item</TableCell>
+                                                        <TableCell align="right">Price</TableCell>
+                                                        <TableCell align="right">Quantity</TableCell>
+                                                        <TableCell align="right">Value</TableCell>
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                    {method.reagent_items.map((row) => (
+                                                        <TableRow key={row._id}>
+                                                            <TableCell>{row.name.en_GB}</TableCell>
+                                                            <TableCell align="right">{row.price}</TableCell>
+                                                            <TableCell align="right">{row.quantity}</TableCell>
+                                                            <TableCell align="right">{row.value}</TableCell>
+                                                        </TableRow>
+                                                    ))}
+                                                    <TableRow>
+                                                        <TableCell>Method</TableCell>
+                                                        <TableCell align="right">Nominal Value</TableCell>
+                                                        <TableCell align="right">Queue Quantity</TableCell>
+                                                        <TableCell align="right">Queue Cost</TableCell>
+                                                    </TableRow>
+                                                    <TableRow key={method._id}>
+                                                        <TableCell>{method._id}</TableCell>
+                                                        <TableCell align="right">{method.nominal_value}</TableCell>
+                                                        <TableCell align="right">{method.queue_quantity}</TableCell>
+                                                        <TableCell align="right">{method.queue_cost}</TableCell>
+                                                    </TableRow>
+                                                </TableBody>
+                                            </Table>
+                                        </TableContainer>
+                                    </TabPanel>
+                                ))}
+                            </AppBar>
+                        ) : (
+                        ''
+                        )}
+                    </Grid>
+                </Grid>
                 </React.Fragment>
             ) : (
                 ''
             )}
+            {/** MARKET BLOCK */}
             {(chart && quotes) ? (
                 <React.Fragment>
                 <Divider className={classes.pos} />
@@ -564,17 +617,28 @@ const Item = ({item, realm, valuation, quotes, chart, contracts_day}) => {
                         </TableContainer>
                     </Grid>
                 </Grid>
-                <Divider className={classes.pos} />
                 </React.Fragment>
             ) : (
                 ''
             )}
-            {(chart && quotes) ? (
-                ''
+            {/** PREMIUM BLOCK */}
+            {(valuation && valuation.reagent && valuation.reagent.premium) ? (
+                <React.Fragment>
+                <Divider className={classes.pos} />
+                <Container maxWidth="lg">
+                    <Grid item xs={12}>
+                        <HighchartsReact
+                            highcharts={Highcharts}
+                            constructorType={'chart'}
+                            options={variwideChart}
+                        />
+                    </Grid>
+                </Container>
+                </React.Fragment>
             ) : (
                 ''
             )}
-            <Divider className={classes.pos} />0
+            <Divider className={classes.pos} />
         </Container>
     )
 };
