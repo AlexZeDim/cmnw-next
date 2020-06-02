@@ -113,17 +113,20 @@ const Item = ({item, realm, valuation, quotes, chart, contracts_day}) => {
             let data = []
             if ("market" in valuation) {
                 let {market} = valuation;
-                data.push({
-                    name: "Market",
-                    color: '#241c18',
-                    data: [
-                        {
-                            name: "MARKET",
-                            y: market.price,
-                            drilldown: false
-                        }
-                    ]
-                })
+                if ("price" in market) {
+                    let {price} = market
+                    data.push({
+                        name: "Market",
+                        color: '#241c18',
+                        data: [
+                            {
+                                name: "MARKET",
+                                y: price,
+                                drilldown: false
+                            }
+                        ]
+                    })
+                }
             }
             if ("derivative" in valuation) {
                 let {derivative} = valuation;
@@ -133,15 +136,9 @@ const Item = ({item, realm, valuation, quotes, chart, contracts_day}) => {
         }
 
         const dropdownData = (point) => {
-            const [findData] = valuation.derivative.map(({_id, reagent_items}) => {
-                if (_id === point) {
-                    return {
-                        name: _id,
-                        color: '#c1aa82',
-                        data: reagent_items.map(item => [item.name.en_GB, item.value])
-                    }
-                }
-            })
+            const {_id, reagent_items} = valuation.derivative.find(({_id}) => (_id === point));
+            let findData = {}
+            Object.assign(findData, {name: _id, color: '#c1aa82', data: reagent_items.map(item => [item.name.en_GB, item.value]) })
             return findData
         }
 
@@ -572,6 +569,12 @@ const Item = ({item, realm, valuation, quotes, chart, contracts_day}) => {
             ) : (
                 ''
             )}
+            {(chart && quotes) ? (
+                ''
+            ) : (
+                ''
+            )}
+            <Divider className={classes.pos} />0
         </Container>
     )
 };
