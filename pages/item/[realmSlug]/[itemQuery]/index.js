@@ -5,7 +5,7 @@ import HighchartsExporting from 'highcharts/modules/exporting'
 import HighchartsReact from 'highcharts-react-official'
 import HC_heatmap from "highcharts/modules/heatmap";
 import HC_column from "highcharts/modules/drilldown";
-import HC_variwide from "highcharts/modules/variwide";
+import HC_treemap from "highcharts/modules/treemap";
 import Link from "../../../../src/Link";
 import Clock from "../../../../src/Clock";
 import PropTypes from "prop-types";
@@ -24,7 +24,7 @@ import {
 if (typeof Highcharts === 'object') {
     HC_heatmap(Highcharts);
     HC_column(Highcharts)
-    HC_variwide(Highcharts)
+    HC_treemap(Highcharts)
     HighchartsExporting(Highcharts)
 }
 
@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => ({
     title: {
         fontSize: 14,
     },
-    pos: {
+    divider: {
         margin: theme.spacing(2),
     },
     en_title: {
@@ -108,49 +108,53 @@ const a11yProps = index => ({
 });
 
 const Item = ({item, realm, valuation, quotes, chart, contracts_day}) => {
-    let clusterChartOptions, columnsChartOptions, variwideChart;
+    let clusterChartOptions, columnsChartOptions, treemapChartOptions;
 
     if (valuation && valuation.reagent) {
         let {reagent} = valuation;
         if (reagent.premium && reagent.premium.length) {
-            variwideChart = {
+            treemapChartOptions = {
                 chart: {
-                    type: 'variwide'
+                    type: 'treemap',
+                    backgroundColor: 'transparent'
                 },
-
                 title: {
-                    text: 'Labor Costs in Europe, 2016'
+                    text: undefined
                 },
-
-                subtitle: {
-                    text: 'Source: <a href="http://ec.europa.eu/eurostat/web/' +
-                        'labour-market/labour-costs/main-tables">eurostat</a>'
+                colorAxis: {
+                    minColor: '#ebe7ee',
+                    maxColor: '#241c18'
                 },
-
-                xAxis: {
-                    type: 'category'
-                },
-
-                caption: {
-                    text: 'Column widths are proportional to GDP'
-                },
-
                 legend: {
-                    enabled: false
+                    align: 'right',
+                    layout: 'vertical',
+                    verticalAlign: 'middle',
+                    symbolHeight: 300,
+                    labelFormat: "{value}"
                 },
-
+                plotOptions: {
+                    treemap: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b><br><b>{point.colorValue}g</b><br><b>x{point.value}</b>',
+                            distance: -50,
+                        }
+                    }
+                },
+                tooltip: {
+                    formatter: function () {
+                        return `
+                        Method: ${this.point.name}<br>
+                        Value: ${(this.point.colorValue).toLocaleString('ru-RU')}g<br>
+                        Wi: ${this.point.value}<br>`
+                    }
+                },
                 series: [{
-                    name: 'Labor Costs',
-                    data: valuation.reagent.premium.filter(({wi}) => wi > 10).map(({_id, value, wi}) => [_id, wi, value]),
-                    dataLabels: {
-                        enabled: true,
-                        format: '{point.y:.0f}'
-                    },
-                    tooltip: {
-                        pointFormat: 'Value: <b>{point.y}</b><br>' +
-                            'WI: <b>{point.z}</b><br>'
-                    },
-                    colorByPoint: true
+                    type: 'treemap',
+                    layoutAlgorithm: 'squarified',
+                    data: valuation.reagent.premium.filter(({wi, value}) => wi > 25 && value > 0).map(({_id, value, wi}) => ({name: _id, value: wi, colorValue: value})),
                 }]
             }
         }
@@ -452,21 +456,20 @@ const Item = ({item, realm, valuation, quotes, chart, contracts_day}) => {
             )}
             </Grid>
             {/** DERIVATIVE BLOCK */}
-            {(valuation) ? (
+            {(valuation.derivative && valuation.derivative.length) ? (
                 <React.Fragment>
-                <Divider className={classes.pos} />
-                <Grid container alignItems="center" alignContent="center">
-                    <Grid item xs={4}>
-                        <Grid container spacing={1}>
-                            <HighchartsReact
-                                highcharts={Highcharts}
-                                constructorType={'chart'}
-                                options={columnsChartOptions}
-                            />
+                    <Divider className={classes.divider} />
+                    <Grid container alignItems="center" alignContent="center">
+                        <Grid item xs={4}>
+                            <Grid container spacing={1}>
+                                <HighchartsReact
+                                    highcharts={Highcharts}
+                                    constructorType={'chart'}
+                                    options={columnsChartOptions}
+                                />
+                            </Grid>
                         </Grid>
-                    </Grid>
-                    <Grid item xs={8}>
-                        {(valuation.derivative && valuation.derivative.length) ? (
+                        <Grid item xs={8}>
                             <AppBar position="static" color="default">
                                 <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
                                 {valuation.derivative.map(({_id}, i) => (
@@ -512,11 +515,8 @@ const Item = ({item, realm, valuation, quotes, chart, contracts_day}) => {
                                     </TabPanel>
                                 ))}
                             </AppBar>
-                        ) : (
-                        ''
-                        )}
+                        </Grid>
                     </Grid>
-                </Grid>
                 </React.Fragment>
             ) : (
                 ''
@@ -524,7 +524,7 @@ const Item = ({item, realm, valuation, quotes, chart, contracts_day}) => {
             {/** MARKET BLOCK */}
             {(chart && quotes) ? (
                 <React.Fragment>
-                <Divider className={classes.pos} />
+                <Divider className={classes.divider} />
                 <Container maxWidth="lg">
                     <Grid container spacing={2} direction="row" justify="space-evenly" alignItems="center">
                     {Object.entries(valuation.market).map(([key, value],i, array) => {
@@ -624,13 +624,13 @@ const Item = ({item, realm, valuation, quotes, chart, contracts_day}) => {
             {/** PREMIUM BLOCK */}
             {(valuation && valuation.reagent && valuation.reagent.premium) ? (
                 <React.Fragment>
-                <Divider className={classes.pos} />
+                <Divider className={classes.divider} />
                 <Container maxWidth="lg">
                     <Grid item xs={12}>
                         <HighchartsReact
                             highcharts={Highcharts}
                             constructorType={'chart'}
-                            options={variwideChart}
+                            options={treemapChartOptions}
                         />
                     </Grid>
                 </Container>
@@ -638,7 +638,7 @@ const Item = ({item, realm, valuation, quotes, chart, contracts_day}) => {
             ) : (
                 ''
             )}
-            <Divider className={classes.pos} />
+            <Divider className={classes.divider} />
         </Container>
     )
 };
