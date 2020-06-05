@@ -1,17 +1,7 @@
-const {
-    PHASE_DEVELOPMENT_SERVER,
-    PHASE_PRODUCTION_BUILD,
-} = require('next/constants')
+const withFonts = require('next-fonts');
 
-module.exports = (phase, { defaultConfig }) => {
-    const isDev = phase === PHASE_DEVELOPMENT_SERVER
-    if (phase === isDev) {
-        return {
-            distDir: '.next',
-        }
+module.exports = withFonts({
+    webpack(config, options) {
+        return config;
     }
-
-    return {
-        distDir: '.next',
-    }
-}
+});
