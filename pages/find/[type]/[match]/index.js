@@ -86,8 +86,8 @@ function CharacterPage({ _id, match }) {
 }
 
 export async function getServerSideProps({query}) {
-    const {type, query} = query;
-    const res = await fetch(encodeURI(`http://${process.env.api}/find/${type}/${query}`));
+    const {type, match} = query;
+    const res = await fetch(encodeURI(`http://${process.env.api}/find/${type}/${match}`));
     const json = await res.json();
     return { props: json }
 }
