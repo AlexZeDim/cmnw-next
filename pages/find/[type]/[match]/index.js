@@ -1,12 +1,9 @@
 import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Link from "../../../../src/Link";
-import {
-    Container, Typography,
-    Table, TableBody, TableCell,
-    TableContainer, TableHead,
-    TableRow, Paper, Button
-} from "@material-ui/core";
+import TableIcons from "../../../../src/TableIcons"
+import MaterialTable from 'material-table';
+import { Container, Typography } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
     icon: {
@@ -79,6 +76,36 @@ function CharacterPage({ _id, match }) {
                 </div>
                 {/* End hero unit */}
                 <Container className={classes.cardGrid} maxWidth={false}>
+                    <MaterialTable
+                        title="Render Image Preview"
+                        icons={TableIcons}
+                        columns={[
+                            { title: 'Avatar', field: 'media', render: ({media}) => <img src={media.avatar_url} style={{width: 50, borderRadius: '50%'}}/> },
+                            { title: 'Name', field: 'name' },
+                            {
+                                field: 'realm',
+                                title: 'Realm',
+                                render: ({realm}) => realm.name
+                            },
+                            {
+                                field: 'guild',
+                                title: 'Guild',
+                                render: ({realm, guild}) => <Link href={encodeURI(`/guild/${realm.slug}/${guild.slug}`)} color="secondary" underline="hover">{guild.name}</Link>
+                            },
+                            { title: 'Class', field: 'character_class' },
+                            { title: 'Level', field: 'level' },
+                            { title: 'Faction', field: 'faction' },
+                            { title: 'Race', field: 'race' },
+                            { title: 'Gender', field: 'gender' },
+                        ]}
+                        data={match}
+                        options={{
+                            sorting: true,
+                            pageSize: 10,
+                            pageSizeOptions: [5,10,25,50],
+                            showTitle: false,
+                        }}
+                    />
                 </Container>
             </main>
         </React.Fragment>
