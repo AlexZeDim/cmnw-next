@@ -67,9 +67,10 @@ const useStyles = makeStyles(theme => ({
     large: {
         width: theme.spacing(7),
         height: theme.spacing(7),
+        marginRight: theme.spacing(2),
     },
     container: {
-        maxHeight: "100%",
+        maxHeight: (9 / 16 * 100) + '%',
     },
     cardTitle: {
         fontSize: '1.1em',
@@ -250,8 +251,6 @@ const Item = ({item, realm, valuation, quotes, chart, contracts}) => {
         clusterChartOptions = {
             chart: {
                 type: 'heatmap',
-                marginTop: 40,
-                marginBottom: 40,
                 plotBorderWidth: 1,
                 height: (9 / 16 * 100) + '%',
                 backgroundColor: 'transparent',
@@ -577,7 +576,7 @@ const Item = ({item, realm, valuation, quotes, chart, contracts}) => {
                 ''
             )}
             {/** PREMIUM BLOCK */}
-            {(valuation && valuation.reagent && valuation.reagent.premium) ? (
+            {(valuation && valuation.reagent && valuation.reagent.p_value) ? (
                 <React.Fragment>
                 <Divider className={classes.divider} />
                 <Container maxWidth="lg">
