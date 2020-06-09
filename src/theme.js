@@ -30,7 +30,7 @@ const theme = createMuiTheme({
     }
   },
   overrides: {
-    MuiTableCell: {
+    MuiTableHead: {
       root: {
         textTransform: 'uppercase'
       },
