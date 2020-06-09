@@ -51,17 +51,18 @@ const useStyles = makeStyles(theme => ({
         margin: '0 2px',
         transform: 'scale(0.8)',
     },
-    title: {
-        fontSize: 14,
-    },
     divider: {
         margin: theme.spacing(2),
     },
-    en_title: {
+    title: {
         fontFamily: 'Fira Sans',
         fontStyle: 'normal',
         fontDisplay: 'swap',
-        fontWeight: 400
+        fontWeight: 400,
+    },
+    cardGrid: {
+        paddingTop: theme.spacing(8),
+        paddingBottom: theme.spacing(8),
     },
     large: {
         width: theme.spacing(7),
@@ -71,12 +72,15 @@ const useStyles = makeStyles(theme => ({
         maxHeight: "100%",
     },
     cardTitle: {
-        fontSize: '0.85em',
+        fontSize: '1.1em',
         fontWeight: 600
     },
     chip: {
         margin: theme.spacing(1)
-    }
+    },
+    titleBlock: {
+        padding: theme.spacing(10, 0, 10),
+    },
 }));
 
 const TabPanel = props => {
@@ -107,7 +111,7 @@ const a11yProps = index => ({
     'aria-controls': `simple-tabpanel-${index}`,
 });
 
-const Item = ({item, realm, valuation, quotes, chart, contracts_day}) => {
+const Item = ({item, realm, valuation, quotes, chart, contracts}) => {
     let clusterChartOptions, columnsChartOptions, treemapChartOptions;
 
     if (valuation && valuation.reagent) {
@@ -313,7 +317,7 @@ const Item = ({item, realm, valuation, quotes, chart, contracts_day}) => {
             }]
         };
     }
-    const {_id, name, is_auctionable, is_commdty, quality, item_class, item_subclass, is_equippable, is_stackable, ilvl, inventory_type, level, ticker, asset_class, v_class, sell_price, derivative, expansion} = item;
+    const {_id, name, quality, item_class, item_subclass, ilvl, inventory_type, level, ticker, asset_class, v_class, sell_price, expansion} = item;
     const classes = useStyles();
 
     let defaultValuationTab = 0
@@ -328,133 +332,141 @@ const Item = ({item, realm, valuation, quotes, chart, contracts_day}) => {
         setValue(newValue);
     };
     return (
-        <Container maxWidth={false} alignContent={'center'} justify={'center'}>
+        <Container maxWidth={false} alignContent="center">
             {/** TITLE BLOCK */}
-            <Grid container wrap="nowrap" spacing={2}>
-                <Grid item>
-                    <Avatar alt="Item Icon" variant="rounded" src={item.icon} className={classes.large} />
-                </Grid>
-                <Grid item>
-                    <Typography variant="h2" className={classes.en_title}>
-                        {(ticker) ? (ticker) : (name["en_GB"])}
-                    </Typography>
-                    {(valuation) ? (
-                        <Clock time={valuation.lastModified}/>
-                    ) : ('')}
-                </Grid>
-            </Grid>
-            {/** ITEM BLOCK */}
-            <Grid container spacing={1} className={classes.paper}>
-                <Grid item xs={4}>
-                    <TableContainer>
-                        <Table className={classes.table} size="small" aria-label="Quotes">
-                            <TableBody>
-                                <TableRow key={0}>
-                                    <TableCell component="th" scope="row">
-                                        ID
-                                    </TableCell>
-                                    <TableCell align="right">{_id}</TableCell>
-                                </TableRow>
-                                {(ticker) ? (
-                                <TableRow key={1}>
-                                    <TableCell component="th" scope="row">
-                                        Name
-                                    </TableCell>
-                                    <TableCell align="right">{name["en_GB"]}</TableCell>
-                                </TableRow>
-                                ) : ('')}
-                                {(is_equippable) ? (
-                                <React.Fragment>
-                                    <TableRow key={2}>
-                                        <TableCell component="th" scope="row">
-                                            Inventory Slot
-                                        </TableCell>
-                                        <TableCell align="right">{inventory_type}</TableCell>
-                                    </TableRow>
-                                    <TableRow key={3}>
-                                        <TableCell component="th" scope="row">
-                                            Level
-                                        </TableCell>
-                                        <TableCell align="right">{level} // {ilvl}</TableCell>
-                                    </TableRow>
-                                </React.Fragment>
-                                ) : ('')}
-                                {(item_class) ? (
-                                <TableRow key={4}>
-                                    <TableCell component="th" scope="row">
-                                        Class
-                                    </TableCell>
-                                    <TableCell align="right">{item_class} // {item_subclass}</TableCell>
-                                </TableRow>
-                                ) : ('')}
-                                {(quality) ? (
-                                <TableRow key={5}>
-                                    <TableCell component="th" scope="row">
-                                        Quality
-                                    </TableCell>
-                                    <TableCell align="right">{quality}</TableCell>
-                                </TableRow>
-                                ) : ('')}
-                                {(sell_price !== 0 && sell_price) ? (
-                                <React.Fragment>
-                                    <TableRow key={6}>
-                                        <TableCell component="th" scope="row">
-                                            Vendor Price
-                                        </TableCell>
-                                        <TableCell align="right" style={{textTransform: 'lowercase'}}>{sell_price} g</TableCell>
-                                    </TableRow>
-                                </React.Fragment>
-                                ) : ('')}
-                                {(is_auctionable) ? (
-                                <React.Fragment>
-                                    {(sell_price !== 0) ? (
-                                    <TableRow key={7}>
-                                        <TableCell component="th" scope="row">
-                                            Margin Deposit
-                                        </TableCell>
-                                        <TableCell align="right" style={{textTransform: 'lowercase'}}> 12:{sell_price*0.15} 24:{sell_price*0.30} 48:{sell_price*0.60} g</TableCell>
-                                    </TableRow>
-                                    ) : ('')}
-                                    <TableRow key={8}>
-                                        <TableCell component="th" scope="row">
-                                            Asset Class
-                                        </TableCell>
-                                        <TableCell align="right">{v_class.toString().replace(/,/g, ' ')}</TableCell>
-                                    </TableRow>
-                                    <TableRow key={9}>
-                                        <TableCell component="th" scope="row">
-                                            Expansion
-                                        </TableCell>
-                                        <TableCell align="right">{expansion}</TableCell>
-                                    </TableRow>
-                                </React.Fragment>
-                                ) : ('')}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </Grid>
-                {(valuation && valuation.market) ? (
-                <Grid item xs={4}>
-                    <Container>
-                        <Grid container spacing={4}>
-                            {(contracts_day && contracts_day.length) ? (
-                                <Grid item xs={12} sm={12} md={12}>
-                                    <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                                        Day Contracts
-                                    </Typography>
-                                    <Divider light />
-                                    {contracts_day.map(({_id, code, connected_realm_id}) => (
-                                        <Chip clickable color="primary" variant="default" className={classes.chip} label={<Link href={`/contract/${connected_realm_id}/${code}`} color="inherit" underline="none">{code}</Link>} avatar={<Avatar>D</Avatar>} />
-                                    ))}
+            <Container maxWidth={false} className={classes.titleBlock}>
+                <Grid container direction="column" justify="space-around" alignItems="center" spacing={2}>
+                    <Grid item>
+                        <Box alignItems="center" display="flex" justifyContent="center">
+                            <Avatar alt="Item Icon" variant="rounded" src={item.icon} className={classes.large} />
+                            <Typography component="h1" variant="h2" color="textPrimary" className={classes.title}>
+                                {(ticker) ? (ticker) : (name["en_GB"])}
+                            </Typography>
+                        </Box>
+                    </Grid>
+                    <Grid item>
+                        {(valuation) ? (
+                            <Clock time={valuation.lastModified}/>
+                        ) : ('')}
+                    </Grid>
+                    {(valuation && valuation.market) ? (
+                        <Grid item>
+                            {(contracts && contracts.length) ? (
+                                <Grid container direction="row" justify="space-evenly" alignItems="center">
+                                {contracts.map(({_id, code, type, connected_realm_id}, i) => (
+                                    <Grid item key={i} xs={2} spacing={2}>
+                                        <Chip clickable color="default" variant="default" className={classes.chip} label={<Link href={`/contract/${connected_realm_id}/${code}`} color="inherit" underline="none">{code}</Link>} avatar={<Avatar>{type}</Avatar>} />
+                                    </Grid>
+                                ))}
                                 </Grid>
                             ) : ('')}
                         </Grid>
-                    </Container>
+                    ) : (
+                        ''
+                    )}
                 </Grid>
-            ) : (
-                ''
-            )}
-            </Grid>
+            </Container>
+
+            <Container maxWidth="lg">
+                {/* Cards */}
+                <Grid container spacing={4}>
+                    <Grid item key={1} xs={12} sm={6} md={3}>
+                        <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                            Summary
+                        </Typography>
+                        <Divider light />
+                        <Typography variant="caption" display="block">
+                            ID: {_id}
+                        </Typography>
+                        {(ticker) ? (
+                            <Typography variant="caption" display="block">
+                                Name: {name["en_GB"]}
+                            </Typography>
+                        ) : ('')}
+                    </Grid>
+                    <Grid item key={2} xs={12} sm={6} md={3}>
+                        <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                            Class
+                        </Typography>
+                        <Divider light />
+                        <Typography variant="caption" display="block">
+                            {item_class} {item_subclass}
+                        </Typography>
+                        {(v_class && v_class.length) ? (
+                        <Typography variant="caption" display="block">
+                            {v_class.toString().replace(/,/g, ' ')}
+                        </Typography>
+                        ) : ('')}
+                    </Grid>
+                    <Grid item key={3} xs={12} sm={6} md={3}>
+                        <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                            Inventory
+                        </Typography>
+                        <Divider light />
+                        <Typography variant="caption" display="block">
+                            {quality} // {level}
+                        </Typography>
+                        <Typography variant="caption" display="block">
+                            {ilvl} // {inventory_type}
+                        </Typography>
+                    </Grid>
+                    <Grid item key={4} xs={12} sm={6} md={3}>
+                        <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                            Vendor
+                        </Typography>
+                        <Divider light />
+                        <Typography variant="caption" display="block">
+                            {sell_price}
+                        </Typography>
+                    </Grid>
+                    {(valuation && valuation.market && valuation.market.price) ? (
+                    <React.Fragment>
+                        <Grid item key={5} xs={12} sm={6} md={3}>
+                            <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                                Market
+                            </Typography>
+                            <Divider light />
+                            <Typography variant="caption" display="block">
+                                Price-5% (OTC): {(valuation.market.price*0.95).toLocaleString('ru-RU')}
+                            </Typography>
+                            <Typography variant="caption" display="block">
+                                Price: {valuation.market.price.toLocaleString('ru-RU')}
+                            </Typography>
+                            <Typography variant="caption" display="block">
+                                Price Size: {valuation.market.price_size.toLocaleString('ru-RU')}
+                            </Typography>
+                        </Grid>
+                        <Grid item key={6} xs={12} sm={6} md={3}>
+                            <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                                Market Stats
+                            </Typography>
+                            <Divider light />
+                            <Typography variant="caption" display="block">
+                                Q: {valuation.market.quantity.toLocaleString('ru-RU')}
+                            </Typography>
+                            <Typography variant="caption" display="block">
+                                OI: {valuation.market.open_interest.toLocaleString('ru-RU')}
+                            </Typography>
+                            <Typography variant="caption" display="block">
+                                Orders: {valuation.market.orders.length}
+                            </Typography>
+                        </Grid>
+                        <Grid item key={7} xs={12} sm={6} md={3}>
+                            <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                                Yield
+                            </Typography>
+                            <Divider light />
+                            <Typography variant="caption" display="block">
+                                To vendor: {valuation.market.yieldVendor} %
+                            </Typography>
+                            <Typography variant="caption" display="block">
+                                To derivative: {valuation.market.yieldReagent} %
+                            </Typography>
+                        </Grid>
+                    </React.Fragment>
+                    ) : ('')}
+                </Grid>
+            </Container>
             {/** DERIVATIVE BLOCK */}
             {(valuation.derivative && valuation.derivative.length) ? (
                 <React.Fragment>
@@ -525,63 +537,6 @@ const Item = ({item, realm, valuation, quotes, chart, contracts_day}) => {
             {(chart && quotes) ? (
                 <React.Fragment>
                 <Divider className={classes.divider} />
-                <Container maxWidth="lg">
-                    <Grid container spacing={2} direction="row" justify="space-evenly" alignItems="center">
-                    {Object.entries(valuation.market).map(([key, value],i, array) => {
-                        if (key === "price") {
-                            return (
-                                <React.Fragment>
-                                    <Grid item key={array.length+1} xs={1}>
-                                        <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                                            {"OTC (Price-5%)"}
-                                        </Typography>
-                                        <Divider light />
-                                        <Typography variant="caption" display="block">
-                                            {(value * 0.95).toLocaleString('ru-RU')}
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item key={i} xs={1}>
-                                        <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                                            {key.replace(/_/g, ' ')}
-                                        </Typography>
-                                        <Divider light />
-                                        <Typography variant="caption" display="block">
-                                            {value.toLocaleString('ru-RU')}
-                                        </Typography>
-                                    </Grid>
-                                </React.Fragment>
-                            )
-                        }
-                        if (key === "orders") {
-                            return (
-                                <Grid item key={i} xs={1}>
-                                    <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                                        {key.replace(/_/g, ' ')}
-                                    </Typography>
-                                    <Divider light />
-                                    <Typography variant="caption" display="block">
-                                        {value.length.toLocaleString('ru-RU')}
-                                    </Typography>
-                                </Grid>
-                            )
-                        }
-                        if (key === "lastModified") {
-                            return ('')
-                        }
-                        return (
-                            <Grid item key={i} xs={1}>
-                                <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                                    {key.replace(/_/g, ' ')}
-                                </Typography>
-                                <Divider light />
-                                <Typography variant="caption" display="block">
-                                    {value.toLocaleString('ru-RU')}
-                                </Typography>
-                            </Grid>
-                        )
-                    })}
-                    </Grid>
-                </Container>
                 <Grid container>
                     <Grid item xs={9}>
                         <HighchartsReact
@@ -595,9 +550,9 @@ const Item = ({item, realm, valuation, quotes, chart, contracts_day}) => {
                             <Table stickyHeader className={classes.table} size="small" aria-label="Quotes">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>P</TableCell>
-                                        <TableCell align="left">Q</TableCell>
-                                        <TableCell align="right">OI</TableCell>
+                                        <TableCell>Price</TableCell>
+                                        <TableCell align="left">Quantity</TableCell>
+                                        <TableCell align="right">Value</TableCell>
                                         <TableCell align="right">Orders</TableCell>
                                     </TableRow>
                                 </TableHead>
