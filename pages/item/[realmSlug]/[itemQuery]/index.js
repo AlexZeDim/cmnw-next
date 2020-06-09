@@ -9,6 +9,8 @@ import HC_treemap from "highcharts/modules/treemap";
 import Link from "../../../../src/Link";
 import Clock from "../../../../src/Clock";
 import PropTypes from "prop-types";
+import TableIcons from "../../../../src/TableIcons"
+import MaterialTable from 'material-table';
 import {
     Container, Grid,
     Typography, Divider,
@@ -52,7 +54,7 @@ const useStyles = makeStyles(theme => ({
         transform: 'scale(0.8)',
     },
     divider: {
-        margin: theme.spacing(2),
+        margin: `${theme.spacing(2)}px auto`,
     },
     title: {
         fontFamily: 'Fira Sans',
@@ -69,9 +71,6 @@ const useStyles = makeStyles(theme => ({
         height: theme.spacing(7),
         marginRight: theme.spacing(2),
     },
-    container: {
-        maxHeight: (9 / 16 * 100) + '%',
-    },
     cardTitle: {
         fontSize: '1.1em',
         fontWeight: 600
@@ -81,7 +80,7 @@ const useStyles = makeStyles(theme => ({
     },
     titleBlock: {
         padding: theme.spacing(10, 0, 10),
-    },
+    }
 }));
 
 const TabPanel = props => {
@@ -545,30 +544,49 @@ const Item = ({item, realm, valuation, quotes, chart, contracts}) => {
                         />
                     </Grid>
                     <Grid item xs={3}>
-                        <TableContainer component={Paper} className={classes.container}>
-                            <Table stickyHeader className={classes.table} size="small" aria-label="Quotes">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Price</TableCell>
-                                        <TableCell align="left">Quantity</TableCell>
-                                        <TableCell align="right">Value</TableCell>
-                                        <TableCell align="right">Orders</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {quotes.map(({_id, quantity, open_interest, orders}, i) => (
-                                        <TableRow key={i}>
-                                            <TableCell component="th" scope="row">
-                                                {_id.toLocaleString('ru-RU')}
-                                            </TableCell>
-                                            <TableCell align="left">{quantity.toLocaleString('ru-RU')}</TableCell>
-                                            <TableCell align="right">{Math.round(open_interest).toLocaleString('ru-RU')}</TableCell>
-                                            <TableCell align="right">{orders.length}</TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
+                        <MaterialTable
+                            title="Basic Sorting Preview"
+                            icons={TableIcons}
+                            columns={[
+                                {
+                                    field: 'price',
+                                    title: 'Price',
+                                    render: ({_id}) => `${_id.toLocaleString('ru-RU')}`,
+                                    type: 'numberic'
+                                },
+                                {
+                                    field: 'quantity',
+                                    title: 'Quantity',
+                                    render: ({quantity}) => quantity.toLocaleString('ru-RU'),
+                                    type: 'numberic'
+                                },
+                                {
+                                    field: 'open_interest',
+                                    title: 'Value',
+                                    render: ({open_interest}) => Math.round(open_interest).toLocaleString('ru-RU'),
+                                    type: 'numberic'
+                                },
+                                {
+                                    field: 'orders',
+                                    title: 'Orders',
+                                    render:({orders}) => Math.round(orders.length).toLocaleString('ru-RU'),
+                                    type: 'numberic'
+                                }
+                            ]}
+                            data={quotes}
+                            options={{
+                                showTitle: false,
+                                search: false,
+                                paging: false,
+                                padding: "dense",
+                                showTextRowsSelected: false,
+                                showSelectAllCheckbox: false,
+                                showFirstLastPageButtons: false,
+                                showEmptyDataSourceMessage: false,
+                                toolbar: false,
+                                maxBodyHeight: 700
+                            }}
+                        />
                     </Grid>
                 </Grid>
                 </React.Fragment>
