@@ -45,13 +45,10 @@ const useStyles = makeStyles(theme => ({
     table: {
         minWidth: 300
     },
-    title: {
-        fontSize: 14,
-    },
     pos: {
         margin: theme.spacing(2),
     },
-    en_title: {
+    title: {
         fontFamily: 'Fira Sans',
         fontStyle: 'normal',
         fontDisplay: 'swap',
@@ -68,9 +65,12 @@ const useStyles = makeStyles(theme => ({
         fontSize: '0.9em',
         fontWeight: 600
     },
+    titleBlock: {
+        padding: theme.spacing(10, 0, 10),
+    },
 }));
 
-const Contract = ({_id, code, realmName, open_interest, price, price_size, quantity, risk, sellers, orders, type, createdAt, data, updatedAt}) => {
+const Contract = ({_id, code, realm, open_interest, price, price_size, quantity, risk, sellers, orders, type, createdAt, data, updatedAt}) => {
     const classes = useStyles();
     let tableSet = new Set();
     data.map(({orders}) => {if (orders) orders.map(({id}) => tableSet.add(id))});
@@ -82,29 +82,68 @@ const Contract = ({_id, code, realmName, open_interest, price, price_size, quant
             height: (9 / 16 * 50) + '%',
             backgroundColor: 'transparent',
         },
+        yAxis: [
+            {
+                labels: {
+                    format: '{value}g',
+                },
+                title: {
+                    text: 'Price',
+                }
+            },
+            {
+                title: {
+                    text: 'Quantity',
+                },
+                labels: {
+                    format: 'x{value}',
+                },
+                opposite: true
+            },
+            {
+                title: {
+                    text: 'Open Interest',
+                },
+                labels: {
+                    format: '{value} g',
+                },
+                opposite: true
+            }
+        ],
         title: {
             text: ''
         },
-        series: [{
-            data: data.map(({price}) => price),
-        }],
+        series: [
+            { name: 'Open Interest', type: 'column', data: data.map(({open_interest}) => open_interest), yAxis: 2, opacity: 0.75, color: '#89858c' },
+            { name: 'Quantity', type: 'column', data: data.map(({quantity}) => quantity), yAxis: 1, opacity: 0.75, color: '#c1aa82' },
+            { name: 'Price', data: data.map(({price}) => price), color: '#241c18' }
+        ],
         xAxis: {
-            categories: data.map(({_id}) => (`${new Date(_id).toLocaleString('en-GB')} || ${new Date(_id).getDate()} `))
+            categories: data.map(({_id}) => (`${new Date(_id).toLocaleString('en-GB')}`))
         },
     };
     return (
         <Container maxWidth={false}>
-            <Grid container wrap="nowrap" spacing={2}>
-                <Grid item xs>
-                    <Typography variant="h2" className={classes.en_title} style={{textTransform: 'uppercase'}}>
-                        {code}@{realmName}
-                    </Typography>
+            <Container maxWidth={false} className={classes.titleBlock}>
+                <Grid container direction="column" justify="space-around" alignItems="center" spacing={2}>
+                    <Grid item xs>
+                        {(realm.ticker) ? (
+                            <Typography variant="h2" className={classes.title} style={{textTransform: 'uppercase'}}>
+                                {code}@{realm.ticker}
+                            </Typography>
+                        ) : (
+                            <Typography variant="h2" className={classes.title} style={{textTransform: 'uppercase'}}>
+                                {code}@{realm.name}
+                            </Typography>
+                        )}
+
+                    </Grid>
+                    <Grid item xs>
+                        <Clock time={updatedAt}/>
+                    </Grid>
                 </Grid>
-            </Grid>
-            <Grid item xs>
-                <Clock time={updatedAt}/>
-            </Grid>
-            <Grid container spacing={1} className={classes.paper}>
+            </Container>
+            <Grid container spacing={1}>
                 <Grid item xs={3}>
                     <TableContainer container spacing={1} className={classes.paper}>
                         <Table className={classes.table} size="small" aria-label="Price">
