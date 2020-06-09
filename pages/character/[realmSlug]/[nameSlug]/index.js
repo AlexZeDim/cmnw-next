@@ -1,5 +1,5 @@
 import React from "react";
-import Router from 'next/router'
+import Router from 'next/router';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     Container, Grid, Divider,
@@ -125,8 +125,8 @@ function CharacterPage(json) {
                     <span className={classes.heroButtons}>
                         <Grid container spacing={2} justify="center">
                             <Grid item>
-                                <Button variant="contained" color="primary" onClick={() => Router.push(`/find/${_id}`)}>
-                                    Find all
+                                <Button variant="contained" color="primary" onClick={() => Router.push(`/find/any/${_id}`)}>
+                                    Find any
                                 </Button>
                             </Grid>
                             { (guild) ? (
