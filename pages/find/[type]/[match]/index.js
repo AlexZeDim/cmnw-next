@@ -38,7 +38,6 @@ const useStyles = makeStyles(theme => ({
         minWidth: 650,
     },
     title: {
-        color: theme.palette.background.paper,
         fontFamily: 'Fira Sans',
         fontStyle: 'normal',
         fontDisplay: 'swap',
@@ -69,7 +68,7 @@ function CharacterPage({ _id, match }) {
                 {/* Hero unit */}
                 <div className={classes.heroContent}>
                     <Container maxWidth="lg">
-                        <Typography component="h1" variant="h2" align="center" color="textPrimary" className={classes.title} gutterBottom>
+                        <Typography component="h1" variant="h2" align="center" color="secondary" className={classes.title} gutterBottom>
                             {_id}
                         </Typography>
                     </Container>
