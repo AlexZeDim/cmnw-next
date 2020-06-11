@@ -9,8 +9,6 @@ import HC_treemap from "highcharts/modules/treemap";
 import Link from "../../../../src/Link";
 import Clock from "../../../../src/Clock";
 import PropTypes from "prop-types";
-import TableIcons from "../../../../src/TableIcons"
-import MaterialTable from 'material-table';
 import {
     Container, Grid,
     Typography, Divider,
@@ -42,6 +40,7 @@ const useStyles = makeStyles(theme => ({
     },
     table: {
         minWidth: 400,
+        maxHeight: '760px',
     },
     card: {
         height: '100%',
@@ -71,6 +70,10 @@ const useStyles = makeStyles(theme => ({
         height: theme.spacing(7),
         marginRight: theme.spacing(2),
     },
+    container: {
+        maxHeight: 'auto',
+        margin: `auto ${theme.spacing(1)}px`,
+    },
     cardTitle: {
         fontSize: '1.1em',
         fontWeight: 600
@@ -80,6 +83,9 @@ const useStyles = makeStyles(theme => ({
     },
     titleBlock: {
         padding: theme.spacing(10, 0, 10),
+    },
+    totalRow: {
+        backgroundColor: '#ebe7ee',
     }
 }));
 
@@ -352,7 +358,7 @@ const Item = ({item, realm, valuation, quotes, chart, contracts}) => {
                             {(contracts && contracts.length) ? (
                                 <Grid container direction="row" justify="space-evenly" alignItems="center">
                                 {contracts.map(({_id, code, type, connected_realm_id}, i) => (
-                                    <Grid item key={i} xs={2} spacing={2}>
+                                    <Grid item key={i} xs={2}>
                                         <Chip clickable color="default" variant="default" className={classes.chip} label={<Link href={`/contract/${connected_realm_id}/${code}`} color="inherit" underline="none">{code}</Link>} avatar={<Avatar>{type}</Avatar>} />
                                     </Grid>
                                 ))}
@@ -365,8 +371,8 @@ const Item = ({item, realm, valuation, quotes, chart, contracts}) => {
                 </Grid>
             </Container>
 
+            {/** CARD BLOCK */}
             <Container maxWidth="lg">
-                {/* Cards */}
                 <Grid container spacing={4}>
                     <Grid item key={1} xs={12} sm={6} md={3}>
                         <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
@@ -465,31 +471,30 @@ const Item = ({item, realm, valuation, quotes, chart, contracts}) => {
                     ) : ('')}
                 </Grid>
             </Container>
+
             {/** DERIVATIVE BLOCK */}
             {(valuation.derivative && valuation.derivative.length) ? (
                 <React.Fragment>
                     <Divider className={classes.divider} />
-                    <Grid container alignItems="center" alignContent="center">
-                        <Grid item xs={4}>
-                            <Grid container spacing={1}>
-                                <HighchartsReact
-                                    highcharts={Highcharts}
-                                    constructorType={'chart'}
-                                    options={columnsChartOptions}
-                                />
-                            </Grid>
+                    <Grid container alignItems="center" alignContent="center" spacing={2}>
+                        <Grid item key={1} xs={4}>
+                            <HighchartsReact
+                                highcharts={Highcharts}
+                                constructorType={'chart'}
+                                options={columnsChartOptions}
+                            />
                         </Grid>
-                        <Grid item xs={8}>
+                        <Grid item key={2} xs={8}>
                             <AppBar position="static" color="default">
-                                <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+                                <Tabs value={value} onChange={handleChange} aria-label="Methods">
                                 {valuation.derivative.map(({_id}, i) => (
                                     <Tab label={_id} {...a11yProps(i)} />
                                 ))}
                                 </Tabs>
                                 {valuation.derivative.map((method, i) => (
                                     <TabPanel value={value} index={i}>
-                                        <TableContainer component={Paper}>
-                                            <Table className={classes.table} aria-label="spanning table">
+                                        <TableContainer>
+                                            <Table stickyHeader className={classes.table} aria-label="Method">
                                                 <TableHead>
                                                     <TableRow>
                                                         <TableCell>Item</TableCell>
@@ -501,7 +506,7 @@ const Item = ({item, realm, valuation, quotes, chart, contracts}) => {
                                                 <TableBody>
                                                     {method.reagent_items.map((row) => (
                                                         <TableRow key={row._id}>
-                                                            <TableCell>{row.name.en_GB}</TableCell>
+                                                            <TableCell><Link href={`/item/${realm.connected_realm_id}/${row._id}`} color="secondary" underline="hover">{row.name.en_GB}</Link></TableCell>
                                                             <TableCell align="right">{row.price}</TableCell>
                                                             <TableCell align="right">{row.quantity}</TableCell>
                                                             <TableCell align="right">{row.value}</TableCell>
@@ -513,12 +518,23 @@ const Item = ({item, realm, valuation, quotes, chart, contracts}) => {
                                                         <TableCell align="right">Queue Quantity</TableCell>
                                                         <TableCell align="right">Queue Cost</TableCell>
                                                     </TableRow>
-                                                    <TableRow key={method._id}>
+                                                    <TableRow key={method._id} className={classes.totalRow}>
                                                         <TableCell>{method._id}</TableCell>
                                                         <TableCell align="right">{method.nominal_value}</TableCell>
                                                         <TableCell align="right">{method.queue_quantity}</TableCell>
                                                         <TableCell align="right">{method.queue_cost}</TableCell>
                                                     </TableRow>
+                                                    {(method.yieldMarket || method.yieldVendor) ? (
+                                                    <TableRow>
+                                                        <TableCell>Yield</TableCell>
+                                                        {(method.yieldMarket) ? (
+                                                            <TableCell align="right">Market: {method.yieldMarket} %</TableCell>
+                                                        ) : ('')}
+                                                        {(method.yieldVendor) ? (
+                                                            <TableCell align="right">Vendor: {method.yieldVendor} %</TableCell>
+                                                        ) : ('')}
+                                                    </TableRow>
+                                                    ) : ('')}
                                                 </TableBody>
                                             </Table>
                                         </TableContainer>
@@ -535,7 +551,7 @@ const Item = ({item, realm, valuation, quotes, chart, contracts}) => {
             {(chart && quotes) ? (
                 <React.Fragment>
                 <Divider className={classes.divider} />
-                <Grid container>
+                <Grid container spacing={2}>
                     <Grid item xs={9}>
                         <HighchartsReact
                             highcharts={Highcharts}
@@ -544,49 +560,28 @@ const Item = ({item, realm, valuation, quotes, chart, contracts}) => {
                         />
                     </Grid>
                     <Grid item xs={3}>
-                        <MaterialTable
-                            title="Basic Sorting Preview"
-                            icons={TableIcons}
-                            columns={[
-                                {
-                                    field: 'price',
-                                    title: 'Price',
-                                    render: ({_id}) => `${_id.toLocaleString('ru-RU')}`,
-                                    type: 'numberic'
-                                },
-                                {
-                                    field: 'quantity',
-                                    title: 'Quantity',
-                                    render: ({quantity}) => quantity.toLocaleString('ru-RU'),
-                                    type: 'numberic'
-                                },
-                                {
-                                    field: 'open_interest',
-                                    title: 'Value',
-                                    render: ({open_interest}) => Math.round(open_interest).toLocaleString('ru-RU'),
-                                    type: 'numberic'
-                                },
-                                {
-                                    field: 'orders',
-                                    title: 'Orders',
-                                    render:({orders}) => Math.round(orders.length).toLocaleString('ru-RU'),
-                                    type: 'numberic'
-                                }
-                            ]}
-                            data={quotes}
-                            options={{
-                                showTitle: false,
-                                search: false,
-                                paging: false,
-                                padding: "dense",
-                                showTextRowsSelected: false,
-                                showSelectAllCheckbox: false,
-                                showFirstLastPageButtons: false,
-                                showEmptyDataSourceMessage: false,
-                                toolbar: false,
-                                maxBodyHeight: 700
-                            }}
-                        />
+                        <TableContainer component={Paper} className={classes.table}>
+                            <Table stickyHeader size="small" aria-label="Quotes">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Price</TableCell>
+                                        <TableCell align="left">Quantity</TableCell>
+                                        <TableCell align="right">Value</TableCell>
+                                        <TableCell align="right">Orders</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {quotes.map(({_id, quantity, open_interest, orders}, i) => (
+                                        <TableRow key={i}>
+                                            <TableCell component="th" scope="row">{_id.toLocaleString('ru-RU')}</TableCell>
+                                            <TableCell align="right">{quantity.toLocaleString('ru-RU')}</TableCell>
+                                            <TableCell align="right">{Math.round(open_interest).toLocaleString('ru-RU')}</TableCell>
+                                            <TableCell align="right">{orders.length}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
                     </Grid>
                 </Grid>
                 </React.Fragment>
@@ -596,16 +591,16 @@ const Item = ({item, realm, valuation, quotes, chart, contracts}) => {
             {/** PREMIUM BLOCK */}
             {(valuation && valuation.reagent && valuation.reagent.p_value) ? (
                 <React.Fragment>
-                <Divider className={classes.divider} />
-                <Container maxWidth="lg">
-                    <Grid item xs={12}>
-                        <HighchartsReact
-                            highcharts={Highcharts}
-                            constructorType={'chart'}
-                            options={treemapChartOptions}
-                        />
-                    </Grid>
-                </Container>
+                    <Divider className={classes.divider} />
+                    <Container maxWidth="lg">
+                        <Grid item xs={12}>
+                            <HighchartsReact
+                                highcharts={Highcharts}
+                                constructorType={'chart'}
+                                options={treemapChartOptions}
+                            />
+                        </Grid>
+                    </Container>
                 </React.Fragment>
             ) : (
                 ''
