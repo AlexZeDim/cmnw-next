@@ -164,41 +164,39 @@ function CharacterPage(json) {
                     </Typography>
                     <Divider light />
                     <Typography variant="caption" display="block">
-                        {gender} / {race}
+                        {gender} {race}
                     </Typography>
                     <Typography variant="caption" display="block">
-                        {character_class} / {spec}
+                        {character_class} {spec}
                     </Typography>
                 </Grid>
                 { (guild) ? (
-                    <Grid item key={3} xs={12} sm={6} md={3}>
-                        <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                            Guild
-                        </Typography>
-                        <Divider light />
-                        <Typography variant="caption" display="block">
-                            {guild.name}
-                        </Typography>
-                        <Typography variant="caption" display="block">
-                            Rank { (guild.rank === 0) ? ('GM') : (guild.rank)}
-                        </Typography>
-                    </Grid>
-                    ) : ('')
-                }
+                <Grid item key={3} xs={12} sm={6} md={3}>
+                    <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                        Guild
+                    </Typography>
+                    <Divider light />
+                    <Typography variant="caption" display="block">
+                        {guild.name}
+                    </Typography>
+                    <Typography variant="caption" display="block">
+                        Rank { (guild.rank === 0) ? ('GM') : (guild.rank)}
+                    </Typography>
+                </Grid>
+                ) : ('')}
                 { (ilvl) ? (
-                    <Grid item key={4} xs={12} sm={6} md={3}>
-                        <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                            ilvl
+                <Grid item key={4} xs={12} sm={6} md={3}>
+                    <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
+                        ilvl
+                    </Typography>
+                    <Divider light />
+                    {Object.keys(ilvl).map((key, index) => (
+                        <Typography key={index} variant="caption" display="block">
+                            {`${key[0]}: ${ilvl[key]}`}
                         </Typography>
-                        <Divider light />
-                        {Object.keys(ilvl).map((key, index) => (
-                            <Typography key={index} variant="caption" display="block">
-                                {`${key[0]}: ${ilvl[key]}`}
-                            </Typography>
-                        ))}
-                    </Grid>
-                ) : ('')
-                }
+                    ))}
+                </Grid>
+                ) : ('')}
                 { (hash) ? (
                     <Grid item key={5} xs={12} sm={6} md={3}>
                         <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
@@ -211,8 +209,8 @@ function CharacterPage(json) {
                             </Typography>
                         ))}
                     </Grid>
-                ) : ('')
-                }
+                ) : ('')}
+                { (createdAt && updatedAt) ? (
                 <Grid item key={6} xs={12} sm={6} md={3}>
                     <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
                         {updatedBy || 'OSINT-indexCharacters'}
@@ -225,6 +223,8 @@ function CharacterPage(json) {
                         U: {new Date(updatedAt).toLocaleString('en-GB')}
                     </Typography>
                 </Grid>
+                ) : ('')}
+                { (lastModified && lastOnline) ? (
                 <Grid item key={7} xs={12} sm={6} md={3}>
                     <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
                         Timestamp
@@ -237,28 +237,28 @@ function CharacterPage(json) {
                         {new Date(lastOnline).toLocaleString('en-GB')}
                     </Typography>
                 </Grid>
+                ) : ('')}
                 { (media) ? (
-                    <Grid item key={8} xs={12} sm={6} md={3}>
-                        <Avatar variant="rounded" alt={_id} src={media.bust_url} className={classes.large} onClick={handleOpen}/>
-                        <Modal
-                            aria-labelledby="transition-modal-title"
-                            aria-describedby="transition-modal-description"
-                            className={classes.modal}
-                            open={open}
-                            onClose={handleClose}
-                            closeAfterTransition
-                            BackdropComponent={Backdrop}
-                            BackdropProps={{
-                                timeout: 500,
-                            }}
-                        >
-                        <Fade in={open}>
-                            <Avatar variant="rounded" alt={_id} src={media.render_url} className={classes.full}/>
-                        </Fade>
-                        </Modal>
-                    </Grid>
-                ) : ('')
-                }
+                <Grid item key={8} xs={12} sm={6} md={3}>
+                    <Avatar variant="rounded" alt={_id} src={media.bust_url} className={classes.large} onClick={handleOpen}/>
+                    <Modal
+                        aria-labelledby="transition-modal-title"
+                        aria-describedby="transition-modal-description"
+                        className={classes.modal}
+                        open={open}
+                        onClose={handleClose}
+                        closeAfterTransition
+                        BackdropComponent={Backdrop}
+                        BackdropProps={{
+                            timeout: 500,
+                        }}
+                    >
+                    <Fade in={open}>
+                        <Avatar variant="rounded" alt={_id} src={media.render_url} className={classes.full}/>
+                    </Fade>
+                    </Modal>
+                </Grid>
+                ) : ('')}
             </Grid>
             {/* End Cards */}
             { (logs && logs.length > 0) ? (
