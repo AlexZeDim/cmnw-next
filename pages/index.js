@@ -4,14 +4,13 @@ import Router from 'next/router'
 import Link from './../src/Link'
 import {
     Container, Grid,
-    MenuItem, Button,
-    TextField, makeStyles,
-    FormHelperText
+    MenuItem, TextField, makeStyles,
+    FormHelperText, Typography
 } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
     root: {
-        height: '100vh',
+        height: '93vh',
     },
     searchField: {
         margin: theme.spacing(6, 0, 6),
@@ -19,7 +18,6 @@ const useStyles = makeStyles(theme => ({
     searchbar: {
         marginRight: "auto",
         marginLeft: "auto",
-        marginTop: "20%"
     },
     search: {
         marginLeft: theme.spacing(1),
@@ -58,9 +56,20 @@ const commands = [
 
 function Index () {
     const classes = useStyles();
+    const greetings = [
+        'Viam supervadet vadens',
+        'Something from nothing',
+        'bb theunderminejournal',
+        'goodbye TUJ',
+        'you did nothing',
+        'RIP wowtoken',
+    ];
     return (
-        <Grid container component="main" className={classes.root}>
-            <Container className={classes.searchbar} maxWidth="lg">
+        <Grid container direction="column" justify="center" alignItems="center" className={classes.root}>
+            <Typography variant="h1" align="center" style={{textTransform: 'uppercase'}}>
+                {greetings[Math.floor(Math.random() * greetings.length)]}
+            </Typography>
+            <Container className={classes.searchbar} maxWidth="lg" alignContent="center">
                 <Formik
                     initialValues={{ command: 'item', arguments: ''}}
                     onSubmit={async (values, { setSubmitting }) => {
