@@ -37,11 +37,11 @@ export default function SignInSide() {
     return (
         <Grid container component="main" className={classes.root}>
             <Grid item xs={false} sm={5} md={5} className={classes.image} style={{backgroundImage: `url(https://render-eu.worldofwarcraft.com/character/gordunni/38/188747814-main.jpg)`}}/>
-            <Grid item xs={12} sm={7} md={7} component={Paper} elevation={6} square>
+            <Grid item xs={12} sm={7} md={7} elevation={6} square>
                 <div className={classes.paper} style={{alignItems: 'left'}}>
                     <Grid>
                         <Typography variant="h1" component="h2" gutterBottom>
-                            Initiative
+                            AlexZeDim
                         </Typography>
                         <Typography variant="body1" gutterBottom>
                             I started to play this game since WotLK release (ru_RU). My very first character was a druid on a god-forgotten realm like Ashenvale.
@@ -68,25 +68,22 @@ export default function SignInSide() {
                     </Grid>
                 </div>
             </Grid>
-            <Grid item xs={12} sm={7} md={7} component={Paper} elevation={6} square>
+            <Grid item xs={12} sm={7} md={7} elevation={6} square>
                 <div className={classes.paper} style={{alignItems: 'right'}}>
                     <Grid>
                         <Typography variant="h1" component="h2" gutterBottom>
                             Bluratella
                         </Typography>
                         <Typography variant="body1" gutterBottom>
-                            «Всё что вам надо знать о ней: она как я, только женщина»<br />
+                            «She is just like me, but a woman»<br />
                             <br />
-                            Playing World of Mountcraft since Cataclysm. Author of various algo patterns across many functions inside Conglomerat. Been here all along. Remembers OSINT as VOLUSPA...
+                            Been here since Cataclysm. Pet lover, long range mount collector. #Casual player. Buying WC3 Reforge Deluxe but not playing a single mission in it. Co-author of various algo-patterns across Conglomerat.
                         </Typography>
                         <Divider />
                         <List component="nav" aria-label="initiative">
                             <ListItemLink href="/character/gordunni/блюрателла">
                                 <ListItemText primary="Main Character: блюрателла@гордунни" />
                             </ListItemLink>
-                            <ListItem>
-                                <ListItemText primary="Someother" />
-                            </ListItem>
                         </List>
                     </Grid>
                 </div>
