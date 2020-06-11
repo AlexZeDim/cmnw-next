@@ -206,11 +206,11 @@ function GuildPage({
                                         render: rowData => new Date(rowData.lastModified).toLocaleString('en-GB')
                                     },
                                 ]}
-                                data={members.map(({_id, name, realm, guild, hash, lastModified}) => {
+                                data={members.map(({_id, name, realm, guild, rank, hash, lastModified}) => {
                                     let row = {
                                         _id: _id,
                                         url_id: `/character/${realm.name}/${name}`,
-                                        rank: `${guild.rank}`,
+                                        rank: `${rank}`,
                                         a: 0,
                                         url_a: ``,
                                         b: 0,
@@ -224,19 +224,19 @@ function GuildPage({
                                     if (hash) {
                                         if ("a" in hash) {
                                             row.a = hash.a;
-                                            row.url_a = `/find/${hash.a}`;
+                                            row.url_a = `/find/a/${hash.a}`;
                                         }
                                         if ("b" in hash) {
                                             row.b = hash.b;
-                                            row.url_b = `/find/${hash.b}`;
+                                            row.url_b = `/find/b/${hash.b}`;
                                         }
                                         if ("c" in hash) {
                                             row.c = hash.c;
-                                            row.url_c = `/find/${hash.c}`;
+                                            row.url_c = `/find/c/${hash.c}`;
                                         }
                                         if ("ex" in hash) {
                                             row.ex = hash.ex;
-                                            row.url_ex = `/find/${hash.ex}`;
+                                            row.url_ex = `/find/ex/${hash.ex}`;
                                         }
                                     }
                                     return row
