@@ -178,6 +178,7 @@ function GuildPage({
                                         title: 'Rank',
                                         field: 'rank',
                                         type: 'numeric',
+                                        defaultSort: 'asc',
                                         render: rowData => (parseInt(rowData.rank) === 0) ? ('GM') : (rowData.rank)
                                     },
                                     {
@@ -203,6 +204,10 @@ function GuildPage({
                                     {
                                         title: 'Last Modified',
                                         field: 'lastModified',
+                                        cellStyle: {
+                                            width: 300,
+                                            minWidth: 300
+                                        },
                                         render: rowData => new Date(rowData.lastModified).toLocaleString('en-GB')
                                     },
                                 ]}
@@ -241,11 +246,12 @@ function GuildPage({
                                     }
                                     return row
                                 })}
+                                style={{textTransform: "uppercase"}}
                                 options={{
                                     sorting: true,
                                     pageSize: 20,
                                     pageSizeOptions: [10,25,50],
-                                    showTitle: false,
+                                    showTitle: false
                                 }}
                             />
                         </Paper>
