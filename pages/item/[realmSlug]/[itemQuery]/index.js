@@ -321,7 +321,7 @@ const Item = ({item, realm, valuation, quotes, chart, contracts}) => {
             }]
         };
     }
-    const {_id, name, quality, item_class, item_subclass, ilvl, inventory_type, level, ticker, asset_class, v_class, sell_price, expansion} = item;
+    const {_id, name, quality, item_class, item_subclass, ilvl, inventory_type, level, ticker, v_class, sell_price} = item;
     const classes = useStyles();
 
     let defaultValuationTab = 0
@@ -344,7 +344,7 @@ const Item = ({item, realm, valuation, quotes, chart, contracts}) => {
                         <Box alignItems="center" display="flex" justifyContent="center">
                             <Avatar alt="Item Icon" variant="rounded" src={item.icon} className={classes.large} />
                             <Typography component="h1" variant="h2" color="textPrimary" className={classes.title}>
-                                {(ticker) ? (ticker) : (name["en_GB"])}
+                                {(ticker) ? (ticker) : (name["en_GB"])}@{(realm.ticker) ? (realm.ticker) : (ticker.name)}
                             </Typography>
                         </Box>
                     </Grid>
@@ -408,11 +408,13 @@ const Item = ({item, realm, valuation, quotes, chart, contracts}) => {
                         </Typography>
                         <Divider light />
                         <Typography variant="caption" display="block">
-                            {quality} // {level}
+                            {quality} {inventory_type}
                         </Typography>
-                        <Typography variant="caption" display="block">
-                            {ilvl} // {inventory_type}
-                        </Typography>
+                        {(ilvl && level) ? (
+                            <Typography variant="caption" display="block">
+                                {ilvl} {level}
+                            </Typography>
+                        ) : ("")}
                     </Grid>
                     <Grid item key={4} xs={12} sm={6} md={3}>
                         <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
