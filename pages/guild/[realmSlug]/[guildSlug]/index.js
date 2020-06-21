@@ -211,11 +211,11 @@ function GuildPage({
                                         render: rowData => new Date(rowData.lastModified).toLocaleString('en-GB')
                                     },
                                 ]}
-                                data={members.map(({_id, name, realm, guild, rank, hash, lastModified}) => {
+                                data={members.map(({_id, name, realm, guild, hash, lastModified}) => {
                                     let row = {
                                         _id: _id,
                                         url_id: `/character/${realm.name}/${name}`,
-                                        rank: `${rank}`,
+                                        rank: `${guild.rank}`,
                                         a: 0,
                                         url_a: ``,
                                         b: 0,
