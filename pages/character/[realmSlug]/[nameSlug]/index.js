@@ -125,8 +125,8 @@ function CharacterPage(json) {
                     <span className={classes.heroButtons}>
                         <Grid container spacing={2} justify="center">
                             <Grid item>
-                                <Button variant="contained" color="primary" onClick={() => Router.push(`/find/any/${_id}`)}>
-                                    Find any
+                                <Button variant="contained" color="primary" onClick={() => Router.push(`/find/all/${_id}`)}>
+                                    Find all
                                 </Button>
                             </Grid>
                             { (guild) ? (
