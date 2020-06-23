@@ -36,7 +36,7 @@ export default function SignInSide() {
     const classes = useStyles();
     return (
         <Grid container component="main" className={classes.root}>
-            <Grid item xs={false} sm={5} md={5} className={classes.image} style={{backgroundImage: `url(https://render-eu.worldofwarcraft.com/character/gordunni/38/188747814-main.jpg)`}}/>
+            <Grid item xs={false} sm={5} md={5} className={classes.image} style={{backgroundImage: `url(https://i.imgur.com/poOeOqP.jpg`}}/>
             <Grid item xs={12} sm={7} md={7} elevation={6} square>
                 <div className={classes.paper} style={{alignItems: 'left'}}>
                     <Grid>
@@ -88,7 +88,7 @@ export default function SignInSide() {
                     </Grid>
                 </div>
             </Grid>
-            <Grid item xs={false} sm={5} md={5} className={classes.image} style={{backgroundImage: `url(https://render-eu.worldofwarcraft.com/character/gordunni/117/188608885-main.jpg)`}} />
+            <Grid item xs={false} sm={5} md={5} className={classes.image} style={{backgroundImage: `url(https://i.imgur.com/75bI6Rr.jpg)`}} />
         </Grid>
     );
 }
