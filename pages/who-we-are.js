@@ -1,19 +1,12 @@
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
 import Link from "../src/Link";
-import { palette } from '@material-ui/system';
+import {
+    List, ListItem, ListItemText,
+    Divider, Typography, Grid,
+    makeStyles
+} from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
-    root: {
-
-    },
     image: {
         backgroundImage: 'url(https://source.unsplash.com/random)',
         backgroundRepeat: 'no-repeat',
@@ -35,7 +28,7 @@ const ListItemLink = props => <ListItem button component="a" {...props} />;
 export default function SignInSide() {
     const classes = useStyles();
     return (
-        <Grid container component="main" className={classes.root}>
+        <Grid container>
             <Grid item xs={false} sm={5} md={5} className={classes.image} style={{backgroundImage: `url(https://i.imgur.com/poOeOqP.jpg`}}/>
             <Grid item xs={12} sm={7} md={7} elevation={6} square>
                 <div className={classes.paper} style={{alignItems: 'left'}}>
