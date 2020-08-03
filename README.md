@@ -1,21 +1,15 @@
-# Next.js example
+# Conglomerat Group
 
-## How to use
+Welcome! This is a front-end repository of [conglomerat.group](https://conglomerat.group).
 
-Download the example [or clone the repo](https://github.com/mui-org/material-ui):
+## How to start
 
-```sh
-curl https://codeload.github.com/mui-org/material-ui/tar.gz/master | tar -xz --strip=2  material-ui-master/examples/nextjs
-cd nextjs
-```
+ 1. Set API in `.env` file.
+ 2. `npm run build`
+ 3. Deploy local with this [gist](https://github.com)
 
-Install it and run:
+## Build with:
 
-```sh
-npm install
-npm run dev
-```
-
-## The idea behind the example
-
-[Next.js](https://github.com/zeit/next.js) is a framework for server-rendered React apps.
+1. MongoDB
+2. Express
+3. [Next.js](https://github.com/zeit/next.js) is a framework for server-rendered React apps.
