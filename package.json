@@ -1,5 +1,5 @@
 {
-  "name": "nextjs",
+  "name": "conglomerat-front",
   "version": "4.0.0",
   "private": true,
   "dependencies": {
@@ -9,7 +9,6 @@
     "formik": "^2.1.4",
     "highcharts": "^7.2.1",
     "highcharts-react-official": "^2.2.2",
-    "isomorphic-unfetch": "^3.0.0",
     "material-table": "^1.58.2",
     "next": "^9.4.2",
     "next-compose-plugins": "^2.2.0",
