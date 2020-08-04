@@ -1,67 +1,35 @@
 import React from "react";
-import Router from 'next/router';
 import { makeStyles } from '@material-ui/core/styles';
+import OSINT_Logs from '../../../../src/OsintLogs'
+import CharacterProfile from '../../../../src/CharacterProfile'
+import Link from '../../../../src/Link'
 import {
-    Container, Grid, Divider,
-    Typography, Avatar, Button,
-    Table, TableBody, TableCell,
-    TableContainer, TableHead,
-    TableRow, Paper, Modal,
-    Backdrop, Fade
+    Grid, Divider, Typography,
 } from "@material-ui/core";
 
 
 const useStyles = makeStyles(theme => ({
-    icon: {
-        marginRight: theme.spacing(2),
+    root: {
+        height: '93vh',
     },
-    titleBlock: {
-        padding: theme.spacing(10, 0, 10),
-    },
-    heroButtons: {
-        marginTop: theme.spacing(4),
-    },
-    cardGrid: {
-        paddingTop: theme.spacing(8),
-        paddingBottom: theme.spacing(8),
-    },
-    card: {
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: 'inherit'
-    },
-    cardMedia: {
-        paddingTop: '56.25%', // 16:9
-    },
-    cardContent: {
-        flexGrow: 1,
-    },
-    cardTitle: {
-        fontSize: '1.1em',
-        fontWeight: 600
-    },
-    footer: {
-        backgroundColor: theme.palette.background.paper,
-        padding: theme.spacing(6),
-    },
-    table: {
-        minWidth: 650
-    },
-    guild_history: {
-        marginTop: theme.spacing(4),
-        maxHeight: 440,
-    },
-    modal: {
-        margin: theme.spacing(15, 60, 30),
-        alignItems: 'center',
-        justifyContent: 'center',
+    image: {
+        backgroundImage: 'url(https://source.unsplash.com/random)',
+        backgroundRepeat: 'no-repeat',
+        backgroundColor:
+            theme.palette.type === 'dark' ? theme.palette.grey[900] : theme.palette.grey[50],
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        height: '93vh',
     },
     paper: {
-        backgroundColor: theme.palette.background.paper,
-        border: '2px solid #000',
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3),
+        margin: theme.spacing(8, 4),
+        display: 'flex',
+        flexDirection: 'column'
+    },
+    hr: {
+        marginTop: theme.spacing(1),
+        marginRight: theme.spacing(2),
+        marginBottom: theme.spacing(2),
     },
     title: {
         fontFamily: 'Fira Sans',
@@ -69,233 +37,79 @@ const useStyles = makeStyles(theme => ({
         fontDisplay: 'swap',
         fontWeight: 400,
         textTransform: 'uppercase'
-    },
-    large: {
-        width: theme.spacing(36),
-        height: theme.spacing(14),
-    },
-    full: {
-        width: 'auto',
-        height: 'auto',
-    },
+    }
 }));
 
-function CharacterPage(json) {
-    const {
-        _id,
-        ilvl,
-        hash,
-        media,
-        logs,
-        id,
+function CharacterPage({character}) {
+
+    const [ info, logs ] = character;
+
+    let media,
         name,
-        gender,
-        faction,
-        race,
-        spec,
-        character_class,
         realm,
-        level,
-        lastOnline,
-        lastModified,
-        statusCode,
-        guild,
-        createdBy,
-        updatedBy,
-        createdAt,
-        updatedAt
-    } = json;
+        guild
+
+    if (info.value) {
+        ({
+            media,
+            name,
+            realm,
+            guild,
+        } = info.value);
+
+        if (media && media.render_url) {
+            /** If media true then return pic*/
+        }
+        /** Else - placeholder */
+    }
+
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => {
-        setOpen(true);
-    };
-    const handleClose = () => {
-        setOpen(false);
-    };
+
     return (
         <main>
-            {/* Hero unit */}
-            <div className={classes.titleBlock}>
-                <Container maxWidth="lg">
-                    <Typography component="h1" variant="h2" align="center" color="textPrimary" className={classes.title} gutterBottom>
-                        {_id}
-                    </Typography>
-                    { (statusCode === 200) ? (
-                    <span className={classes.heroButtons}>
-                        <Grid container spacing={2} justify="center">
-                            <Grid item>
-                                <Button variant="contained" color="primary" onClick={() => Router.push(`/find/all/${_id}`)}>
-                                    Find all
-                                </Button>
-                            </Grid>
-                            { (guild) ? (
-                                <Grid item>
-                                    <Button variant="contained" color="primary" onClick={() => Router.push(`/guild/${realm.name}/${guild.name}`)}>
-                                        Guild
-                                    </Button>
-                                </Grid>
-                            ) : ('')}
-                        </Grid>
-                    </span>
-                    ) : ('')
-                    }
-                </Container>
-            </div>
-            {/* End hero unit */}
-            <Container maxWidth="lg">
-            {/* Cards */}
-            <Grid container spacing={4}>
-                <Grid item key={1} xs={12} sm={6} md={3}>
-                    <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                        Summary
-                    </Typography>
-                    <Divider light />
-                    <Typography variant="caption" display="block">
-                        ID: {id}
-                    </Typography>
-                    <Typography variant="caption" display="block">
-                        LVL: {level}
-                    </Typography>
-                </Grid>
-                <Grid item key={2} xs={12} sm={6} md={3}>
-                    <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                        {faction}
-                    </Typography>
-                    <Divider light />
-                    <Typography variant="caption" display="block">
-                        {gender} {race}
-                    </Typography>
-                    <Typography variant="caption" display="block">
-                        {character_class} {spec}
-                    </Typography>
-                </Grid>
-                { (guild) ? (
-                <Grid item key={3} xs={12} sm={6} md={3}>
-                    <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                        Guild
-                    </Typography>
-                    <Divider light />
-                    <Typography variant="caption" display="block">
-                        {guild.name}
-                    </Typography>
-                    <Typography variant="caption" display="block">
-                        Rank { (guild.rank === 0) ? ('GM') : (guild.rank)}
-                    </Typography>
-                </Grid>
+            <Grid container className={classes.root}>
+                { (media && media.render_url) ? (
+                    <Grid key={0} item xs={12} sm={5} md={5} className={classes.image} style={{backgroundImage: `url(${media.render_url}`}}/>
                 ) : ('')}
-                { (ilvl) ? (
-                <Grid item key={4} xs={12} sm={6} md={3}>
-                    <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                        ilvl
-                    </Typography>
-                    <Divider light />
-                    {Object.keys(ilvl).map((key, index) => (
-                        <Typography key={index} variant="caption" display="block">
-                            {`${key[0]}: ${ilvl[key]}`}
-                        </Typography>
-                    ))}
-                </Grid>
-                ) : ('')}
-                { (hash) ? (
-                    <Grid item key={5} xs={12} sm={6} md={3}>
-                        <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                            Hash
-                        </Typography>
-                        <Divider light />
-                        {Object.keys(hash).map((key, index) => (
-                            <Typography variant="caption" display="block">
-                                {`${key}: ${hash[key]}`}
+                <Grid key={1} item xs={12} sm={7} md={7} elevation={6}>
+                    <div className={classes.paper} style={{alignItems: 'left'}}>
+                        <Grid>
+                            <Typography variant="h3" component="h3" color="textPrimary" className={classes.title}>
+                                {name}
                             </Typography>
-                        ))}
-                    </Grid>
-                ) : ('')}
-                { (createdAt && updatedAt) ? (
-                <Grid item key={6} xs={12} sm={6} md={3}>
-                    <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                        {updatedBy || 'OSINT-indexCharacters'}
-                    </Typography>
-                    <Divider light />
-                    <Typography variant="caption" display="block">
-                        C: {new Date(createdAt).toLocaleString('en-GB')}
-                    </Typography>
-                    <Typography variant="caption" display="block">
-                        U: {new Date(updatedAt).toLocaleString('en-GB')}
-                    </Typography>
+                            { (guild && realm.slug && guild.slug) ? (
+                                <Typography variant="h4" component="h4" color="textPrimary" className={classes.title}>
+                                    #<Link href={`/guild/${realm.slug}/${guild.slug}`} color="textPrimary" underline="hover">{guild.name}</Link> // R{guild.rank}
+                                </Typography>
+                            ) : ('')}
+                            <Typography variant="h4" component="h4" color="textPrimary" className={classes.title}>
+                                @{realm.name}
+                            </Typography>
+                        </Grid>
+                        <Divider light className={classes.hr}/>
+                        <CharacterProfile character={info.value}/>
+                    </div>
                 </Grid>
-                ) : ('')}
-                { (lastModified && lastOnline) ? (
-                <Grid item key={7} xs={12} sm={6} md={3}>
-                    <Typography gutterBottom variant="overline" display="block" component="h2" className={classes.cardTitle}>
-                        Timestamp
-                    </Typography>
-                    <Divider light />
-                    <Typography variant="caption" display="block">
-                        {new Date(lastModified).toLocaleString('en-GB')}
-                    </Typography>
-                    <Typography variant="caption" display="block">
-                        {new Date(lastOnline).toLocaleString('en-GB')}
-                    </Typography>
-                </Grid>
-                ) : ('')}
-                { (media) ? (
-                <Grid item key={8} xs={12} sm={6} md={3}>
-                    <Avatar variant="rounded" alt={_id} src={media.bust_url} className={classes.large} onClick={handleOpen}/>
-                    <Modal
-                        aria-labelledby="transition-modal-title"
-                        aria-describedby="transition-modal-description"
-                        className={classes.modal}
-                        open={open}
-                        onClose={handleClose}
-                        closeAfterTransition
-                        BackdropComponent={Backdrop}
-                        BackdropProps={{
-                            timeout: 500,
-                        }}
-                    >
-                    <Fade in={open}>
-                        <Avatar variant="rounded" alt={_id} src={media.render_url} className={classes.full}/>
-                    </Fade>
-                    </Modal>
-                </Grid>
-                ) : ('')}
             </Grid>
-            {/* End Cards */}
-            { (logs && logs.length > 0) ? (
-                <TableContainer className={classes.guild_history} component={Paper}>
-                    <Table className={classes.table} size="small" aria-label="a dense table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell align="center">Message</TableCell>
-                                <TableCell align="center">After</TableCell>
-                                <TableCell align="center">Before</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {logs.map(({message, after, before}) => (
-                                <TableRow key={message}>
-                                    <TableCell component="th" scope="row" align="center">
-                                        {message}
-                                    </TableCell>
-                                    <TableCell align="center">{new Date(after).toLocaleString('en-GB')}</TableCell>
-                                    <TableCell align="center">{new Date(before).toLocaleString('en-GB')}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            ) : ('')
-            }
-            </Container>
+            { (logs.value) ? (
+                <Grid container alignItems="center" justify="center">
+                    <Grid item xs={10} className={classes.paper}>
+                        <OSINT_Logs data={logs.value}/>
+                    </Grid>
+                </Grid>
+            ) : ('')}
         </main>
     )
 }
 
 export async function getServerSideProps({query}) {
-    const {realmSlug, nameSlug} = query;
-    const res = await fetch(encodeURI(`http://${process.env.api}/characters/${(nameSlug)}@${realmSlug}`));
-    const json = await res.json();
-    return { props: json }
+    const { realmSlug, nameSlug } = query;
+
+    const character = await Promise.allSettled([
+        fetch(encodeURI(`http://${process.env.api}/characters/character/${(nameSlug)}@${realmSlug}`)).then(res => res.json()),
+        fetch(encodeURI(`http://${process.env.api}/characters/character_logs/${(nameSlug)}@${realmSlug}`)).then(res => res.json())
+    ])
+    return { props: { character } }
 }
 
 export default CharacterPage
