@@ -1,4 +1,4 @@
-import React, { ForwardedRef } from 'react';
+import React, { ForwardedRef, PropsWithChildren } from 'react';
 import NextLink from 'next/link';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
@@ -70,4 +70,4 @@ Link.propTypes = {
   prefetch: PropTypes.bool,
 };
 
-export default React.forwardRef((props, ref: ForwardedRef<string>) => <Link {...props} innerRef={ref}/>);
+export default React.forwardRef((props:PropsWithChildren<any>, ref: ForwardedRef<string>) => <Link {...props} innerRef={ref}/>);
