@@ -6,7 +6,7 @@ import Link from '../../libs/components/Link';
 import MetaHead from '../../libs/components/MetaHead';
 import CharacterButtons from '../../libs/components/CharacterButtons';
 import CharacterProfile from '../../libs/components/CharacterProfile';
-import { characterResponce } from '../../libs/types/components';
+import { characterResponse } from '../../libs/types/components';
 import { domain } from '../../libs/constants/domains';
 
 const useStyles = makeStyles(theme => ({
@@ -97,7 +97,7 @@ const Character = ({ character }) => {
 export async function getServerSideProps({ query }) {
   const { id } = query;
   const res = await fetch(encodeURI(`${domain}/api/osint/character?_id=${id}`));
-  const character = await res.json() as characterResponce;
+  const character = await res.json() as characterResponse;
   if (!character) {
     return {
       notFound: true,

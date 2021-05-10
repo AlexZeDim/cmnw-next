@@ -4,7 +4,7 @@ import { characterPet } from './characterPet';
 import { characterProfession } from './characterProfession';
 import { characterRaidProgress } from './characterRaidProgress';
 
-export type characterResponce = {
+export type characterResponse = {
   _id: string,
   realm: string,
   name: string,

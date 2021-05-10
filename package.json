@@ -8,7 +8,8 @@
     "start": "next start"
   },
   "dependencies": {
-    "@material-ui/core": "latest",
+    "@material-ui/core": "^4.11.4",
+    "@material-ui/data-grid": "*",
     "@material-ui/icons": "^4.11.2",
     "clsx": "latest",
     "humanize-string": "^2.1.0",
