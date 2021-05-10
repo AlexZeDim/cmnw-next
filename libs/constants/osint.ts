@@ -11,4 +11,4 @@ export const OSINT = [
     value: 'hash',
     label: 'HASH',
   }
-]
+];

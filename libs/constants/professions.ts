@@ -47,4 +47,4 @@ export const PROFESSIONS = [
     value: 'vendor',
     label: 'Vendor',
   },
-]
+];

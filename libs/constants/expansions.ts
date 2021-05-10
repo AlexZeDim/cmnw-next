@@ -35,4 +35,4 @@ export const EXPANSIONS = [
     value: 'shdw',
     label: 'SHDW',
   },
-]
+];
