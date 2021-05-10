@@ -4,14 +4,10 @@ import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import clsx from 'clsx';
 import MuiLink from '@material-ui/core/Link';
+import { nextCompose } from '../../types/components';
 
-type Props = {
-  as: string,
-  href: string,
-  prefetch: boolean
-}
 
-const NextComposed: React.FC<Props> = React.forwardRef(function NextComposed(props, ref: ForwardedRef<HTMLAnchorElement>) {
+const NextComposed: React.FC<nextCompose> = React.forwardRef(function NextComposed(props, ref: ForwardedRef<HTMLAnchorElement>) {
   const { as, href, prefetch, ...other } = props;
 
   return (
