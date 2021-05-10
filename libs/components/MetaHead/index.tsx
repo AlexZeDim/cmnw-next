@@ -1,9 +1,9 @@
 import Head from 'next/head';
 import React from 'react';
 import { metaHead } from '../../types/components';
-import { domains } from '../../constants/domains';
+import { domain } from '../../constants/domains';
 
-const MetaHead: React.FC<metaHead> = ({ title, description, image }) => {
+const MetaHead: React.FC<metaHead> = ({ title, description, image, wowhead = false }) => {
   return (
     <Head>
       <title>{title}</title>
@@ -11,18 +11,18 @@ const MetaHead: React.FC<metaHead> = ({ title, description, image }) => {
       <meta name="description" content={description}/>
 
       <meta property="og:type" content="website"/>
-      <meta property="og:url" content={domains}/>
+      <meta property="og:url" content={domain}/>
       <meta property="og:title" content={title}/>
       <meta property="og:description" content={description}/>
       <meta property="og:image" content={image}/>
 
       <meta property="twitter:card" content="summary_large_image"/>
-      <meta property="og:url" content={domains}/>
+      <meta property="og:url" content={domain}/>
       <meta property="twitter:title" content={title}/>
       <meta property="twitter:description" content={description}/>
       <meta property="twitter:image" content={image}/>
 
-      <script type="text/javascript" src={"../power.js"}/>
+      {wowhead ? (<script type="text/javascript" src={'../power.js'}/>) : ('')}
     </Head>
   )
 }

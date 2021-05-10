@@ -5,7 +5,7 @@ import { Typography } from '@material-ui/core';
 import humanizeString from 'humanize-string'
 import Link from '../Link';
 
-const CharacterProfile: FC<characterProfile> = (character) => {
+const CharacterProfile: FC<characterProfile> = ({ character}) => {
   const fields: string[] = ['id', 'level', 'average_item_level', 'equipped_item_level', 'chosen_covenant', 'renown_level', 'faction', 'gender', 'race', 'character_class', 'active_spec', 'createdBy'];
   const fieldsWithLink: string[] = ['hash_a', 'hash_b'];
   const profile = pick(character, [...fields, ...fieldsWithLink]);

@@ -1,4 +1,4 @@
-export const domains: string = 'https://cmnw.me';
+export const domain: string = 'https://cmnw.me';
 
 export const warcraftlogs: string = 'https://www.warcraftlogs.com';
 

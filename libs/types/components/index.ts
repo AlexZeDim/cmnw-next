@@ -6,3 +6,4 @@ export * from './characterProfile';
 export * from './characterPet';
 export * from './characterMount';
 export * from './characterRaidProgress';
+export * from './characterResponce';
