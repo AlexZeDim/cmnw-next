@@ -4,7 +4,7 @@ import Head from 'next/head';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { theme } from '../libs/styles/theme';
-
+import Header from '../libs/components/Header';
 
 function MyApp({ Component, pageProps }) {
   React.useEffect(() => {
@@ -21,6 +21,7 @@ function MyApp({ Component, pageProps }) {
         <title>WoW Commonwealth</title>
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width"/>
       </Head>
+      <Header/>
       <CssBaseline />
       <Component {...pageProps} />
     </MuiThemeProvider>

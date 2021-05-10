@@ -1,7 +1,7 @@
-import { characterPortrait } from '../../libs/utils/characterPortrait';
 import { Container, Divider, Grid, makeStyles, Typography } from '@material-ui/core';
 import React from 'react';
 import { CHARACTER_PAGE } from '../../libs/constants/pages';
+import { characterPortrait } from '../../libs/utils/characterPortrait';
 import Link from '../../libs/components/Link';
 import MetaHead from '../../libs/components/MetaHead';
 import CharacterButtons from '../../libs/components/CharacterButtons';
@@ -10,15 +10,18 @@ import { characterResponce } from '../../libs/types/components';
 import { domain } from '../../libs/constants/domains';
 
 const useStyles = makeStyles(theme => ({
+  main: {
+    marginTop: '65px',
+  },
   root: {
-    height: '93vh',
+    minHeight: '93vh',
     padding: 0,
   },
   image: {
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    height: '93vh',
+    minHeight: '93vh',
   },
   paper: {
     margin: theme.spacing(8, 4),
@@ -54,11 +57,12 @@ const Character = ({ character }) => {
   const classes = useStyles();
 
   return (
-    <main>
+    <main className={classes.main}>
       <MetaHead
         title={`${name}@${realm}`}
         description={CHARACTER_PAGE.description}
         image={portrait}
+        wowhead={false}
       />
       <Container maxWidth={false} className={classes.root}>
         <Grid container>
