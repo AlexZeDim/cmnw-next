@@ -22,7 +22,7 @@ const MetaHead: React.FC<metaHead> = ({ title, description, image }) => {
       <meta property="twitter:description" content={description}/>
       <meta property="twitter:image" content={image}/>
 
-      <script type="text/javascript" src="../power.js"/>
+      <script type="text/javascript" src={"../power.js"}/>
     </Head>
   )
 }
