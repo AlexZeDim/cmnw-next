@@ -1,7 +1,8 @@
 import { Avatar, Grid, makeStyles } from '@material-ui/core';
 import { characterButtons } from '../../types/components';
 import React, { FC, Fragment } from 'react';
-import Link from '.'
+import Link from '../Link';
+import { battlenet, check_pvp, raiderio, warcraftlogs, wowprogress } from '../../constants/domains';
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -40,19 +41,19 @@ const CharacterButtons: FC<characterButtons> = ({ name, realm }) => {
         justify="flex-start"
         alignItems="center"
       >
-        <Link href={`https://www.warcraftlogs.com/character/eu/${realm}/${name}`} prefetch={false} name={name} realm={realm}>
+        <Link href={`${warcraftlogs}/character/eu/${realm}/${name}`} prefetch={false}>
           <Avatar variant="square" alt="WarcraftLogs" src="https://assets.rpglogs.com/img/warcraft/favicon.png?v=2" className={classes.large}/>
         </Link>
-        <Link href={`https://raider.io/characters/eu/${realm}/${name}`} prefetch={false} name={name} realm={realm}>
+        <Link href={`${raiderio}/characters/eu/${realm}/${name}`} prefetch={false}>
           <Avatar variant="square" alt="RaiderIO" src="https://cdnassets.raider.io/images/brand/Icon_FullColor.png" className={classes.large}/>
         </Link>
-        <Link href={`https://www.wowprogress.com/character/eu/${realm}/${name}`} prefetch={false} name={name} realm={realm}>
+        <Link href={`${wowprogress}/character/eu/${realm}/${name}`} prefetch={false}>
           <Avatar alt="WoWProgress" className={classes.wp}>WP</Avatar>
         </Link>
-        <Link href={`https://worldofwarcraft.com/en-gb/character/eu/${realm}/${name}`} prefetch={false} name={name} realm={realm}>
+        <Link href={`${battlenet}en-gb/character/eu/${realm}/${name}`} prefetch={false}>
           <Avatar alt="BattleNet" src="https://conglomerat.group/wow.svg" className={classes.v_large}/>
         </Link>
-        <Link href={`https://check-pvp.fr/eu/${realm}/${name}`} prefetch={false} name={name} realm={realm}>
+        <Link href={`${check_pvp}/eu/${realm}/${name}`} prefetch={false}>
           <Avatar alt="Check PvP" className={classes.pvp}>
             PvP
           </Avatar>
