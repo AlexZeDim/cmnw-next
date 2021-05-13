@@ -5,5 +5,10 @@ export const CHARACTER_PAGE = {
 
 export const HASH_PAGE = {
   basename: '/hash',
-  description: 'HASH — return all available hash matches for dynamic hash value. Don\'t bookmark this page!'
+  description: 'HASH — all available hash matches for dynamic hash value. Don\'t bookmark this page!'
+}
+
+export const GUILD_PAGE = {
+  basename: '/guild',
+  description: 'GUILD — all available information about selected guild, like members and OSINT logs.'
 }

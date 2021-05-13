@@ -8,3 +8,5 @@ export * from './characterMount';
 export * from './characterRaidProgress';
 export * from './characterResponse';
 export * from './characterTable';
+export * from './guildMember';
+export * from './guildResponse';
