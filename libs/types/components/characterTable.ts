@@ -1,6 +1,6 @@
 import { characterResponse } from './characterResponse';
 
 export type characterTable = {
-  characters: Partial<characterResponse>[],
+  characters: characterResponse[],
   roster: boolean,
 }
