@@ -6,8 +6,9 @@ import Link from '../../libs/components/Link';
 import MetaHead from '../../libs/components/MetaHead';
 import CharacterButtons from '../../libs/components/CharacterButtons';
 import CharacterProfile from '../../libs/components/CharacterProfile';
-import { characterResponse } from '../../libs/types/components';
+import { characterResponse, logResponse } from '../../libs/types/components';
 import { domain } from '../../libs/constants/domains';
+import { LogTable } from '../../libs/components/LogTable';
 
 const useStyles = makeStyles(theme => ({
   main: {
@@ -51,6 +52,7 @@ const Character = ({ character }) => {
     guild_id,
     guild_rank,
     faction,
+    logs,
   } = character;
 
   const portrait = characterPortrait(faction, main);
@@ -89,6 +91,11 @@ const Character = ({ character }) => {
             </div>
           </Grid>
         </Grid>
+        <Grid container alignItems="center" justify="center">
+          <Grid item xs={12} className={classes.paper}>
+            <LogTable logs={logs}/>
+          </Grid>
+        </Grid>
       </Container>
     </main>
   )
@@ -96,8 +103,13 @@ const Character = ({ character }) => {
 
 export async function getServerSideProps({ query }) {
   const { id } = query;
-  const res = await fetch(encodeURI(`${domain}/api/osint/character?_id=${id}`));
-  const character = await res.json() as characterResponse;
+  const [ c, l ] = await Promise.all([
+    fetch(encodeURI(`${domain}/api/osint/character?_id=${id}`)),
+    fetch(encodeURI(`${domain}/api/osint/character/logs?_id=${id}`))
+  ]);
+  const character = await c.json() as characterResponse;
+  const logs = await l.json() as logResponse[];
+  Object.assign(character, { logs });
   if (!character) {
     return {
       notFound: true,

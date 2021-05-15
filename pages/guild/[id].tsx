@@ -4,7 +4,8 @@ import MetaHead from '../../libs/components/MetaHead';
 import { GUILD_PAGE } from '../../libs/constants/pages';
 import { CharacterTable } from '../../libs/components/CharacterTable';
 import { domain } from '../../libs/constants/domains';
-import { guildResponse } from '../../libs/types/components';
+import { guildResponse, logResponse } from '../../libs/types/components';
+import { LogTable } from '../../libs/components/LogTable';
 
 const useStyles = makeStyles(theme => ({
   main: {
@@ -39,7 +40,8 @@ const Guild = ({ guild }) => {
     created_timestamp,
     achievement_points,
     member_count,
-  } = guild
+    logs,
+  } = guild;
 
   const classes = useStyles();
   return (
@@ -71,6 +73,7 @@ const Guild = ({ guild }) => {
       <Container maxWidth={false}>
         <CharacterTable characters={members} roster={true}/>
         <Divider className={classes.divider}/>
+        <LogTable logs={logs}/>
       </Container>
     </main>
   )
@@ -78,8 +81,13 @@ const Guild = ({ guild }) => {
 
 export async function getServerSideProps({ query }) {
   const { id } = query;
-  const res = await fetch(encodeURI(`${domain}/api/osint/guild?_id=${id}`));
-  const guild = await res.json() as guildResponse;
+  const [ g, l ] = await Promise.all([
+    fetch(encodeURI(`${domain}/api/osint/guild?_id=${id}`)),
+    fetch(encodeURI(`${domain}/api/osint/guild/logs?_id=${id}`))
+  ]);
+  const guild = await g.json() as guildResponse;
+  const logs = await l.json() as logResponse[];
+  Object.assign(guild, { logs });
   if (!guild) {
     return {
       notFound: true,
