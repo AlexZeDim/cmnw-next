@@ -1,4 +1,4 @@
-import { Container, Divider, Grid, makeStyles, Typography } from '@material-ui/core';
+import { Container, Divider, Grid, makeStyles, Paper, Typography } from '@material-ui/core';
 import React from 'react';
 import { CHARACTER_PAGE } from '../../libs/constants/pages';
 import { characterPortrait } from '../../libs/utils/characterPortrait';
@@ -9,20 +9,27 @@ import CharacterProfile from '../../libs/components/CharacterProfile';
 import { characterResponse, logResponse } from '../../libs/types/components';
 import { domain } from '../../libs/constants/domains';
 import { LogTable } from '../../libs/components/LogTable';
+import CharacterTitle from '../../libs/components/CharacterTitle';
 
 const useStyles = makeStyles(theme => ({
   main: {
     marginTop: '65px',
   },
   root: {
-    minHeight: '93vh',
+    minHeight: '90vh',
     padding: 0,
   },
+  portrait: {
+    marginRight: "auto",
+    marginLeft: "auto",
+  },
   image: {
+    margin: theme.spacing(4, 6),
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    minHeight: '93vh',
+    minHeight: '80vh',
+    borderRadius: 10,
   },
   paper: {
     margin: theme.spacing(8, 4),
@@ -34,13 +41,6 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(2),
     marginBottom: theme.spacing(2),
   },
-  title: {
-    fontFamily: 'Fira Sans',
-    fontStyle: 'normal',
-    fontDisplay: 'swap',
-    fontWeight: 400,
-    textTransform: 'uppercase'
-  }
 }));
 
 const Character = ({ character }) => {
@@ -68,27 +68,20 @@ const Character = ({ character }) => {
       />
       <Container maxWidth={false} className={classes.root}>
         <Grid container>
-          <Grid key={0} item xs={12} sm={5} md={5} className={classes.image} style={{backgroundImage: `url(${portrait}`}}/>
+          <Grid key={0} item xs={12} sm={5} md={5}>
+            <Grid item xs={12} sm={10} className={classes.portrait}>
+              <Paper elevation={6} className={classes.image} style={{backgroundImage: `url(${portrait}`}}/>
+            </Grid>
+          </Grid>
           <Grid key={1} item xs={12} sm={7} md={7}>
             <div className={classes.paper} style={{alignItems: 'left'}}>
               <Grid>
-                <Typography variant="h3" component="h3" color="textPrimary" className={classes.title}>
-                  {name}
-                </Typography>
-                {(guild && guild_id) ? (
-                  <Typography variant="h4" component="h4" color="textPrimary" className={classes.title}>
-                    #<Link href={`/guild/${guild_id}`} color="textPrimary" underline="hover">{guild}</Link>
-                    {(guild_rank && typeof guild_rank === 'number') ? ((guild_rank === 0) ? (` // GM`) : (` // R${guild_rank}`)) : ('')}
-                  </Typography>
-                ) : ('')}
-                <Typography variant="h4" component="h4" color="textPrimary" className={classes.title}>
-                  @{realm}
-                </Typography>
                 <CharacterButtons name={name} realm={realm}/>
               </Grid>
               <Divider light className={classes.hr}/>
               <CharacterProfile character={character}/>
             </div>
+            <CharacterTitle name={name} realm={realm} guild={guild} guild_id={guild_id} guild_rank={guild_rank}/>
           </Grid>
         </Grid>
         {(logs && logs.length) ? (

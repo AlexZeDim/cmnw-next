@@ -51,7 +51,7 @@ const CharacterButtons: FC<characterButtons> = ({ name, realm }) => {
           <Avatar alt="WoWProgress" className={classes.wp}>WP</Avatar>
         </Link>
         <Link href={`${battlenet}en-gb/character/eu/${realm}/${name}`} prefetch={false}>
-          <Avatar alt="BattleNet" src="https://conglomerat.group/wow.svg" className={classes.v_large}/>
+          <Avatar alt="BattleNet" src="./public/wow.svg" className={classes.v_large}/>
         </Link>
         <Link href={`${check_pvp}/eu/${realm}/${name}`} prefetch={false}>
           <Avatar alt="Check PvP" className={classes.pvp}>
