@@ -91,11 +91,13 @@ const Character = ({ character }) => {
             </div>
           </Grid>
         </Grid>
-        <Grid container alignItems="center" justify="center">
-          <Grid item xs={12} className={classes.paper}>
-            <LogTable logs={logs}/>
+        {(logs && logs.length) ? (
+          <Grid container alignItems="center" justify="center">
+            <Grid item xs={12} className={classes.paper}>
+              <LogTable logs={logs}/>
+            </Grid>
           </Grid>
-        </Grid>
+        ) : ('')}
       </Container>
     </main>
   )
