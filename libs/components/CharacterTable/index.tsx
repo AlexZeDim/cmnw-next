@@ -16,11 +16,11 @@ export const CharacterTable: FC<characterTable> = ({ characters, roster }) => {
     },
     {
       field: 'hash_a',
-      headerName: 'Hash A',
+      headerName: 'HashType A',
     },
     {
       field: 'hash_b',
-      headerName: 'Hash B',
+      headerName: 'HashType B',
     },
     {
       field: 'guild',

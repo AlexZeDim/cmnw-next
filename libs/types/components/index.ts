@@ -12,3 +12,4 @@ export * from './guildMember';
 export * from './guildResponse';
 export * from './logResponse';
 export * from './logTable';
+export * from './initialValuesSearch';

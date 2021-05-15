@@ -2,6 +2,7 @@ import MetaHead from '../libs/components/MetaHead';
 import { INDEX_PAGE } from '../libs/constants/pages';
 import { Container, makeStyles } from '@material-ui/core';
 import React from 'react';
+import { SearchForm } from '../libs/components/SearchForm';
 
 
 const useStyles = makeStyles(() => ({
@@ -17,7 +18,8 @@ const useStyles = makeStyles(() => ({
     height: '100vh',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    width: '100%'
   },
   item: {
     display: 'flex',
@@ -36,7 +38,7 @@ export default function Home() {
         wowhead={false}
       />
       <Container maxWidth={false} className={classes.root}>
-
+        <SearchForm/>
       </Container>
     </main>
   )
