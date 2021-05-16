@@ -1,67 +1,122 @@
-import React, { FC } from 'react';
-import {
-  DataGrid,
-} from '@material-ui/data-grid';
+import React, { FC, Fragment } from 'react';
+import MUIDataTable from "mui-datatables";
 import { characterTable } from '../../types/components';
 import Link from '../Link';
+import { makeStyles } from '@material-ui/core';
 
-export const CharacterTable: FC<characterTable> = ({ characters, roster }) => {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: 'auto',
+    height: 500,
+  },
+}));
+
+const options = {
+  download: false,
+  fixedSelectColumn: false,
+  selectableRows: 'none',
+}
+
+const CharacterTable: FC<characterTable> = ({ characters, roster }) => {
 
   const columns = [
     {
-      field: '_id',
-      headerName: 'Name',
-      width: 180,
-      renderCell: (params) => <Link href={`/character/${params.getValue('_id')}`} color="secondary" underline="hover">{params.getValue('_id')}</Link>
+      name: '_id',
+      label: 'Name',
+      options: {
+        filter: false,
+        customBodyRenderLite: (dataIndex) =>
+          <Link
+            href={`/character/${characters[dataIndex]._id}`}
+            color="secondary"
+            underline="hover"
+          >
+            {characters[dataIndex]._id.toUpperCase()}
+          </Link>
+      }
     },
     {
-      field: 'hash_a',
-      headerName: 'Hash A',
-      renderCell: (params) => <Link href={`/hash/a@${params.getValue('hash_a')}`} color="secondary" underline="hover">{params.getValue('hash_a')}</Link>
+      name: 'hash_a',
+      label: 'Hash A',
+      options: {
+        customBodyRenderLite: (dataIndex) =>
+          characters[dataIndex].hash_a ?
+          <Link
+            href={`/hash/a@${characters[dataIndex].hash_a}`}
+            color="secondary"
+            underline="hover"
+          >
+            {characters[dataIndex].hash_a.toUpperCase()}
+          </Link> : <></>
+      }
     },
     {
-      field: 'hash_b',
-      headerName: 'Hash B',
-      renderCell: (params) => <Link href={`/hash/b@${params.getValue('hash_b')}`} color="secondary" underline="hover">{params.getValue('hash_b')}</Link>
+      name: 'hash_b',
+      label: 'Hash B',
+      options: {
+        customBodyRenderLite: (dataIndex) =>
+          characters[dataIndex].hash_b ?
+            <Link
+              href={`/hash/b@${characters[dataIndex].hash_b}`}
+              color="secondary"
+              underline="hover"
+            >
+              {characters[dataIndex].hash_b.toUpperCase()}
+            </Link> : <></>
+      }
     },
     {
-      field: 'guild',
-      headerName: 'Guild',
-      renderCell: (params) => <Link href={`/guild/${params.getValue('guild_id')}`} color="secondary" underline="hover">{params.getValue('guild')}</Link>
+      name: 'guild',
+      label: 'Guild',
+      options: {
+        display: roster ? 'excluded' : true,
+        customBodyRenderLite: (dataIndex) =>
+          characters[dataIndex].guild_id ?
+            <Link
+              href={`/guild/@${characters[dataIndex].guild_id}`}
+              color="secondary"
+              underline="hover"
+            >
+              {characters[dataIndex].guild}
+            </Link> : <></>
+      }
     },
     {
-      field: roster ? 'rank' : 'guild_rank',
-      headerName: 'Rank',
+      name: roster ? 'rank' : 'guild_rank',
+      label: 'Rank',
       type: 'number',
     },
     {
-      field: 'average_item_level',
-      headerName: 'Item Level',
+      name: 'average_item_level',
+      label: 'Item Level',
       type: 'number',
     },
-    { headerName: 'Class', field: 'character_class' },
-    { headerName: 'Specialization', field: 'active_spec' },
-    { headerName: 'Achievement Points', field: 'achievement_points', type: 'number' },
-    { headerName: 'Level', field: 'level', type: 'number' },
-    { headerName: 'Faction', field: 'faction' },
-    { headerName: 'Race', field: 'race' },
-    { headerName: 'Gender', field: 'gender' },
-    { headerName: 'Covenant', field: 'chosen_covenant' },
-    { headerName: 'Renown', field: 'renown_level' },
+    { label: 'Class', name: 'character_class' },
+    { label: 'Specialization', name: 'active_spec' },
+    { label: 'Achievement Points', name: 'achievement_points', type: 'number', options: { filter: false, display: roster ? true : false, } },
+    { label: 'Level', name: 'level', type: 'number' },
+    { label: 'Faction', name: 'faction', options: { display: roster ? 'excluded' : true, }},
+    { label: 'Race', name: 'race' },
+    { label: 'Gender', name: 'gender' },
+    { label: 'Covenant', name: 'chosen_covenant' },
+    { label: 'Renown', name: 'renown_level' },
     {
-      field: 'last_modified',
-      headerName: 'Last Modified',
-      width: 180,
+      name: 'last_modified',
+      label: 'Last Modified',
       type: 'date',
+      options: { filter: false }
     },
   ];
 
   return (
-    <div style={{ height: 400, width: '100%' }}>
-      <DataGrid
-        rows={characters}
+    <Fragment>
+      <MUIDataTable
+        data={characters}
         columns={columns}
+        options={options}
       />
-    </div>
-  );
+    </Fragment>
+  )
 }
+
+export default CharacterTable;

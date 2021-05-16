@@ -26,19 +26,4 @@ export const theme = createMuiTheme({
       textTransform: 'uppercase'
     }
   },
-  overrides: {
-    MuiTableHead: {
-      root: {
-        textTransform: 'uppercase'
-      },
-    },
-    MuiCssBaseline: {
-      "@global": {
-        body: {
-          backgroundImage: `url(/bg${randomInt(0,5)}.png)`,
-          backgroundSize: 'cover'
-        }
-      }
-    }
-  },
 });

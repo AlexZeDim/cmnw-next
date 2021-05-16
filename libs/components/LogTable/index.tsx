@@ -1,46 +1,51 @@
 import React, { FC } from 'react';
-import { DataGrid } from '@material-ui/data-grid';
+import MUIDataTable from "mui-datatables";
 import { logTable } from '../../types/components';
 
 const columns = [
   {
-    field: 'event',
-    headerName: 'Event',
-    width: 180,
+    name: 'event',
+    label: 'Event',
   },
   {
-    field: 'action',
-    headerName: 'Action',
+    name: 'action',
+    label: 'Action',
   },
   {
-    field: 'original',
-    headerName: 'Original',
+    name: 'original',
+    label: 'Original',
   },
   {
-    field: 'updated',
-    headerName: 'Updated',
+    name: 'updated',
+    label: 'Updated',
   },
   {
-    field: 't0',
-    headerName: 'After',
+    name: 't0',
+    label: 'After',
     type: 'date',
   },
   {
-    field: 't1',
-    headerName: 'Before',
+    name: 't1',
+    label: 'Before',
     type: 'date',
   }
 ];
+
+const options = {
+  download: false,
+  fixedSelectColumn: false,
+  selectableRows: 'none',
+}
+
 
 export const LogTable: FC<logTable> = ({ logs }) => {
   if (!logs || logs.length === 0) return (<div/>);
   const data = logs.map(l => Object.assign(l, { id: l._id }));
   return (
-    <div style={{ height: 400, width: '100%' }}>
-      <DataGrid
-        rows={data}
-        columns={columns}
-      />
-    </div>
+    <MUIDataTable
+      data={data}
+      columns={columns}
+      options={options}
+    />
   )
 };

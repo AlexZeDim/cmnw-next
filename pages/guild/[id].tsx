@@ -1,12 +1,12 @@
 import React from 'react';
-import { Container, Divider, Grid, makeStyles, Typography } from '@material-ui/core';
+import { Container, Divider, makeStyles } from '@material-ui/core';
 import MetaHead from '../../libs/components/MetaHead';
 import { GUILD_PAGE } from '../../libs/constants/pages';
-import { CharacterTable } from '../../libs/components/CharacterTable';
 import { domain } from '../../libs/constants/domains';
 import { guildResponse, logResponse } from '../../libs/types/components';
 import { LogTable } from '../../libs/components/LogTable';
 import GuildTitle from '../../libs/components/GuildTitle';
+import CharacterTable from '../../libs/components/CharacterTable';
 
 const useStyles = makeStyles(theme => ({
   main: {

@@ -1,11 +1,11 @@
 import React from 'react';
 import MetaHead from '../../libs/components/MetaHead';
-import { Container, makeStyles, Typography } from '@material-ui/core';
-import { CharacterTable } from '../../libs/components/CharacterTable';
+import { Container, makeStyles } from '@material-ui/core';
 import { domain } from '../../libs/constants/domains';
 import { characterResponse } from '../../libs/types/components';
 import { HASH_PAGE } from '../../libs/constants/pages';
 import HashTitle from '../../libs/components/HashTitle';
+import CharacterTable from '../../libs/components/CharacterTable';
 
 const useStyles = makeStyles(theme => ({
   main: {
