@@ -65,7 +65,7 @@ const CharacterTable: FC<characterTable> = ({ characters, roster }) => {
         customBodyRenderLite: (dataIndex) =>
           characters[dataIndex].guild_id ?
             <Link
-              href={`/guild/@${characters[dataIndex].guild_id}`}
+              href={`/guild/${characters[dataIndex].guild_id}`}
               color="secondary"
               underline="hover"
             >

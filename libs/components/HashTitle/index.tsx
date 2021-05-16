@@ -1,6 +1,7 @@
 import React, { FC, Fragment, useState } from 'react';
 import { hashTitle } from '../../types/components/hashTitle';
 import { Divider, makeStyles, Popover, Typography } from '@material-ui/core';
+import { generateFactionBackground } from '../../utils/generateFactionBackground';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,9 +62,10 @@ const HashTitle: FC<hashTitle> = ({ id }) => {
   const pid = open ? 'text-buffer' : undefined;
 
   const classes = useStyles();
+  const background = generateFactionBackground();
   return (
     <Fragment>
-      <div className={classes.root}>
+      <div className={classes.root} style={background}>
         <Typography
           onClick={(e) => handleClick(id, e)}
           onMouseLeave={handlePopoverClose}

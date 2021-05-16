@@ -40,7 +40,7 @@ const GuildTitle: FC<guildTitle> = ({ name, realm, member_count, created_timesta
   const background = generateFactionBackground(faction);
   return (
     <Fragment>
-      <div className={classes.root}  style={background}>
+      <div className={classes.root} style={background}>
         <Typography variant="h3" component="h3" color="textPrimary" className={classes.name}>
           #{name}
         </Typography>
@@ -49,10 +49,7 @@ const GuildTitle: FC<guildTitle> = ({ name, realm, member_count, created_timesta
           @{realm}
         </Typography>
         <Typography variant="overline">
-          Created: {new Date(created_timestamp).toLocaleString('en-GB')}
-        </Typography>
-        <Typography variant="overline">
-          Members: {member_count} Achievements: {achievement_points}
+          Created: {new Date(created_timestamp).toLocaleString('en-GB')} Members: {member_count} Achievements: {achievement_points}
         </Typography>
       </div>
     </Fragment>
