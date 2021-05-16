@@ -2,13 +2,12 @@ import React, { FC, Fragment } from 'react';
 import { characterTitle } from '../../types/components';
 import Link from '../Link';
 import { makeStyles, Typography } from '@material-ui/core';
+import { generateFactionBackground } from '../../utils/generateFactionBackground';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     margin: theme.spacing(2),
     padding: theme.spacing(2, 8),
-    backgroundImage:`url(https://i.imgur.com/o5eTd5L.png)`, // FIXME
-    backgroundSize: 'cover',
     borderRadius: 35,
   },
   name: {
@@ -34,11 +33,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CharacterTitle: FC<characterTitle> = ({ name, realm, guild, guild_id, guild_rank }) => {
+const CharacterTitle: FC<characterTitle> = ({ name, realm, guild, guild_id, guild_rank, faction }) => {
   const classes = useStyles();
+  const background = generateFactionBackground(faction);
   return (
     <Fragment>
-      <div className={classes.root}>
+      <div className={classes.root} style={background}>
         <Typography variant="h4" component="h4" color="textPrimary" className={classes.realm}>
           @{realm}
         </Typography>

@@ -1,5 +1,4 @@
 import { createMuiTheme } from '@material-ui/core/styles';
-import { randomInt } from '../utils/randomInt';
 
 export const theme = createMuiTheme({
   palette: {
@@ -18,6 +17,9 @@ export const theme = createMuiTheme({
     },
     warning: {
       main: '#c1aa82',
+    },
+    background: {
+      default: "#f5f5f5"
     },
   },
   typography: {

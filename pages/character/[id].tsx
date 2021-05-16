@@ -1,8 +1,7 @@
-import { Container, Divider, Grid, makeStyles, Paper, Typography } from '@material-ui/core';
+import { Container, Divider, Grid, makeStyles, Paper } from '@material-ui/core';
 import React from 'react';
 import { CHARACTER_PAGE } from '../../libs/constants/pages';
 import { characterPortrait } from '../../libs/utils/characterPortrait';
-import Link from '../../libs/components/Link';
 import MetaHead from '../../libs/components/MetaHead';
 import CharacterButtons from '../../libs/components/CharacterButtons';
 import CharacterProfile from '../../libs/components/CharacterProfile';
@@ -81,7 +80,7 @@ const Character = ({ character }) => {
               <Divider light className={classes.hr}/>
               <CharacterProfile character={character}/>
             </div>
-            <CharacterTitle name={name} realm={realm} guild={guild} guild_id={guild_id} guild_rank={guild_rank}/>
+            <CharacterTitle name={name} realm={realm} guild={guild} guild_id={guild_id} guild_rank={guild_rank} faction={faction}/>
           </Grid>
         </Grid>
         {(logs && logs.length) ? (

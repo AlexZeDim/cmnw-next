@@ -2,14 +2,6 @@ import React, { FC, Fragment } from 'react';
 import MUIDataTable from "mui-datatables";
 import { characterTable } from '../../types/components';
 import Link from '../Link';
-import { makeStyles } from '@material-ui/core';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: 'auto',
-    height: 500,
-  },
-}));
 
 const options = {
   download: false,
@@ -93,7 +85,7 @@ const CharacterTable: FC<characterTable> = ({ characters, roster }) => {
     },
     { label: 'Class', name: 'character_class' },
     { label: 'Specialization', name: 'active_spec' },
-    { label: 'Achievement Points', name: 'achievement_points', type: 'number', options: { filter: false, display: roster ? true : false, } },
+    { label: 'Achievement Points', name: 'achievement_points', type: 'number', options: { filter: false, display: roster, } },
     { label: 'Level', name: 'level', type: 'number' },
     { label: 'Faction', name: 'faction', options: { display: roster ? 'excluded' : true, }},
     { label: 'Race', name: 'race' },

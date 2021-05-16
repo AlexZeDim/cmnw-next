@@ -1,3 +1,4 @@
+import { Faction } from '../enums';
 
 export type characterTitle = {
   name: string,
@@ -5,4 +6,5 @@ export type characterTitle = {
   guild?: string,
   guild_id?: string,
   guild_rank?: number,
+  faction?: Faction,
 }
