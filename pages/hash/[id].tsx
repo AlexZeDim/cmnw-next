@@ -5,24 +5,12 @@ import { CharacterTable } from '../../libs/components/CharacterTable';
 import { domain } from '../../libs/constants/domains';
 import { characterResponse } from '../../libs/types/components';
 import { HASH_PAGE } from '../../libs/constants/pages';
+import HashTitle from '../../libs/components/HashTitle';
 
 const useStyles = makeStyles(theme => ({
   main: {
-    marginTop: '65px',
-  },
-  divider: {
-    margin: `${theme.spacing(2)}px auto`,
-  },
-  titleBlock: {
-    padding: theme.spacing(10, 0, 5),
-  },
-  title: {
-    fontFamily: 'Fira Sans',
-    fontStyle: 'normal',
-    fontDisplay: 'swap',
-    fontWeight: 400,
-    textTransform: 'uppercase'
-  },
+    marginTop: '85px',
+  }
 }));
 
 const Hash = ({ hash, id }) => {
@@ -34,13 +22,9 @@ const Hash = ({ hash, id }) => {
         description={HASH_PAGE.description}
         wowhead={false}
       />
-      <div className={classes.titleBlock}>
-        <Container maxWidth="lg">
-          <Typography component="h1" variant="h2" align="center" color="secondary" className={classes.title} gutterBottom>
-            {id}
-          </Typography>
-        </Container>
-      </div>
+      <Container maxWidth={false}>
+        <HashTitle id={id}/>
+      </Container>
       <Container maxWidth={false}>
         <CharacterTable characters={hash} roster={false}/>
       </Container>
