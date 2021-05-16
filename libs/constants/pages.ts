@@ -22,3 +22,8 @@ export const WHO_WE_ARE = {
   basename: './who-we-are',
   description: 'World of Warcraft: Intelligence always wins.',
 }
+
+export const DISCORD = {
+  basename: './discord',
+  description: 'World of Warcraft: Intelligence always wins.',
+}

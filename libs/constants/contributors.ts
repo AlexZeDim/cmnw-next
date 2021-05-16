@@ -29,7 +29,7 @@ export const CONTRIBUTORS = [
     value: 6,
     name: "Саске",
     discord: 'Sasuke#7918',
-    character: "саске@gordunni"
+    character: "Sasukegodx@twisting-nether"
   },
   {
     value: 7,

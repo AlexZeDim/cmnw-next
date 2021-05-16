@@ -7,7 +7,7 @@ import ContributionStar from '../libs/components/ContributionStar';
 
 const useStyles = makeStyles(theme => ({
   main: {
-    marginTop: '85px',
+    marginTop: '65px',
   },
   memory: {
     margin: theme.spacing(4),
