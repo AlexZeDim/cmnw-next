@@ -9,26 +9,7 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(6),
     height: theme.spacing(6),
     marginRight: theme.spacing(2)
-  },
-  wp: {
-    width: theme.spacing(6),
-    height: theme.spacing(6),
-    marginRight: theme.spacing(1),
-    color: '#fff',
-    backgroundColor: '#313131',
-  },
-  v_large: {
-    width: theme.spacing(8),
-    height: theme.spacing(8),
-    marginRight: theme.spacing(1),
-  },
-  pvp: {
-    width: theme.spacing(6),
-    height: theme.spacing(6),
-    marginRight: theme.spacing(1),
-    color: '#80c7f6',
-    backgroundColor: '#8a0d0d',
-  },
+  }
 }));
 
 const CharacterButtons: FC<characterButtons> = ({ name, realm }) => {
@@ -42,21 +23,19 @@ const CharacterButtons: FC<characterButtons> = ({ name, realm }) => {
         alignItems="center"
       >
         <Link href={`${warcraftlogs}/character/eu/${realm}/${name}`} prefetch={false}>
-          <Avatar variant="square" alt="WarcraftLogs" src="https://assets.rpglogs.com/img/warcraft/favicon.png?v=2" className={classes.large}/>
+          <Avatar variant="square" alt="WarcraftLogs" src={'./wcl.png'} className={classes.large}/>
         </Link>
         <Link href={`${raiderio}/characters/eu/${realm}/${name}`} prefetch={false}>
-          <Avatar variant="square" alt="RaiderIO" src="https://cdnassets.raider.io/images/brand/Icon_FullColor.png" className={classes.large}/>
+          <Avatar variant="square" alt="RaiderIO" src={'./rio.png'} className={classes.large}/>
         </Link>
         <Link href={`${wowprogress}/character/eu/${realm}/${name}`} prefetch={false}>
-          <Avatar alt="WoWProgress" className={classes.wp}>WP</Avatar>
+          <Avatar alt="WoWProgress" src={'./wp.png'} className={classes.large} />
         </Link>
         <Link href={`${battlenet}en-gb/character/eu/${realm}/${name}`} prefetch={false}>
-          <Avatar alt="BattleNet" src="./public/wow.svg" className={classes.v_large}/>
+          <Avatar alt="BattleNet" src={'./wow.png'} className={classes.large}/>
         </Link>
         <Link href={`${check_pvp}/eu/${realm}/${name}`} prefetch={false}>
-          <Avatar alt="Check PvP" className={classes.pvp}>
-            PvP
-          </Avatar>
+          <Avatar alt="Check PvP" src={'./pvp.png'} className={classes.large} />
         </Link>
       </Grid>
     </Fragment>
