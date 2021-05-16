@@ -16,11 +16,13 @@ export const CharacterTable: FC<characterTable> = ({ characters, roster }) => {
     },
     {
       field: 'hash_a',
-      headerName: 'HashType A',
+      headerName: 'Hash A',
+      renderCell: (params) => <Link href={`/hash/a@${params.getValue('hash_a')}`} color="secondary" underline="hover">{params.getValue('hash_a')}</Link>
     },
     {
       field: 'hash_b',
-      headerName: 'HashType B',
+      headerName: 'Hash B',
+      renderCell: (params) => <Link href={`/hash/b@${params.getValue('hash_b')}`} color="secondary" underline="hover">{params.getValue('hash_b')}</Link>
     },
     {
       field: 'guild',

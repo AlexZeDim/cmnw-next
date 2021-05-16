@@ -10,7 +10,7 @@ import GuildTitle from '../../libs/components/GuildTitle';
 
 const useStyles = makeStyles(theme => ({
   main: {
-    marginTop: '65px',
+    marginTop: '85px',
   },
   paper: {
     marginTop: theme.spacing(2),

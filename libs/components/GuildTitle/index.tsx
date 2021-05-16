@@ -1,6 +1,6 @@
 import React, { FC, Fragment } from 'react';
 import { guildTitle } from '../../types/components';
-import { makeStyles, Typography } from '@material-ui/core';
+import { Divider, makeStyles, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,8 +14,11 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: 'Fira Sans',
     fontWeight: 900,
     textTransform: 'uppercase',
-    fontSize: '10em',
+    fontSize: '6em',
     textAlign: 'left',
+  },
+  divider: {
+    background: theme.palette.primary.main
   },
   realm: {
     fontFamily: 'Fira Sans',
@@ -41,6 +44,7 @@ const GuildTitle: FC<guildTitle> = ({ name, realm, member_count, created_timesta
         <Typography variant="h3" component="h3" color="textPrimary" className={classes.name}>
           #{name}
         </Typography>
+        <Divider className={classes.divider}/>
         <Typography variant="h4" component="h4" color="textPrimary" className={classes.realm}>
           @{realm}
         </Typography>
