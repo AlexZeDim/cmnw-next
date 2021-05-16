@@ -12,7 +12,7 @@ import { REALMS } from '../../constants/realms';
 import { HASH } from '../../constants/hash';
 import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
 import { initialValuesSearch } from '../../types/components';
-import { HashType } from '../../types/enums';
+import { Commands, HashType } from '../../types/enums';
 import { submitSearchForm } from '../../utils/submitSearchForm';
 
 const useStyles = makeStyles(() => ({
@@ -92,7 +92,7 @@ export const SearchForm: FC = () => {
                 </Field>
               </div>
             </Grid>
-            {values.command === "character" && (
+            {values.command === Commands.characters && (
               <React.Fragment>
                 <Grid item xs={12} md={3}>
                   <div className={classes.item}>
@@ -128,7 +128,7 @@ export const SearchForm: FC = () => {
                 </Grid>
               </React.Fragment>
             )}
-            {values.command === "guild" && (
+            {values.command === Commands.guilds && (
               <React.Fragment>
                 <Grid item xs={12} md={3}>
                   <div className={classes.item}>
@@ -164,7 +164,7 @@ export const SearchForm: FC = () => {
                 </Grid>
               </React.Fragment>
             )}
-            {values.command === "hash" && (
+            {values.command === Commands.hash && (
               <React.Fragment>
                 <Grid item xs={12} md={3}>
                   <div className={classes.item}>

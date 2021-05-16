@@ -6,6 +6,7 @@ import { CharacterTable } from '../../libs/components/CharacterTable';
 import { domain } from '../../libs/constants/domains';
 import { guildResponse, logResponse } from '../../libs/types/components';
 import { LogTable } from '../../libs/components/LogTable';
+import GuildTitle from '../../libs/components/GuildTitle';
 
 const useStyles = makeStyles(theme => ({
   main: {
@@ -37,6 +38,7 @@ const Guild = ({ guild }) => {
     name,
     realm,
     members,
+    faction,
     created_timestamp,
     achievement_points,
     member_count,
@@ -52,22 +54,14 @@ const Guild = ({ guild }) => {
         wowhead={false}
       />
       <Container maxWidth={false}>
-        <div className={classes.paper}>
-          <Grid container direction="column" justify="center" alignItems="center">
-            <Typography variant="h3" component="h3" color="textPrimary" className={classes.title}>
-              #{name}
-            </Typography>
-            <Typography variant="h4" component="h4" color="textPrimary" className={classes.title}>
-              @{realm}
-            </Typography>
-            <Typography variant="overline">
-              Created: {new Date(created_timestamp).toLocaleString('en-GB')}
-            </Typography>
-            <Typography variant="overline">
-              Members: {member_count} Achievements: {achievement_points}
-            </Typography>
-          </Grid>
-        </div>
+        <GuildTitle
+          name={name}
+          realm={realm}
+          member_count={member_count}
+          created_timestamp={created_timestamp}
+          achievement_points={achievement_points}
+          faction={faction}
+        />
       </Container>
       <Divider className={classes.divider}/>
       <Container maxWidth={false}>
