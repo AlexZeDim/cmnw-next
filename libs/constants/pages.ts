@@ -15,5 +15,10 @@ export const GUILD_PAGE = {
 
 export const INDEX_PAGE = {
   basename: './',
-  description: 'World of Warcraft: Intellegence always wins.',
+  description: 'World of Warcraft: Intelligence always wins.',
+}
+
+export const WHO_WE_ARE = {
+  basename: './who-we-are',
+  description: 'World of Warcraft: Intelligence always wins.',
 }

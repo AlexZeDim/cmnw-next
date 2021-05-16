@@ -15,3 +15,4 @@ export * from './logTable';
 export * from './initialValuesSearch';
 export * from './characterTitle';
 export * from './guildTitle';
+export * from './contributionStar';

@@ -7,8 +7,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     margin: theme.spacing(10),
     padding: theme.spacing(6, 8),
-    backgroundImage:`url(https://i.imgur.com/o5eTd5L.png)`, // FIXME
-    backgroundSize: 'cover',
     borderRadius: 35,
   },
   hash: {
