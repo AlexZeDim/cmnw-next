@@ -31,7 +31,7 @@ const CharacterButtons: FC<characterButtons> = ({ name, realm }) => {
         <Link href={`${wowprogress}/character/eu/${realm}/${name}`} prefetch={false}>
           <Avatar alt="WoWProgress" src={'https://i.imgur.com/zqecypv.png'} className={classes.large} />
         </Link>
-        <Link href={`${battlenet}en-gb/character/eu/${realm}/${name}`} prefetch={false}>
+        <Link href={`${battlenet}/en-gb/character/eu/${realm}/${name}`} prefetch={false}>
           <Avatar alt="BattleNet" src={'https://i.imgur.com/AuXAi2j.png'} className={classes.large}/>
         </Link>
         <Link href={`${check_pvp}/eu/${realm}/${name}`} prefetch={false}>
