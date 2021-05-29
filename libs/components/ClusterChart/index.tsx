@@ -6,6 +6,8 @@ import HC_heatmap from 'highcharts/modules/heatmap';
 import { clusterChart } from '../../types/components/clusterChart';
 import { chartResponse } from '../../types/components/chartResponse';
 
+console.log(typeof Highcharts);
+
 if (typeof Highcharts === 'object') {
   HC_heatmap(Highcharts);
   HighchartsExporting(Highcharts)

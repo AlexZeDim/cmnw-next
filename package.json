@@ -16,6 +16,8 @@
     "formik": "^2.2.6",
     "formik-material-ui": "^3.0.1",
     "formik-material-ui-lab": "^0.0.8",
+    "highcharts": "^9.1.0",
+    "highcharts-react-official": "^3.0.0",
     "humanize-string": "^2.1.0",
     "lodash": "^4.17.21",
     "mui-datatables": "^3.7.7",

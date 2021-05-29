@@ -4,6 +4,7 @@ import React from 'react';
 import MetaHead from '../../libs/components/MetaHead';
 import { generateItemTitle } from '../../libs/utils/generateItemTitle';
 import ItemTitle from '../../libs/components/ItemTitle';
+import ClusterChart from '../../libs/components/ClusterChart';
 
 const useStyles = makeStyles(theme => ({
   main: {
@@ -14,8 +15,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Item = ({ item, realm }) => {
+const Item = ({ id, item, realm }) => {
   const {
+    _id,
     quality,
     asset_class
   } = item;
@@ -39,6 +41,7 @@ const Item = ({ item, realm }) => {
         />
       </Container>
       <Divider className={classes.divider}/>
+      <ClusterChart _id={id}/>
     </main>
   )
 }
@@ -53,7 +56,7 @@ export async function getServerSideProps({ query }) {
     }
   }
   return {
-    props: { item, realm },
+    props: { id, item, realm },
   }
 }
 
