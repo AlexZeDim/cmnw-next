@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "docker:build": "docker build -t cmnw ."
+    "docker:build": "docker build -t cmnw .",
+    "docker:run": "docker run -d -p 3000:3000 cmnw"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.4",
