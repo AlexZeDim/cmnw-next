@@ -1,10 +1,11 @@
 import { domain } from '../../libs/constants/domains';
-import { Container, Divider, makeStyles } from '@material-ui/core';
+import { Container, Divider, Grid, makeStyles } from '@material-ui/core';
 import React from 'react';
 import MetaHead from '../../libs/components/MetaHead';
 import { generateItemTitle } from '../../libs/utils/generateItemTitle';
 import ItemTitle from '../../libs/components/ItemTitle';
 import ClusterChart from '../../libs/components/ClusterChart';
+import ItemQuotes from '../../libs/components/ItemQuotes';
 
 const useStyles = makeStyles(theme => ({
   main: {
@@ -23,7 +24,7 @@ const Item = ({ id, item, realm }) => {
   } = item;
 
   const classes = useStyles();
-  const { itemTitle, realmTitle } = generateItemTitle(item, realm);
+  const { itemTitle, realmTitle, is_xrs, is_gold } = generateItemTitle(item, realm);
 
   return (
     <main className={classes.main}>
@@ -39,6 +40,18 @@ const Item = ({ id, item, realm }) => {
           quality={quality}
           asset_class={asset_class}
         />
+      </Container>
+      <Divider className={classes.divider}/>
+      <Container maxWidth={false}>
+        <Grid container spacing={4}>
+          <Grid item xs={12} sm={6} md={4}>
+            <ItemQuotes
+              id={id}
+              is_xrs={is_xrs}
+              is_gold={is_gold}
+            />
+          </Grid>
+        </Grid>
       </Container>
       <Divider className={classes.divider}/>
       <ClusterChart _id={id}/>

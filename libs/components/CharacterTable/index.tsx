@@ -1,5 +1,5 @@
 import React, { FC, Fragment } from 'react';
-import MUIDataTable from "mui-datatables";
+import MUIDataTable from 'mui-datatables';
 import { characterTable } from '../../types/components';
 import Link from '../Link';
 
@@ -20,8 +20,8 @@ const CharacterTable: FC<characterTable> = ({ characters, roster }) => {
         customBodyRenderLite: (dataIndex) =>
           <Link
             href={`/character/${characters[dataIndex]._id}`}
-            color="secondary"
-            underline="hover"
+            color='secondary'
+            underline='hover'
           >
             {characters[dataIndex]._id.toUpperCase()}
           </Link>
@@ -35,8 +35,8 @@ const CharacterTable: FC<characterTable> = ({ characters, roster }) => {
           characters[dataIndex].hash_a ?
           <Link
             href={`/hash/a@${characters[dataIndex].hash_a}`}
-            color="secondary"
-            underline="hover"
+            color='secondary'
+            underline='hover'
           >
             {characters[dataIndex].hash_a.toUpperCase()}
           </Link> : <></>
@@ -50,8 +50,8 @@ const CharacterTable: FC<characterTable> = ({ characters, roster }) => {
           characters[dataIndex].hash_b ?
             <Link
               href={`/hash/b@${characters[dataIndex].hash_b}`}
-              color="secondary"
-              underline="hover"
+              color='secondary'
+              underline='hover'
             >
               {characters[dataIndex].hash_b.toUpperCase()}
             </Link> : <></>
@@ -66,8 +66,8 @@ const CharacterTable: FC<characterTable> = ({ characters, roster }) => {
           characters[dataIndex].guild_id ?
             <Link
               href={`/guild/${characters[dataIndex].guild_id}`}
-              color="secondary"
-              underline="hover"
+              color='secondary'
+              underline='hover'
             >
               {characters[dataIndex].guild}
             </Link> : <></>
