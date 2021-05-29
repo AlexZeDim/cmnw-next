@@ -6,12 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "docker:build": "docker build -t cmmw ."
+    "docker:build": "docker build -t cmnw ."
   },
   "dependencies": {
     "@material-ui/core": "^4.11.4",
-    "@material-ui/data-grid": "*",
-    "@material-ui/x-grid-data-generator": "4.0.0-alpha.28",
     "clsx": "latest",
     "formik": "^2.2.6",
     "formik-material-ui": "^3.0.1",
