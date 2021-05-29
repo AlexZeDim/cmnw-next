@@ -1,4 +1,4 @@
-export const OSINT = [
+export const COMMANDS = [
   {
     value: 'character',
     label: 'CHARACTER',
@@ -10,5 +10,9 @@ export const OSINT = [
   {
     value: 'hash',
     label: 'HASH',
+  },
+  {
+    value: 'item',
+    label: 'ITEM',
   }
 ];

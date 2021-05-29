@@ -15,7 +15,7 @@ const options = {
   fixedSelectColumn: false,
   selectableRows: 'none',
   setTableProps: () => ({ size:'small' }),
-  rowsPerPage: 25,
+  rowsPerPage: 15,
   rowsPerPageOptions: [15, 25, 50]
 }
 

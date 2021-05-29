@@ -4,7 +4,7 @@ export const HEADER = [
     href: "/discord",
   },
   {
-    label: "Characters & Guilds",
+    label: "Characters & Guilds | Items & Valuations",
     href: "/",
   },
   {

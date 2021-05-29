@@ -6,6 +6,8 @@ export type initialValuesSearch = {
   character: string,
   guild: string,
   type: HashType,
+  item: string,
+  hubs: Array<{ label: string, value: string }>
   hash: string,
   id: string,
 }

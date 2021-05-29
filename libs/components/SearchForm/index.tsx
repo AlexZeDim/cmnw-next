@@ -1,4 +1,4 @@
-import { object, string, mixed } from 'yup';
+import { object, string, array } from 'yup';
 import Router from 'next/router'
 import MuiTextField from '@material-ui/core/TextField';
 import { Field, Form, Formik } from 'formik';
@@ -6,7 +6,7 @@ import { TextField } from 'formik-material-ui';
 import { Autocomplete } from 'formik-material-ui-lab';
 import React, { FC } from 'react';
 import { Button, Grid, makeStyles, MenuItem } from '@material-ui/core';
-import { OSINT, REALMS, HASH } from '../../constants';
+import { COMMANDS, REALMS, HASH } from '../../constants';
 import AtSign from '../AtSign/AtSign';
 import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
 import { initialValuesSearch } from '../../types/components';
@@ -40,7 +40,12 @@ const validation = object().shape({
     .min(13, 'Between 14 and 20 symbols!')
     .max(20, 'Between 14 and 20 symbols!')
     .required('Required'),
-  realm: mixed().required('Required')
+  realm: object({
+    label: string().default('Гордунни').required(),
+    value: string().default('gordunni').required(),
+  }),
+  item: string().required('Required'),
+  hubs: array().min(1),
 });
 
 const initialValues: initialValuesSearch = {
@@ -50,6 +55,8 @@ const initialValues: initialValuesSearch = {
   guild: 'Депортация',
   type: HashType.A,
   hash: 'A99BECEC48B29FF',
+  item: 'FLASK.POWER',
+  hubs: [{ value: "gordunni", label: "Гордунни" }],
   id: '0'
 }
 
@@ -59,7 +66,7 @@ export const SearchForm: FC = () => {
     <Formik
       initialValues={initialValues}
       validationSchema={validation}
-      onSubmit={(values, {setSubmitting}) => {
+      onSubmit={(values, { setSubmitting }) => {
         setSubmitting(false);
         const route = submitSearchForm(values);
         Router.push(route);
@@ -82,7 +89,7 @@ export const SearchForm: FC = () => {
                     shrink: true,
                   }}
                 >
-                  {OSINT.map((option) => (
+                  {COMMANDS.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
                       {option.label}
                     </MenuItem>
@@ -90,6 +97,43 @@ export const SearchForm: FC = () => {
                 </Field>
               </div>
             </Grid>
+            {values.command === Commands.item && (
+              <React.Fragment>
+                <Grid item xs={12} md={3}>
+                  <div className={classes.item}>
+                    <Field
+                      component={TextField}
+                      name="item"
+                      type="text"
+                      label="Item"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </div>
+                </Grid>
+                <AtSign/>
+                <Grid item xs={12} md={3}>
+                  <div className={classes.item}>
+                    <Field
+                      name="hubs"
+                      multiple
+                      component={Autocomplete}
+                      options={REALMS}
+                      getOptionLabel={(option) => option.label}
+                      fullWidth
+                      renderInput={(params) => (
+                        <MuiTextField
+                          {...params}
+                          error={touched['hubs'] && !!errors['hubs']}
+                          label="Realms"
+                          variant="outlined"
+                        />
+                      )}
+                    />
+                  </div>
+                </Grid>
+              </React.Fragment>
+            )}
             {values.command === Commands.characters && (
               <React.Fragment>
                 <Grid item xs={12} md={3}>

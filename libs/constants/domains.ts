@@ -1,4 +1,4 @@
-export const domain: string = 'http://localhost:8000'; // FIXME 'https://cmnw.me'
+export const domain: string = 'https://cmnw.me';
 
 export const warcraftlogs: string = 'https://www.warcraftlogs.com';
 

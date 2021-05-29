@@ -1,6 +1,6 @@
 export const CHARACTER_PAGE = {
   basename: '/character',
-  description: 'CHARACTER — Provides a requested information about certain game character across OSINT-DB',
+  description: 'CHARACTER — Provides a requested information about certain game character across Commands-DB',
 }
 
 export const HASH_PAGE = {
@@ -10,7 +10,7 @@ export const HASH_PAGE = {
 
 export const GUILD_PAGE = {
   basename: '/guild',
-  description: 'GUILD — all available information about selected guild, like members and OSINT logs.',
+  description: 'GUILD — all available information about selected guild, like members and Commands logs.',
 }
 
 export const INDEX_PAGE = {
