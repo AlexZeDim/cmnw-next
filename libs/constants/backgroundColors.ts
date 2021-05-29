@@ -40,6 +40,47 @@ export const backgroundColors = [
   {
     backgroundColor: '#ec913e',
     backgroundImage: 'linear-gradient(19deg, #ec913e 0%, #77116c 100%)'
+  },
+  // Item Quality
+  // Common & Grey
+  {
+    backgroundColor: '#616060',
+    backgroundImage: 'linear-gradient(273deg, #616060 0%, #9d9d9d 100%)'
+  },
+  // Uncommon
+  {
+    backgroundColor: '#3aad7d',
+    backgroundImage: 'linear-gradient(175deg, #3aad7d 0%, #47a13a 100%)'
+  },
+  // Rare
+  {
+    backgroundColor: '#04013d',
+    backgroundImage:
+      'linear-gradient(196deg, #04013d 0%, #0070dd 35%, #00d4ff 100%)'
+  },
+  // Epic
+  {
+    backgroundColor: '#9f40df',
+    backgroundImage:
+      'linear-gradient(243deg, #9f40df 0%, #9b22ad 45%, #965abf 100%)'
+  },
+  // Legendary
+  {
+    backgroundColor: '#ffaf36',
+    backgroundImage:
+      'linear-gradient(45deg, #ffaf36 0%, #f27d0d 50%, #ff9500 100%)'
+  },
+  // Artifact & Gold
+  {
+    backgroundColor: '#e6cc80',
+    backgroundImage:
+      'linear-gradient(0deg, #e6cc80 0%, #9e802a 100%)'
+  },
+  // Legacy & WoWToken
+  {
+    backgroundColor: '#a6d1f6',
+    backgroundImage:
+      'linear-gradient(180deg, #a6d1f6 0%, #44c7e8 42%, #a6d1f6 100%)'
   }
 ];
 
