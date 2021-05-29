@@ -1,9 +1,15 @@
 import { itemResponse, realmResponse } from '../types/components';
 
-export const generateItemTitle = (item: Partial<itemResponse>, realms: Partial<realmResponse>[]) => {
+export const generateItemTitle = (
+  item: Partial<itemResponse>,
+  realms: Partial<realmResponse>[],
+) => {
   let
     itemTitle: string,
     realmTitle: string;
+
+  const is_gold = item._id === 1;
+  const is_xrs = realms.length > 1;
 
   if (item.ticker) {
     itemTitle = item.ticker.toUpperCase();
@@ -23,5 +29,5 @@ export const generateItemTitle = (item: Partial<itemResponse>, realms: Partial<r
     realmTitle = realms.map(r => r.name_locale ? r.name_locale : r.name).join(', ');
   }
 
-  return { itemTitle, realmTitle }
+  return { itemTitle, realmTitle, is_gold, is_xrs };
 }
