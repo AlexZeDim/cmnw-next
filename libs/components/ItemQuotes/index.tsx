@@ -1,9 +1,9 @@
 import React, { FC, Fragment } from 'react';
-import { itemQuotes } from '../../types/components';
+import { itemQuery } from '../../types/components';
 import useSWR from 'swr';
 import MUIDataTable from 'mui-datatables';
-import { domain } from '../../constants/domains';
-import { quotesResponse } from '../../types/components/quotesResponse';
+import { domain } from '../../constants';
+import { quotesResponse } from '../../types/components';
 import { LinearProgress } from '@material-ui/core';
 
 const options = {
@@ -19,7 +19,7 @@ const options = {
   rowsPerPageOptions: [15, 25, 50]
 }
 
-const ItemQuotes: FC<itemQuotes> = ({ id, is_gold, is_xrs }) => {
+const ItemQuotes: FC<itemQuery> = ({ id, is_gold, is_xrs }) => {
 
   if (is_xrs) return <></>
 

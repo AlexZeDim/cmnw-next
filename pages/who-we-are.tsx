@@ -1,8 +1,7 @@
 import React from 'react';
 import MetaHead from '../libs/components/MetaHead';
-import { WHO_WE_ARE } from '../libs/constants/pages';
+import { WHO_WE_ARE, CONTRIBUTORS } from '../libs/constants';
 import { Container, Divider, Grid, makeStyles, Typography } from '@material-ui/core';
-import { CONTRIBUTORS } from '../libs/constants/contributors';
 import ContributionStar from '../libs/components/ContributionStar';
 
 const useStyles = makeStyles(theme => ({

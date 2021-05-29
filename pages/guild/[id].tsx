@@ -1,8 +1,8 @@
 import React from 'react';
 import { Container, Divider, makeStyles } from '@material-ui/core';
 import MetaHead from '../../libs/components/MetaHead';
-import { GUILD_PAGE } from '../../libs/constants/pages';
-import { domain } from '../../libs/constants/domains';
+import { GUILD_PAGE } from '../../libs/constants';
+import { domain } from '../../libs/constants';
 import { guildResponse, logResponse } from '../../libs/types/components';
 import { LogTable } from '../../libs/components/LogTable';
 import GuildTitle from '../../libs/components/GuildTitle';

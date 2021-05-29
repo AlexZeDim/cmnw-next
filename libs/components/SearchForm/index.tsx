@@ -6,14 +6,12 @@ import { TextField } from 'formik-material-ui';
 import { Autocomplete } from 'formik-material-ui-lab';
 import React, { FC } from 'react';
 import { Button, Grid, makeStyles, MenuItem } from '@material-ui/core';
-import { OSINT } from '../../constants/osint';
+import { OSINT, REALMS, HASH } from '../../constants';
 import AtSign from '../AtSign/AtSign';
-import { REALMS } from '../../constants/realms';
-import { HASH } from '../../constants/hash';
 import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
 import { initialValuesSearch } from '../../types/components';
 import { Commands, HashType } from '../../types/enums';
-import { submitSearchForm } from '../../utils/submitSearchForm';
+import { submitSearchForm } from '../../utils';
 
 const useStyles = makeStyles(() => ({
   item: {

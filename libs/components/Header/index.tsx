@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/styles';
-import { HEADER } from '../../constants/header';
+import { HEADER } from '../../constants';
 import React, { useEffect, useState } from 'react';
 import MenuIcon from "@material-ui/icons/Menu";
 import Link from '../Link';

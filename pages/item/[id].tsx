@@ -1,11 +1,12 @@
-import { domain } from '../../libs/constants/domains';
+import { domain } from '../../libs/constants';
 import { Container, Divider, Grid, makeStyles } from '@material-ui/core';
 import React from 'react';
 import MetaHead from '../../libs/components/MetaHead';
-import { generateItemTitle } from '../../libs/utils/generateItemTitle';
+import { generateItemTitle } from '../../libs/utils';
 import ItemTitle from '../../libs/components/ItemTitle';
 import ClusterChart from '../../libs/components/ClusterChart';
 import ItemQuotes from '../../libs/components/ItemQuotes';
+import ItemListing from '../../libs/components/ItemListing';
 
 const useStyles = makeStyles(theme => ({
   main: {
@@ -18,13 +19,18 @@ const useStyles = makeStyles(theme => ({
 
 const Item = ({ id, item, realm }) => {
   const {
-    _id,
     quality,
     asset_class
   } = item;
 
   const classes = useStyles();
-  const { itemTitle, realmTitle, is_xrs, is_gold } = generateItemTitle(item, realm);
+  const {
+    itemTitle,
+    realmTitle,
+    is_xrs,
+    is_gold,
+    is_commdty,
+  } = generateItemTitle(item, realm);
 
   return (
     <main className={classes.main}>
@@ -49,19 +55,31 @@ const Item = ({ id, item, realm }) => {
               id={id}
               is_xrs={is_xrs}
               is_gold={is_gold}
+              is_commdty={is_commdty}
             />
           </Grid>
         </Grid>
       </Container>
       <Divider className={classes.divider}/>
-      <ClusterChart _id={id}/>
+      <ClusterChart
+        id={id}
+        is_xrs={is_xrs}
+        is_gold={is_gold}
+        is_commdty={is_commdty}
+      />
+      <ItemListing
+        id={id}
+        is_xrs={is_xrs}
+        is_gold={is_gold}
+        is_commdty={is_commdty}
+      />
     </main>
   )
 }
 
 export async function getServerSideProps({ query }) {
   const { id } = query;
-  const res = await fetch(encodeURI(`http://localhost:8000/api/dma/item?_id=${id}`));
+  const res = await fetch(encodeURI(`${domain}/api/dma/item?_id=${id}`));
   const { item, realm } = await res.json();
   if (!item) {
     return {

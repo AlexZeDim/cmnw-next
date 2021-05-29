@@ -20,5 +20,7 @@ export * from './itemResponse';
 export * from './nameLocaleEmbed';
 export * from './realmResponse';
 export * from './itemTitle';
-export * from './itemQuotes';
+export * from './itemQuery';
 export * from './clusterChart';
+export * from './auctionsResponse';
+export * from './quotesResponse';

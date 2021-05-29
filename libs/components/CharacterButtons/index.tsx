@@ -2,7 +2,7 @@ import { Avatar, Grid, makeStyles } from '@material-ui/core';
 import { characterButtons } from '../../types/components';
 import React, { FC, Fragment } from 'react';
 import Link from '../Link';
-import { battlenet, check_pvp, raiderio, warcraftlogs, wowprogress } from '../../constants/domains';
+import { battlenet, check_pvp, raiderio, warcraftlogs, wowprogress } from '../../constants';
 
 const useStyles = makeStyles((theme) => ({
   large: {

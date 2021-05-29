@@ -1,7 +1,7 @@
 import { itemTitle } from '../../types/components';
 import React, { FC, Fragment } from 'react';
 import { Divider, makeStyles, Typography } from '@material-ui/core';
-import { generateItemBackground } from '../../utils/generateItemBackground';
+import { generateItemBackground } from '../../utils';
 
 const useStyles = makeStyles((theme) => ({
   root: {

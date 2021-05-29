@@ -10,6 +10,7 @@ export const generateItemTitle = (
 
   const is_gold = item._id === 1;
   const is_xrs = realms.length > 1;
+  const is_commdty = item.asset_class.includes('commdty');
 
   if (item.ticker) {
     itemTitle = item.ticker.toUpperCase();
@@ -29,5 +30,5 @@ export const generateItemTitle = (
     realmTitle = realms.map(r => r.name_locale ? r.name_locale : r.name).join(', ');
   }
 
-  return { itemTitle, realmTitle, is_gold, is_xrs };
+  return { itemTitle, realmTitle, is_gold, is_xrs, is_commdty };
 }

@@ -4,19 +4,21 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import HighchartsExporting from 'highcharts/modules/exporting';
 import Heatmap from 'highcharts/modules/heatmap';
-import { clusterChart } from '../../types/components';
+import { itemQuery } from '../../types/components';
 import { LinearProgress } from '@material-ui/core';
 import { chartResponse } from '../../types/components/chartResponse';
-import { domain } from '../../constants/domains';
+import { domain } from '../../constants';
 
 if (typeof Highcharts === 'object') {
   Heatmap(Highcharts);
   HighchartsExporting(Highcharts)
 }
 
-const ClusterChart: FC<clusterChart> = ({ _id }) => {
+const ClusterChart: FC<itemQuery> = ({ id, is_commdty }) => {
 
-  const { data, error } = useSWR<chartResponse>(`${domain}/api/dma/item/chart?_id=${_id}`, (url) => fetch(url).then(r => r.json()));
+  if (!is_commdty) return <></>
+
+  const { data, error } = useSWR<chartResponse>(`${domain}/api/dma/item/chart?_id=${id}`, (url) => fetch(url).then(r => r.json()));
 
   if (error) return <div>failed to load</div>
   if (!data) return <LinearProgress />

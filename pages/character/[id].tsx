@@ -1,12 +1,12 @@
 import { Container, Divider, Grid, makeStyles, Paper } from '@material-ui/core';
 import React from 'react';
-import { CHARACTER_PAGE } from '../../libs/constants/pages';
-import { characterPortrait } from '../../libs/utils/characterPortrait';
+import { CHARACTER_PAGE } from '../../libs/constants';
+import { characterPortrait } from '../../libs/utils';
 import MetaHead from '../../libs/components/MetaHead';
 import CharacterButtons from '../../libs/components/CharacterButtons';
 import CharacterProfile from '../../libs/components/CharacterProfile';
 import { characterResponse, logResponse } from '../../libs/types/components';
-import { domain } from '../../libs/constants/domains';
+import { domain } from '../../libs/constants';
 import { LogTable } from '../../libs/components/LogTable';
 import CharacterTitle from '../../libs/components/CharacterTitle';
 
