@@ -37,7 +37,7 @@ const Item = ({ id, item, realm }) => {
       <MetaHead
         title={itemTitle}
         description={'Test'}
-        wowhead={false}
+        wowhead={true}
       />
       <Container maxWidth={false}>
         <ItemTitle
@@ -69,6 +69,7 @@ const Item = ({ id, item, realm }) => {
       />
       <ItemListing
         id={id}
+        name={itemTitle}
         is_xrs={is_xrs}
         is_gold={is_gold}
         is_commdty={is_commdty}

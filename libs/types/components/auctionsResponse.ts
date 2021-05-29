@@ -1,8 +1,13 @@
+import { nameLocaleEmbed } from './nameLocaleEmbed';
+
 export type AuctionsResponse = {
   feed: Array<{
     id: number;
     item_id: number;
-    item: Object;
+    item: {
+      id: number;
+      bonus_lists?: number[];
+    };
     connected_realm_id: number;
     last_modified: number;
     quantity: number;

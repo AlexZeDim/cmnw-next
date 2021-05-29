@@ -4,13 +4,17 @@ import useSWR from 'swr';
 import { domain } from '../../constants';
 import { LinearProgress } from '@material-ui/core';
 import { AuctionsResponse, itemQuery } from '../../types/components';
+import Link from '../Link';
 
 const options = {
+  selectableRows: 'none',
   download: false,
+  rowsPerPage: 25,
+  rowsPerPageOptions: [15, 25, 50],
   setTableProps: () => ({ size:'small' }),
 }
 
-const ItemListing: FC<itemQuery> = ({ id, is_gold, is_commdty }) => {
+const ItemListing: FC<itemQuery & { name: string }> = ({ id, name, is_gold, is_commdty }) => {
 
   if (is_commdty || is_gold) return <></>
 
@@ -30,6 +34,32 @@ const ItemListing: FC<itemQuery> = ({ id, is_gold, is_commdty }) => {
     {
       name: 'id',
       label: 'Item',
+      options: {
+        customBodyRenderLite: (dataIndex) => {
+          let wowhead = `item=${data.feed[dataIndex].item_id}&`;
+          if (data.feed[dataIndex].item.bonus_lists) {
+            const bonus_lists: string = data.feed[dataIndex].item.bonus_lists.toString().replace(/,/g, ':');
+            wowhead = wowhead.concat(`bonus=${bonus_lists}`);
+          }
+          wowhead = wowhead.concat('&xml')
+          return (
+            <Link
+              href={`https://wowhead.com/item=${data.feed[dataIndex].item_id}`}
+              prefetch={false}
+              color="inherit"
+              variant="inherit"
+              underline="hover"
+              data-disable-wowhead-tooltip="false"
+              data-wh-icon-added="false"
+              data-wh-rename-link="true"
+              data-wh-icon-size="small"
+              data-wowhead={wowhead}
+            >
+              {name}
+            </Link>
+          )
+        }
+      }
     },
     {
       name: 'connected_realm_id',
@@ -55,7 +85,7 @@ const ItemListing: FC<itemQuery> = ({ id, is_gold, is_commdty }) => {
     },
     {
       name: 'last_modified',
-      label: 'Created',
+      label: 'Last Update',
       options: {
         customBodyRenderLite: (dataIndex) => new Date(data.feed[dataIndex].last_modified).toLocaleString('en-GB')
       }
@@ -66,6 +96,7 @@ const ItemListing: FC<itemQuery> = ({ id, is_gold, is_commdty }) => {
     <MUIDataTable
       data={data.feed}
       columns={columns}
+      options={options}
     />
   )
 }

@@ -22,7 +22,7 @@ const MetaHead: React.FC<metaHead> = ({ title, description, image, wowhead = fal
       <meta property="twitter:description" content={description}/>
       <meta property="twitter:image" content={image}/>
 
-      {wowhead ? (<script type="text/javascript" src={'../power.js'}/>) : ('')}
+      {wowhead ? (<script type="text/javascript" src={'https://wow.zamimg.com/widgets/power.js'}/>) : ('')}
     </Head>
   )
 }
