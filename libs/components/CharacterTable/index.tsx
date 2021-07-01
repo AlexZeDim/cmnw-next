@@ -3,13 +3,19 @@ import MUIDataTable from 'mui-datatables';
 import { characterTable } from '../../types/components';
 import Link from '../Link';
 
-const options = {
-  download: false,
-  fixedSelectColumn: false,
-  selectableRows: 'none',
-}
+
 
 const CharacterTable: FC<characterTable> = ({ characters, roster }) => {
+
+  const options = {
+    download: false,
+    fixedSelectColumn: false,
+    selectableRows: 'none',
+    sortOrder: {
+      name: roster ? 'rank' : '_id',
+      direction: 'asc',
+    }
+  }
 
   const columns = [
     {
