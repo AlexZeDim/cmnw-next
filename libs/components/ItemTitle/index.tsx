@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     // FIXME improve style
     margin: theme.spacing(2),
-    padding: theme.spacing(2, 8),
+    padding: theme.spacing(4, 8),
     borderRadius: 35,
   },
   itemTitle: {
@@ -43,7 +43,7 @@ const ItemTitle: FC<itemTitle> = ({ itemTitle, realmTitle, quality, asset_class,
   return (
     <Fragment>
       <div className={classes.root} style={background}>
-        <Box alignItems="left" display="flex" justifyContent="left">
+        <Box alignItems="center" display="flex" justifyContent="left">
           <Avatar alt="Item Icon" variant="rounded" src={icon} className={classes.large}/>
           <Typography variant="h3" component="h3" color="textPrimary" className={classes.itemTitle}>
             {itemTitle}

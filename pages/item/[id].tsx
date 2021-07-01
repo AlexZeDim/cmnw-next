@@ -63,19 +63,24 @@ const Item = ({ id, item, realm }) => {
         </Grid>
       </Container>
       <Divider className={classes.divider}/>
-      <ClusterChart
-        id={id}
-        is_xrs={is_xrs}
-        is_gold={is_gold}
-        is_commdty={is_commdty}
-      />
-      <ItemListing
-        id={id}
-        name={itemTitle}
-        is_xrs={is_xrs}
-        is_gold={is_gold}
-        is_commdty={is_commdty}
-      />
+      <Container maxWidth={false}>
+        <ClusterChart
+          id={id}
+          is_xrs={is_xrs}
+          is_gold={is_gold}
+          is_commdty={is_commdty}
+        />
+      </Container>
+      <Container maxWidth={false}>
+        <ItemListing
+          id={id}
+          name={itemTitle}
+          is_xrs={is_xrs}
+          is_gold={is_gold}
+          is_commdty={is_commdty}
+        />
+      </Container>
+
     </main>
   )
 }
