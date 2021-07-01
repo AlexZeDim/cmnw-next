@@ -22,12 +22,12 @@ export const generateItemTitle = (
 
   if (realms.length === 1) {
     const [realm] = realms;
-    if (realm.ticker && itemTitle.length < 7) {
-      itemTitle = itemTitle.concat('@', realm.ticker);
+    if (realm.realms && itemTitle.length < 7) {
+      itemTitle = itemTitle.concat('@', realm.realms[0]);
     }
-    realmTitle = realm.name_locale ? realm.name_locale : realm.name;
+    realmTitle = realm.realms[0];
   } else {
-    realmTitle = realms.map(r => r.name_locale ? r.name_locale : r.name).join(', ');
+    realmTitle = realms.map(r => r.realms.map(r => r).join(', ')).join(', ');
   }
 
   return { itemTitle, realmTitle, is_gold, is_xrs, is_commdty };

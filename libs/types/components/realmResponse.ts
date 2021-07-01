@@ -1,39 +1,15 @@
 export type realmResponse = {
-  _id: number;
+  readonly _id: number,
 
-  slug: string;
+  readonly realms: string[],
 
-  name: string;
+  readonly slug: string,
 
-  region: string;
+  readonly connected_realm_id: number;
 
-  name_locale: string;
+  readonly golds: number;
 
-  slug_locale: string;
+  readonly auctions: number;
 
-  ticker: string;
-
-  status: string;
-
-  category: string;
-
-  locale: string;
-
-  timezone: string;
-
-  type: string;
-
-  population_status: string;
-
-  connected_realm_id: number;
-
-  connected_realms: [string];
-
-  wcl_id: number;
-
-  auctions: number;
-
-  valuations: number;
-
-  golds: number;
+  readonly valuations: number;
 }

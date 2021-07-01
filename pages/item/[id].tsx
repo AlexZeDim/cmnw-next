@@ -20,7 +20,8 @@ const useStyles = makeStyles(theme => ({
 const Item = ({ id, item, realm }) => {
   const {
     quality,
-    asset_class
+    asset_class,
+    icon
   } = item;
 
   const classes = useStyles();
@@ -45,6 +46,7 @@ const Item = ({ id, item, realm }) => {
           realmTitle={realmTitle}
           quality={quality}
           asset_class={asset_class}
+          icon={icon}
         />
       </Container>
       <Divider className={classes.divider}/>
