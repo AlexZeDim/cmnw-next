@@ -6,21 +6,23 @@ import { generateFactionBackground } from '../../utils';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    margin: theme.spacing(2),
+    margin: theme.spacing(2, 8, 2, 2),
     padding: theme.spacing(2, 8),
     borderRadius: 35,
+    maxWidth: '760px',
   },
   name: {
     fontFamily: 'Fira Sans',
     fontWeight: 900,
     textTransform: 'uppercase',
-    fontSize: '10em',
+    fontSize: '6vw',
     textAlign: 'right',
   },
   realm: {
     fontFamily: 'Fira Sans',
     fontStyle: 'normal',
     fontDisplay: 'swap',
+    fontSize: '2vw',
     fontWeight: 400,
     textAlign: 'right',
   },
@@ -28,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: 'Fira Sans',
     fontStyle: 'normal',
     fontDisplay: 'swap',
+    fontSize: '2vw',
     fontWeight: 400,
     textAlign: 'right',
   },

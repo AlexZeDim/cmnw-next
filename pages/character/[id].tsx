@@ -67,12 +67,12 @@ const Character = ({ character }) => {
       />
       <Container maxWidth={false} className={classes.root}>
         <Grid container>
-          <Grid key={0} item xs={12} sm={5} md={5}>
+          <Grid key={0} item xs={12} sm={12} md={5}>
             <Grid item xs={12} sm={10} className={classes.portrait}>
               <Paper elevation={6} className={classes.image} style={{backgroundImage: `url(${portrait}`}}/>
             </Grid>
           </Grid>
-          <Grid key={1} item xs={12} sm={7} md={7}>
+          <Grid key={1} item xs={12} sm={12} md={7}>
             <div className={classes.paper} style={{alignItems: 'left'}}>
               <Grid>
                 <CharacterButtons name={name} realm={realm}/>
@@ -80,7 +80,14 @@ const Character = ({ character }) => {
               <Divider light className={classes.hr}/>
               <CharacterProfile character={character}/>
             </div>
-            <CharacterTitle name={name} realm={realm} guild={guild} guild_id={guild_id} guild_rank={guild_rank} faction={faction}/>
+            <CharacterTitle
+              name={name}
+              realm={realm}
+              guild={guild}
+              guild_id={guild_id}
+              guild_rank={guild_rank}
+              faction={faction}
+            />
           </Grid>
         </Grid>
         {(logs && logs.length) ? (
