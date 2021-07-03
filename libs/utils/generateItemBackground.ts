@@ -1,5 +1,5 @@
-import { ItemQuality } from '../types/enums/item-quality';
-import { backgroundColors } from '../constants/backgroundColors';
+import { ItemQuality } from '../types/enums';
+import { backgroundColors } from '../constants';
 
 export const generateItemBackground = (quality?: string, asset_class?: string) => {
   let index: number = 11;

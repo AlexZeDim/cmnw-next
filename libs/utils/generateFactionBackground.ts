@@ -1,6 +1,6 @@
 import { Faction } from '../types/enums';
 import { randomInt } from './randomInt';
-import { backgroundColors } from '../constants/backgroundColors';
+import { backgroundColors } from '../constants';
 
 export const generateFactionBackground = (faction?: Faction) => {
   let min = 0;

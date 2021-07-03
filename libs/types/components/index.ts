@@ -26,3 +26,4 @@ export * from './auctionsResponse';
 export * from './quotesResponse';
 export * from './itemValuationsResponse';
 export * from './itemValuations';
+export * from './itemDetailsTable';

@@ -1,9 +1,11 @@
-import { LinearProgress, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import { LinearProgress } from '@material-ui/core';
 import React, { FC, Fragment } from 'react';
 import { itemValuations, itemValuationsResponse } from '../../types/components';
 import useSWR from 'swr';
 import MUIDataTable from 'mui-datatables';
 import { domain } from '../../constants';
+import { convertDate } from '../../utils';
+import ItemDetailsTable from '../ItemDetailsTable';
 
 const ItemValuations: FC<itemValuations> = ({ id }) => {
 
@@ -30,41 +32,18 @@ const ItemValuations: FC<itemValuations> = ({ id }) => {
     expandableRows: true,
     expandableRowsHeader: false,
     expandableRowsOnClick: true,
-    isRowExpandable: (dataIndex, expandedRows) => data.valuations[dataIndex].details,
+    isRowExpandable: (dataIndex) => !!data.valuations[dataIndex].details,
     renderExpandableRow: (rowData, rowMeta) => {
       const colSpan = rowData.length + 1;
+      const { type, details } = data.valuations[rowMeta.dataIndex];
       return (
-        <Table size="small" aria-label="Reagents">
-          <TableHead>
-            <TableRow>
-              <TableCell colSpan={colSpan} align="right">Queue Value</TableCell>
-              <TableCell colSpan={colSpan} align="right">{data.valuations[rowMeta.dataIndex].details.queue_cost}</TableCell>
-              <TableCell colSpan={colSpan} align="right">Queue Quantity</TableCell>
-              <TableCell colSpan={colSpan} align="right">{data.valuations[rowMeta.dataIndex].details.queue_quantity}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell colSpan={colSpan} align="right">Ticker</TableCell>
-              <TableCell colSpan={colSpan} align="right">Price</TableCell>
-              <TableCell colSpan={colSpan} align="right">Quantity</TableCell>
-              <TableCell colSpan={colSpan} align="right">Value</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data.valuations[rowMeta.dataIndex].details.reagent_items.map((row) => (
-              <TableRow key={row._id}>
-                <TableCell colSpan={colSpan} align="right">{row.name.en_GB}</TableCell>
-                <TableCell colSpan={colSpan} align="right">{row.ticker}</TableCell>
-                <TableCell colSpan={colSpan} align="right">{(row.value / row.quantity).toFixed(2)}</TableCell>
-                <TableCell colSpan={colSpan} align="right">{row.quantity}</TableCell>
-                <TableCell colSpan={colSpan} align="right">{row.value.toFixed(2)}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <ItemDetailsTable
+          type={type}
+          details={details}
+          colspan={colSpan}
+        />
       );
     },
-    onRowExpansionChange: (curExpanded, allExpanded, rowsExpanded) => console.log(curExpanded, allExpanded, rowsExpanded)
   };
 
   const columns = [
@@ -94,10 +73,11 @@ const ItemValuations: FC<itemValuations> = ({ id }) => {
     {
       name: 'last_modified',
       label: 'Last Modified',
+      options: {
+        customBodyRenderLite: (dataIndex) => convertDate(data.valuations[dataIndex].last_modified)
+      }
     },
   ];
-
-  console.log(data);
 
   if (!data.is_evaluating) {
     // TODO force refresh
