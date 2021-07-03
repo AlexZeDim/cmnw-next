@@ -3,13 +3,13 @@ import React, { FC, Fragment } from 'react';
 import { itemValuations, itemValuationsResponse } from '../../types/components';
 import useSWR from 'swr';
 import MUIDataTable from 'mui-datatables';
-import { domain } from '../../constants';
+import { domain, localhost } from '../../constants';
 import { convertDate } from '../../utils';
 import ItemDetailsTable from '../ItemDetailsTable';
 
 const ItemValuations: FC<itemValuations> = ({ id }) => {
 
-  const { data, error } = useSWR<itemValuationsResponse>(`${domain}/api/dma/item/valuations?_id=${id}`, (url) => fetch(url).then(r => r.json()));
+  const { data, error } = useSWR<itemValuationsResponse>(`${localhost}/api/dma/item/valuations?_id=${id}`, (url) => fetch(url).then(r => r.json()));
 
   if (error) return <></>
   if (!data) return <LinearProgress />
@@ -40,7 +40,6 @@ const ItemValuations: FC<itemValuations> = ({ id }) => {
         <ItemDetailsTable
           type={type}
           details={details}
-          colspan={colSpan}
         />
       );
     },

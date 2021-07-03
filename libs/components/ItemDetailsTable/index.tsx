@@ -1,45 +1,67 @@
 import React, { FC, Fragment } from 'react';
 import { itemDetailsTable } from '../../types/components';
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import { Avatar, TableCell, TableRow } from '@material-ui/core';
 import { ValuationTypes } from '../../types/enums';
-import { TableContainer } from '@material-ui/core';
 
 
-const ItemDetailsTable: FC<itemDetailsTable> = ({ type, details, colspan }) => {
+const ItemDetailsTable: FC<itemDetailsTable> = ({ type, details }) => {
+  if (
+    type === ValuationTypes.OTC ||
+    type === ValuationTypes.GOLD ||
+    type === ValuationTypes.FUNPAY ||
+    type === ValuationTypes.WOWTOKEN
+  ) {
+    return (
+      <Fragment>
+        <TableRow key={0}>
+          <TableCell colSpan={3} align="right">Quotation</TableCell>
+          <TableCell colSpan={3} align="right">{details.quotation}</TableCell>
+        </TableRow>
+        <TableRow key={1}>
+          <TableCell colSpan={3} align="right">Minimal Settlement Amount</TableCell>
+          <TableCell colSpan={3} align="right">{details.minimal_settlement_amount.toLocaleString('ru-RU')}</TableCell>
+        </TableRow>
+        <TableRow key={2}>
+          <TableCell colSpan={3} align="right">Lot Size</TableCell>
+          <TableCell colSpan={3} align="right">{details.lot_size.toLocaleString('ru-RU')}</TableCell>
+        </TableRow>
+        <TableRow key={3}>
+          <TableCell colSpan={3} align="right">Description</TableCell>
+          <TableCell colSpan={3} align="right">{details.description}</TableCell>
+        </TableRow>
+      </Fragment>
+    )
+  }
 
   if (type === ValuationTypes.DERIVATIVE) {
     return (
       <Fragment>
-        <TableContainer>
-          <Table size="small" aria-label="Reagents">
-            <TableHead>
-              <TableRow>
-                <TableCell align="right">Queue Cost</TableCell>
-                <TableCell align="right">{details.queue_cost}</TableCell>
-                <TableCell align="right">Queue Quantity</TableCell>
-                <TableCell align="right">{details.queue_quantity}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell align="right">Ticker</TableCell>
-                <TableCell align="right">Price</TableCell>
-                <TableCell align="right">Quantity</TableCell>
-                <TableCell align="right">Value</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {details.reagent_items.map((row) => (
-                <TableRow key={row._id}>
-                  <TableCell align="right">{row.name.en_GB}</TableCell>
-                  <TableCell align="right">{row.ticker}</TableCell>
-                  <TableCell align="right">{(row.value / row.quantity).toFixed(2)}</TableCell>
-                  <TableCell align="right">{row.quantity}</TableCell>
-                  <TableCell align="right">{row.value.toFixed(2)}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <TableRow>
+          <TableCell colSpan={1}/>
+          <TableCell colSpan={1} variant="head">Name</TableCell>
+          <TableCell colSpan={1} variant="head">Ticker</TableCell>
+          <TableCell colSpan={1} variant="head">Price</TableCell>
+          <TableCell colSpan={1} variant="head">Quantity</TableCell>
+          <TableCell colSpan={1} variant="head">Value</TableCell>
+        </TableRow>
+        {details.reagent_items.map((row) => (
+          <TableRow key={row._id}>
+            <TableCell colSpan={1}><Avatar alt="Item Icon" variant="rounded" src={row.icon}/></TableCell>
+            <TableCell colSpan={1}>{row.name.en_GB}</TableCell>
+            <TableCell colSpan={1}>{row.ticker}</TableCell>
+            <TableCell colSpan={1} align="right" >{(row.value / row.quantity).toFixed(2)}</TableCell>
+            <TableCell colSpan={1} align="right" >{row.quantity}</TableCell>
+            <TableCell colSpan={1} align="right" >{row.value.toFixed(2)}</TableCell>
+          </TableRow>
+        ))}
+        <TableRow>
+          <TableCell colSpan={1}/>
+          <TableCell colSpan={1}/>
+          <TableCell colSpan={1} align="right" variant="head">Queue Cost</TableCell>
+          <TableCell colSpan={1} align="left">{details.queue_cost}</TableCell>
+          <TableCell colSpan={1} align="right" variant="head">Queue Quantity</TableCell>
+          <TableCell colSpan={1} align="left">{details.queue_quantity}</TableCell>
+        </TableRow>
       </Fragment>
     )
   }

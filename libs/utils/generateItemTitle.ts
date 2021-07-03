@@ -22,9 +22,6 @@ export const generateItemTitle = (
 
   if (realms.length === 1) {
     const [realm] = realms;
-    if (realm.realms && itemTitle.length < 7) {
-      itemTitle = itemTitle.concat('@', realm.realms[0]);
-    }
     realmTitle = realm.realms[0];
   } else {
     realmTitle = realms.map(r => r.realms.map(r => r).join(', ')).join(', ');

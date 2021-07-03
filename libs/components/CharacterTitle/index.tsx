@@ -8,8 +8,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     margin: theme.spacing(2, 8, 2, 2),
     padding: theme.spacing(2, 8),
-    borderRadius: 35,
-    maxWidth: '760px',
+    borderRadius: 25,
+    maxWidth: '1080px',
   },
   name: {
     fontFamily: 'Fira Sans',
