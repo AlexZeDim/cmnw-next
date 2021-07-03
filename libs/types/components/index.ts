@@ -24,3 +24,5 @@ export * from './itemQuery';
 export * from './clusterChart';
 export * from './auctionsResponse';
 export * from './quotesResponse';
+export * from './itemValuationsResponse';
+export * from './itemValuations';

@@ -7,6 +7,7 @@ import ItemTitle from '../../libs/components/ItemTitle';
 import ClusterChart from '../../libs/components/ClusterChart';
 import ItemQuotes from '../../libs/components/ItemQuotes';
 import ItemListing from '../../libs/components/ItemListing';
+import ItemValuations from '../../libs/components/ItemValuations';
 
 const useStyles = makeStyles(theme => ({
   main: {
@@ -58,6 +59,11 @@ const Item = ({ id, item, realm }) => {
               is_xrs={is_xrs}
               is_gold={is_gold}
               is_commdty={is_commdty}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4} md={6}>
+            <ItemValuations
+              id={id}
             />
           </Grid>
         </Grid>

@@ -14,10 +14,10 @@ const options = {
   viewColumns: false,
   fixedSelectColumn: false,
   selectableRows: 'none',
-  setTableProps: () => ({ size:'small' }),
+  setTableProps: () => ({ size: 'small' }),
   rowsPerPage: 15,
   rowsPerPageOptions: [15, 25, 50]
-}
+};
 
 const ItemQuotes: FC<itemQuery> = ({ id, is_gold, is_xrs }) => {
 
