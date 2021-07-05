@@ -23,19 +23,19 @@ const CharacterButtons: FC<characterButtons> = ({ name, realm }) => {
         alignItems="center"
       >
         <Link href={`${warcraftlogs}/character/eu/${realm}/${name}`} prefetch={false}>
-          <Avatar variant="square" alt="WarcraftLogs" src={'/wcl.svg'} className={classes.large}/>
+          <Avatar variant="square" alt="WarcraftLogs" src={'/static/wcl.svg'} className={classes.large}/>
         </Link>
         <Link href={`${raiderio}/characters/eu/${realm}/${name}`} prefetch={false}>
-          <Avatar variant="square" alt="RaiderIO" src={'/rio.svg'} className={classes.large}/>
+          <Avatar variant="square" alt="RaiderIO" src={'/static/rio.svg'} className={classes.large}/>
         </Link>
         <Link href={`${wowprogress}/character/eu/${realm}/${name}`} prefetch={false}>
-          <Avatar variant="square" alt="WoWProgress" src={'/wp.svg'} className={classes.large} />
+          <Avatar variant="square" alt="WoWProgress" src={'/static/wp.svg'} className={classes.large} />
         </Link>
         <Link href={`${battlenet}/en-gb/character/eu/${realm}/${name}`} prefetch={false}>
-          <Avatar variant="square" alt="BattleNet" src={'/armory.svg'} className={classes.large}/>
+          <Avatar variant="square" alt="BattleNet" src={'/static/armory.svg'} className={classes.large}/>
         </Link>
         <Link href={`${check_pvp}/eu/${realm}/${name}`} prefetch={false}>
-          <Avatar variant="square" alt="Check PvP" src={'/check_pvp.svg'} className={classes.large} />
+          <Avatar variant="square" alt="Check PvP" src={'/static/check_pvp.svg'} className={classes.large} />
         </Link>
       </Grid>
     </Fragment>
