@@ -2,9 +2,10 @@ import React, { FC, Fragment } from 'react';
 import { itemDetailsTable } from '../../types/components';
 import { Avatar, TableCell, TableRow } from '@material-ui/core';
 import { ValuationTypes } from '../../types/enums';
+import humanizeString from 'humanize-string';
+import Link from '../Link';
 
-
-const ItemDetailsTable: FC<itemDetailsTable> = ({ type, details }) => {
+const ItemDetailsTable: FC<itemDetailsTable> = ({ type, details, connected_realm_id }) => {
   if (
     type === ValuationTypes.OTC ||
     type === ValuationTypes.GOLD ||
@@ -13,22 +14,12 @@ const ItemDetailsTable: FC<itemDetailsTable> = ({ type, details }) => {
   ) {
     return (
       <Fragment>
-        <TableRow key={0}>
-          <TableCell colSpan={3} align="right">Quotation</TableCell>
-          <TableCell colSpan={3} align="right">{details.quotation}</TableCell>
-        </TableRow>
-        <TableRow key={1}>
-          <TableCell colSpan={3} align="right">Minimal Settlement Amount</TableCell>
-          <TableCell colSpan={3} align="right">{details.minimal_settlement_amount.toLocaleString('ru-RU')}</TableCell>
-        </TableRow>
-        <TableRow key={2}>
-          <TableCell colSpan={3} align="right">Lot Size</TableCell>
-          <TableCell colSpan={3} align="right">{details.lot_size.toLocaleString('ru-RU')}</TableCell>
-        </TableRow>
-        <TableRow key={3}>
-          <TableCell colSpan={3} align="right">Description</TableCell>
-          <TableCell colSpan={3} align="right">{details.description}</TableCell>
-        </TableRow>
+        {Object.entries(details).map(([key, value], i) => (
+          <TableRow key={i}>
+            <TableCell colSpan={3} align="right">{humanizeString(key)}</TableCell>
+            <TableCell colSpan={3} align="right">{typeof value === 'number' ? value.toLocaleString('ru-RU') : value}</TableCell>
+          </TableRow>
+        ))}
       </Fragment>
     )
   }
@@ -47,7 +38,7 @@ const ItemDetailsTable: FC<itemDetailsTable> = ({ type, details }) => {
         {details.reagent_items.map((row) => (
           <TableRow key={row._id}>
             <TableCell colSpan={1}><Avatar alt="Item Icon" variant="rounded" src={row.icon}/></TableCell>
-            <TableCell colSpan={1}>{row.name.en_GB}</TableCell>
+            <TableCell colSpan={1}><Link href={`/item/${row.name.en_GB}@${connected_realm_id}`} color="textPrimary" underline="hover">{row.name.en_GB}</Link></TableCell>
             <TableCell colSpan={1}>{row.ticker}</TableCell>
             <TableCell colSpan={1} align="right" >{(row.value / row.quantity).toFixed(2)}</TableCell>
             <TableCell colSpan={1} align="right" >{row.quantity}</TableCell>
@@ -55,8 +46,8 @@ const ItemDetailsTable: FC<itemDetailsTable> = ({ type, details }) => {
           </TableRow>
         ))}
         <TableRow>
-          <TableCell colSpan={1}/>
-          <TableCell colSpan={1}/>
+          { details.rank ? <TableCell colSpan={1} align="right" variant="head">Rank</TableCell> : <TableCell colSpan={1}/> }
+          { details.rank ? <TableCell colSpan={1} align="left">{details.rank}</TableCell> : <TableCell colSpan={1}/> }
           <TableCell colSpan={1} align="right" variant="head">Queue Cost</TableCell>
           <TableCell colSpan={1} align="left">{details.queue_cost}</TableCell>
           <TableCell colSpan={1} align="right" variant="head">Queue Quantity</TableCell>

@@ -34,12 +34,12 @@ const ItemValuations: FC<itemValuations> = ({ id }) => {
     expandableRowsOnClick: true,
     isRowExpandable: (dataIndex) => !!data.valuations[dataIndex].details,
     renderExpandableRow: (rowData, rowMeta) => {
-      const colSpan = rowData.length + 1;
       const { type, details } = data.valuations[rowMeta.dataIndex];
       return (
         <ItemDetailsTable
           type={type}
           details={details}
+          connected_realm_id={1602}
         />
       );
     },
