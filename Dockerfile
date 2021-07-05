@@ -25,6 +25,7 @@ ARG X_TAG
 WORKDIR /opt/app
 ENV NODE_ENV=production
 COPY --from=builder /opt/app/next.config.js ./
+COPY --from=builder /opt/app/public ./public
 COPY --from=builder /opt/app/.next ./.next
 COPY --from=builder /opt/app/node_modules ./node_modules
 
