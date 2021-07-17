@@ -30,10 +30,11 @@ const useStyles = makeStyles(() => ({
 
 export default function Home() {
   const classes = useStyles();
+
   return (
     <main className={classes.main}>
       <MetaHead
-        title={'WoW Commonwealth'}
+        title={'CMNW'}
         description={INDEX_PAGE.description}
         wowhead={false}
       />

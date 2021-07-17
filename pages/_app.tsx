@@ -21,8 +21,8 @@ function MyApp({ Component, pageProps }) {
         <title>WoW Commonwealth</title>
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width"/>
       </Head>
-      <Header/>
       <CssBaseline />
+      <Header/>
       <Component {...pageProps} />
     </MuiThemeProvider>
   );

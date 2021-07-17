@@ -1,14 +1,14 @@
 export const HEADER = [
   {
-    label: "Discord Bot",
-    href: "/discord",
+    label: 'Discord Bot',
+    href: '/discord',
   },
   {
-    label: "Characters & Guilds | Items & Valuations",
-    href: "/",
+    label: 'Characters & Guilds | Items & Valuations',
+    href: '/',
   },
   {
-    label: "Who we are",
-    href: "/who-we-are",
+    label: 'Who we are',
+    href: '/who-we-are',
   },
 ];

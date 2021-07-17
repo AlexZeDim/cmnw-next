@@ -56,11 +56,12 @@ const Character = ({ character }) => {
 
   const portrait = characterPortrait(faction, main);
   const classes = useStyles();
+  const title = `CMNW: ${name.toLowerCase()}@${realm.toLowerCase()}`;
 
   return (
     <main className={classes.main}>
       <MetaHead
-        title={`${name}@${realm}`}
+        title={title}
         description={CHARACTER_PAGE.description}
         image={portrait}
         wowhead={false}
