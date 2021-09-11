@@ -1,5 +1,5 @@
 import { object, string, array } from 'yup';
-import Router from 'next/router'
+import Router, { useRouter } from 'next/router'
 import MuiTextField from '@material-ui/core/TextField';
 import { Field, Form, Formik } from 'formik';
 import { TextField } from 'formik-material-ui';
@@ -48,8 +48,8 @@ const validation = object().shape({
   hubs: array().min(1),
 });
 
-const initialValues: initialValuesSearch = {
-  command: 'character',
+const initialValues = (command?: string): initialValuesSearch => ({
+  command: command ? command : 'character',
   realm: { label: 'Гордунни', value: 'gordunni' },
   character: 'Блюрателла',
   guild: 'Депортация',
@@ -58,13 +58,15 @@ const initialValues: initialValuesSearch = {
   item: 'FLASK.POWER',
   hubs: [{ value: "gordunni", label: "Гордунни" }],
   id: '0'
-}
+})
 
 export const SearchForm: FC = () => {
   const classes = useStyles();
+  const router = useRouter();
+
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={initialValues(router.query.command as string)}
       validationSchema={validation}
       onSubmit={(values, { setSubmitting }) => {
         setSubmitting(false);
