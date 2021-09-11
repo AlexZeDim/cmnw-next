@@ -12,7 +12,7 @@ import CharacterTitle from '../../libs/components/CharacterTitle';
 
 const useStyles = makeStyles(theme => ({
   main: {
-    marginTop: '65px',
+    marginTop: '85px',
   },
   root: {
     minHeight: '90vh',

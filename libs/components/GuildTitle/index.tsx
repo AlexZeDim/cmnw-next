@@ -6,8 +6,14 @@ import { generateFactionBackground } from '../../utils';
 const useStyles = makeStyles((theme) => ({
   root: {
     margin: theme.spacing(2),
-    padding: theme.spacing(2, 8),
-    borderRadius: 35,
+    padding: theme.spacing(4),
+    borderRadius: '15px',
+    position: 'relative',
+  },
+  title: {
+    color: 'white',
+    padding: '2rem',
+    border: 'solid 15px white',
   },
   name: {
     fontFamily: 'Fira Sans',
@@ -41,16 +47,18 @@ const GuildTitle: FC<guildTitle> = ({ name, realm, member_count, created_timesta
   return (
     <Fragment>
       <div className={classes.root} style={background}>
-        <Typography variant="h3" component="h3" color="textPrimary" className={classes.name}>
-          #{name}
-        </Typography>
-        <Divider className={classes.divider}/>
-        <Typography variant="h4" component="h4" color="textPrimary" className={classes.realm}>
-          @{realm}
-        </Typography>
-        <Typography variant="overline">
-          Created: {new Date(created_timestamp).toLocaleString('en-GB')} Members: {member_count} Achievements: {achievement_points}
-        </Typography>
+        <div className={classes.title} style={background}>
+          <Typography variant="h3" component="h3" color="textPrimary" className={classes.name}>
+            #{name}
+          </Typography>
+          <Divider className={classes.divider}/>
+          <Typography variant="overline" color="textPrimary">
+            Created: {new Date(created_timestamp).toLocaleString('en-GB')} | Members: {member_count} | Achievements: {achievement_points}
+          </Typography>
+          <Typography variant="h4" component="h4" color="textPrimary" className={classes.realm}>
+            @{realm}
+          </Typography>
+        </div>
       </div>
     </Fragment>
   )

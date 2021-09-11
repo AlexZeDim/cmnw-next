@@ -1,7 +1,7 @@
 import React, { FC, Fragment } from 'react';
 import { characterTitle } from '../../types/components';
 import Link from '../Link';
-import { makeStyles, Typography } from '@material-ui/core';
+import { Divider, makeStyles, Typography } from '@material-ui/core';
 import { generateFactionBackground } from '../../utils';
 
 const useStyles = makeStyles((theme) => ({
@@ -13,10 +13,12 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
   },
   title: {
-    background: '#222',
     color: 'white',
     padding: '1rem',
     border: 'solid 5px white',
+  },
+  divider: {
+    background: theme.palette.primary.main
   },
   name: {
     fontFamily: 'Fira Sans',
@@ -50,8 +52,8 @@ const CharacterTitle: FC<characterTitle> = ({ name, realm, guild, guild_id, guil
     <Fragment>
       <div className={classes.root} style={background}>
         <div className={classes.title} style={background}>
-          <Typography variant="h4" component="h4" color="textPrimary" className={classes.realm}>
-            @{realm}
+          <Typography variant="h1" component="h1" color="textPrimary" className={classes.name}>
+            {name}
           </Typography>
           {(guild && guild_id) ? (
             <Typography variant="h4" component="h4" color="textPrimary" className={classes.guild}>
@@ -59,8 +61,9 @@ const CharacterTitle: FC<characterTitle> = ({ name, realm, guild, guild_id, guil
               {(guild_rank && typeof guild_rank === 'number') ? ((guild_rank === 0) ? (` // GM`) : (` // R${guild_rank}`)) : ('')}
             </Typography>
           ) : ('')}
-          <Typography variant="h1" component="h1" color="textPrimary" className={classes.name}>
-            {name}
+          <Divider className={classes.divider}/>
+          <Typography variant="h4" component="h4" color="textPrimary" className={classes.realm}>
+            @{realm}
           </Typography>
         </div>
       </div>
