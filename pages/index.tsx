@@ -1,9 +1,8 @@
-import MetaHead from '../libs/components/MetaHead';
-import { INDEX_PAGE } from '../libs/constants';
 import { Container, makeStyles } from '@material-ui/core';
 import React from 'react';
+import MetaHead from '../libs/components/MetaHead';
+import { INDEX_PAGE } from '../libs/constants';
 import { SearchForm } from '../libs/components/SearchForm';
-
 
 const useStyles = makeStyles(() => ({
   main: {
@@ -28,7 +27,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-export default function Home() {
+const Home = () => {
   const classes = useStyles();
 
   return (
@@ -44,3 +43,5 @@ export default function Home() {
     </main>
   )
 }
+
+export default Home;

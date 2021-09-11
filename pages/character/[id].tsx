@@ -18,27 +18,23 @@ const useStyles = makeStyles(theme => ({
     minHeight: '90vh',
     padding: 0,
   },
-  portrait: {
-    marginRight: "auto",
-    marginLeft: "auto",
+  left: {
+    marginRight: 'auto',
+    marginLeft: 'auto',
+    maxWidth: '100%',
   },
   image: {
-    margin: theme.spacing(4, 6),
+    margin: theme.spacing(2),
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    minHeight: '80vh',
+    minHeight: '70vh',
     borderRadius: 10,
   },
   paper: {
     margin: theme.spacing(8, 4),
     display: 'flex',
     flexDirection: 'column'
-  },
-  hr: {
-    marginTop: theme.spacing(1),
-    marginRight: theme.spacing(2),
-    marginBottom: theme.spacing(2),
   },
 }));
 
@@ -68,27 +64,30 @@ const Character = ({ character }) => {
       />
       <Container maxWidth={false} className={classes.root}>
         <Grid container>
-          <Grid key={0} item xs={12} sm={12} md={5}>
-            <Grid item xs={12} sm={10} className={classes.portrait}>
-              <Paper elevation={6} className={classes.image} style={{backgroundImage: `url(${portrait}`}}/>
+          <Grid key={0} item xs={12} sm={12} md={4}>
+            <Grid item xs={12} sm={10} className={classes.left}>
+              <Paper
+                elevation={6}
+                className={classes.image}
+                style={{backgroundImage: `url(${portrait}`}}
+              />
+              <CharacterTitle
+                name={name}
+                realm={realm}
+                guild={guild}
+                guild_id={guild_id}
+                guild_rank={guild_rank}
+                faction={faction}
+              />
             </Grid>
           </Grid>
-          <Grid key={1} item xs={12} sm={12} md={7}>
+          <Grid key={1} item xs={12} sm={12} md={1}>
+            <CharacterButtons name={name} realm={realm}/>
+          </Grid>
+          <Grid key={2} item xs={12} sm={12} md={7}>
             <div className={classes.paper} style={{alignItems: 'left'}}>
-              <Grid>
-                <CharacterButtons name={name} realm={realm}/>
-              </Grid>
-              <Divider light className={classes.hr}/>
               <CharacterProfile character={character}/>
             </div>
-            <CharacterTitle
-              name={name}
-              realm={realm}
-              guild={guild}
-              guild_id={guild_id}
-              guild_rank={guild_rank}
-              faction={faction}
-            />
           </Grid>
         </Grid>
         {(logs && logs.length) ? (

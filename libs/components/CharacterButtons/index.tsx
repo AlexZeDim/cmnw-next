@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
   large: {
     width: theme.spacing(8),
     height: theme.spacing(8),
-    marginRight: theme.spacing(2)
+    margin: theme.spacing(2),
   }
 }));
 
@@ -18,7 +18,7 @@ const CharacterButtons: FC<characterButtons> = ({ name, realm }) => {
     <Fragment>
       <Grid
         container
-        direction="row"
+        direction="column"
         justify="flex-start"
         alignItems="center"
       >
