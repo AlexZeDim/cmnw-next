@@ -7,6 +7,10 @@ import ContributionStar from '../libs/components/ContributionStar';
 const useStyles = makeStyles(theme => ({
   main: {
     marginTop: '65px',
+    minHeight: '90vh',
+  },
+  divider: {
+    padding: theme.spacing(2),
   },
   memory: {
     margin: theme.spacing(4),
@@ -22,15 +26,15 @@ const WhoWeAre = () => {
         title={'The Conglomerat'}
         description={WHO_WE_ARE.description}
         wowhead={false}/>
-      <Container maxWidth={false}>
+      <Container maxWidth={false} className={classes.divider}>
         <Divider/>
         <Typography variant="h2" component="h1" align="center" className={classes.memory} gutterBottom>
-          The Conglomerat
+          Great Many Thanks
         </Typography>
         <Divider/>
         <Grid container>
           {CONTRIBUTORS.map((contributor, i) => (
-            <Grid item xs={2} key={i}>
+            <Grid item xs={3} key={i}>
               <ContributionStar
                 character={contributor.character}
                 name={contributor.name}

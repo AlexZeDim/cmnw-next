@@ -5,6 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { theme } from '../libs/styles/theme';
 import Header from '../libs/components/Header';
+import Footer from '../libs/components/Footer';
 
 function MyApp({ Component, pageProps }) {
   React.useEffect(() => {
@@ -24,6 +25,7 @@ function MyApp({ Component, pageProps }) {
       <CssBaseline />
       <Header/>
       <Component {...pageProps} />
+      <Footer/>
     </MuiThemeProvider>
   );
 }
