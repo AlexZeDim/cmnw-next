@@ -57,7 +57,7 @@ const CharacterTable: FC<characterTable> = ({ characters, roster }) => {
             color='secondary'
             underline='hover'
           >
-            {`...${characters[dataIndex].hash_a.substr(-4).toUpperCase()}`}
+            {`...${characters[dataIndex].hash_a.substr(-6).toUpperCase()}`}
           </Link> : <></>
       }
     },
@@ -72,7 +72,7 @@ const CharacterTable: FC<characterTable> = ({ characters, roster }) => {
               color='secondary'
               underline='hover'
             >
-              {`...${characters[dataIndex].hash_b.substr(-4).toUpperCase()}`}
+              {`...${characters[dataIndex].hash_b.substr(-6).toUpperCase()}`}
             </Link> : <></>
       }
     },
