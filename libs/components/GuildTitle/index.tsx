@@ -18,9 +18,10 @@ const useStyles = makeStyles((theme) => ({
   name: {
     fontFamily: 'Fira Sans',
     fontWeight: 900,
+    fontSize: 'clamp(1.3rem, -2.7500rem + 16.6667vw, 6rem)',
     textTransform: 'uppercase',
-    fontSize: '6em',
     textAlign: 'left',
+    overflowWrap: 'break-word',
   },
   divider: {
     background: theme.palette.primary.main
@@ -31,6 +32,8 @@ const useStyles = makeStyles((theme) => ({
     fontDisplay: 'swap',
     fontWeight: 400,
     textAlign: 'left',
+    fontSize: 'clamp(1.3rem, -2.7500rem + 16.6667vw, 4rem)',
+    overflowWrap: 'break-word',
   },
   guild: {
     fontFamily: 'Fira Sans',
@@ -38,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
     fontDisplay: 'swap',
     fontWeight: 400,
     textAlign: 'left',
+    overflowWrap: 'break-word',
   },
 }));
 
@@ -48,7 +52,7 @@ const GuildTitle: FC<guildTitle> = ({ name, realm, member_count, created_timesta
     <Fragment>
       <div className={classes.root} style={background}>
         <div className={classes.title} style={background}>
-          <Typography variant="h3" component="h3" color="textPrimary" className={classes.name}>
+          <Typography variant="h1" component="h1" color="textPrimary" className={classes.name}>
             #{name}
           </Typography>
           <Divider className={classes.divider}/>
