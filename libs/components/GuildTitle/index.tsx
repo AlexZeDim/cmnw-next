@@ -23,9 +23,6 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'left',
     overflowWrap: 'break-word',
   },
-  divider: {
-    background: theme.palette.primary.main
-  },
   realm: {
     fontFamily: 'Fira Sans',
     fontStyle: 'normal',
@@ -42,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 400,
     textAlign: 'left',
     overflowWrap: 'break-word',
+  },
+  divider: {
+    background: theme.palette.primary.main
   },
 }));
 

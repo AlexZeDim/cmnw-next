@@ -42,10 +42,15 @@ export const backgroundColors = [
     backgroundImage: 'linear-gradient(19deg, #ec913e 0%, #77116c 100%)'
   },
   // Item Quality
-  // Common & Grey
+  // Grey
   {
     backgroundColor: '#616060',
     backgroundImage: 'linear-gradient(273deg, #616060 0%, #9d9d9d 100%)'
+  },
+  // Common
+  {
+    backgroundColor: '#b8c6db',
+    backgroundImage: 'linear-gradient(315deg, #b8c6db 0%, #f5f7fa 74%)',
   },
   // Uncommon
   {
@@ -54,9 +59,8 @@ export const backgroundColors = [
   },
   // Rare
   {
-    backgroundColor: '#04013d',
-    backgroundImage:
-      'linear-gradient(196deg, #04013d 0%, #0070dd 35%, #00d4ff 100%)'
+    backgroundColor: '#2f438a',
+    backgroundImage: 'linear-gradient(196deg, #04013d 0%, #0070dd 35%, #00d4ff 100%)'
   },
   // Epic
   {
