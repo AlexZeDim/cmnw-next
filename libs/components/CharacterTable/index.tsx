@@ -2,11 +2,24 @@ import React, { FC, Fragment } from 'react';
 import MUIDataTable from 'mui-datatables';
 import { characterTable } from '../../types/components';
 import Link from '../Link';
+import { makeStyles } from '@material-ui/core';
+import dayjs from 'dayjs';
 
-
+const useStyles = makeStyles((theme) => ({
+  root: {
+    margin: theme.spacing(2),
+    borderRadius: '15px',
+  },
+  table: {
+    color: 'white',
+    padding: '1rem',
+    borderRadius: '15px',
+    border: 'solid 25px white',
+  }
+}));
 
 const CharacterTable: FC<characterTable> = ({ characters, roster }) => {
-
+  const classes = useStyles();
   const options = {
     download: false,
     fixedSelectColumn: false,
@@ -44,7 +57,7 @@ const CharacterTable: FC<characterTable> = ({ characters, roster }) => {
             color='secondary'
             underline='hover'
           >
-            {characters[dataIndex].hash_a.toUpperCase()}
+            {`...${characters[dataIndex].hash_a.substr(-4).toUpperCase()}`}
           </Link> : <></>
       }
     },
@@ -59,7 +72,7 @@ const CharacterTable: FC<characterTable> = ({ characters, roster }) => {
               color='secondary'
               underline='hover'
             >
-              {characters[dataIndex].hash_b.toUpperCase()}
+              {`...${characters[dataIndex].hash_b.substr(-4).toUpperCase()}`}
             </Link> : <></>
       }
     },
@@ -102,17 +115,27 @@ const CharacterTable: FC<characterTable> = ({ characters, roster }) => {
       name: 'last_modified',
       label: 'Last Modified',
       type: 'date',
-      options: { filter: false }
+      options: {
+        filter: false,
+        customBodyRenderLite: (dataIndex => characters[dataIndex].last_modified
+          ? dayjs(characters[dataIndex].last_modified).format('HH:mm DD/MM/YY')
+          : <></>
+        )
+      }
     },
   ];
 
   return (
     <Fragment>
-      <MUIDataTable
-        data={characters}
-        columns={columns}
-        options={options}
-      />
+      <div className={classes.root}>
+        <div className={classes.table}>
+          <MUIDataTable
+            data={characters}
+            columns={columns}
+            options={options}
+          />
+        </div>
+      </div>
     </Fragment>
   )
 }
