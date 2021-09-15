@@ -38,27 +38,26 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   divider: {
-    background: theme.palette.primary.main,
     marginBottom: '15px',
   },
 }));
 
 const ItemTitle: FC<itemTitle> = ({ itemTitle, realmTitle, quality, asset_class, icon}) => {
   const classes = useStyles();
-  const background = generateItemBackground({ quality, asset_class });
-  const test = generateItemBackground({ asset_class });
-  const borderColor = { borderColor: test.backgroundColor };
+  const backgroundRoot = generateItemBackground({ quality, asset_class });
+  const backgroundTitle = generateItemBackground({ asset_class });
+  const borderColor = { borderColor: backgroundTitle.backgroundColor };
   return (
     <Fragment>
-      <div className={classes.root} style={background}>
-        <div className={classes.title} style={{ ...background, ...borderColor}}>
+      <div className={classes.root} style={backgroundRoot}>
+        <div className={classes.title} style={{ ...backgroundRoot, ...borderColor}}>
           <Box alignItems="center" display="flex" justifyContent="left">
             <Avatar alt="Item Icon" variant="rounded" src={icon} className={classes.large}/>
             <Typography variant="h1" component="h1" color="textPrimary" className={classes.item}>
               {itemTitle}
             </Typography>
           </Box>
-          <Divider className={classes.divider}/>
+          <Divider className={classes.divider} style={{ background: backgroundTitle.backgroundColor }}/>
           <Typography variant="h4" component="h3" color="textPrimary" className={classes.realm}>
             {realmTitle}
           </Typography>
