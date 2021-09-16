@@ -19,6 +19,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Item = ({ id, item, realm }) => {
+
   const {
     quality,
     asset_class,

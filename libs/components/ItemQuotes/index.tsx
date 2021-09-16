@@ -4,7 +4,20 @@ import useSWR from 'swr';
 import MUIDataTable from 'mui-datatables';
 import { domain } from '../../constants';
 import { quotesResponse } from '../../types/components';
-import { LinearProgress } from '@material-ui/core';
+import { LinearProgress, makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    padding: theme.spacing(2),
+    borderRadius: '15px',
+    position: 'relative',
+  },
+  table: {
+    color: 'white',
+    padding: '1rem',
+    border: 'solid 15px white',
+  },
+}));
 
 const options = {
   download: false,
@@ -20,6 +33,7 @@ const options = {
 };
 
 const ItemQuotes: FC<itemQuery> = ({ id, is_gold, is_xrs }) => {
+  const classes = useStyles();
 
   if (is_xrs) return <></>
 
@@ -59,11 +73,15 @@ const ItemQuotes: FC<itemQuery> = ({ id, is_gold, is_xrs }) => {
 
   return (
     <Fragment>
-      <MUIDataTable
-        data={data.quotes}
-        columns={columns}
-        options={options}
-      />
+      <div className={classes.root}>
+        <div className={classes.table}>
+          <MUIDataTable
+            data={data.quotes}
+            columns={columns}
+            options={options}
+          />
+        </div>
+      </div>
     </Fragment>
   )
 }

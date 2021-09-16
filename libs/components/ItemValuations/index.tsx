@@ -1,4 +1,4 @@
-import { LinearProgress } from '@material-ui/core';
+import { LinearProgress, makeStyles } from '@material-ui/core';
 import React, { FC, Fragment } from 'react';
 import { itemValuations, itemValuationsResponse } from '../../types/components';
 import useSWR from 'swr';
@@ -7,7 +7,21 @@ import { domain } from '../../constants';
 import { convertDate } from '../../utils';
 import ItemDetailsTable from '../ItemDetailsTable';
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    padding: theme.spacing(2),
+    borderRadius: '15px',
+    position: 'relative',
+  },
+  table: {
+    color: 'white',
+    padding: '1rem',
+    border: 'solid 15px white',
+  },
+}));
+
 const ItemValuations: FC<itemValuations> = ({ id }) => {
+  const classes = useStyles();
 
   const { data, error } = useSWR<itemValuationsResponse>(`${domain}/api/dma/item/valuations?_id=${id}`, (url) => fetch(url).then(r => r.json()));
 
@@ -84,11 +98,15 @@ const ItemValuations: FC<itemValuations> = ({ id }) => {
 
   return (
     <Fragment>
-      <MUIDataTable
-        data={data.valuations}
-        columns={columns}
-        options={options}
-      />
+      <div className={classes.root}>
+        <div className={classes.table}>
+          <MUIDataTable
+            data={data.valuations}
+            columns={columns}
+            options={options}
+          />
+        </div>
+      </div>
     </Fragment>
   )
 }
