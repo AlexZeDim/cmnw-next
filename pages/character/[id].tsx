@@ -1,4 +1,4 @@
-import { Container, Divider, Grid, makeStyles, Paper } from '@material-ui/core';
+import { Container, Grid, makeStyles, Paper } from '@material-ui/core';
 import React from 'react';
 import { CHARACTER_PAGE } from '../../libs/constants';
 import { characterPortrait } from '../../libs/utils';
