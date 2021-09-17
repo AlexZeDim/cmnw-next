@@ -12,6 +12,7 @@ import ItemValuations from '../../libs/components/ItemValuations';
 const useStyles = makeStyles(theme => ({
   main: {
     marginTop: '85px',
+    minHeight: '90vh',
   },
   divider: {
     margin: `${theme.spacing(2)}px auto`,

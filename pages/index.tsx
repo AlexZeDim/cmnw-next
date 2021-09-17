@@ -7,7 +7,7 @@ import { SearchForm } from '../libs/components/SearchForm';
 const useStyles = makeStyles(() => ({
   main: {
     overflow: 'hidden',
-    height: '100vh',
+    height: '95vh',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'

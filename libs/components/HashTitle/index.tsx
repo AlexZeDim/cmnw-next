@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   type: {
     fontFamily: 'Fira Sans',
     fontWeight: 400,
-    fontSize: 'clamp(1.3rem, -2.7500rem + 16.6667vw, 4rem)',
+    fontSize: 'clamp(1.3rem, -2.7500rem + 16.6667vw, 3rem)',
     textTransform: 'uppercase',
     textAlign: 'left',
     overflowWrap: 'break-word',
@@ -111,7 +111,7 @@ const HashTitle: FC<hashTitle> = ({ id }) => {
             color="textPrimary"
             className={classes.type}
           >
-            Type: {type}
+            Type {type}
           </Typography>
         </div>
       </div>

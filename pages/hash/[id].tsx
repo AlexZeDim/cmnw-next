@@ -14,10 +14,11 @@ const useStyles = makeStyles(theme => ({
 
 const Hash = ({ hash, id }) => {
   const classes = useStyles();
+  const title = id.toString().toUpperCase();
   return (
     <main className={classes.main}>
       <MetaHead
-        title={id}
+        title={title}
         description={HASH_PAGE.description}
         wowhead={false}
       />

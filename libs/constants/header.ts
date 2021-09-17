@@ -21,6 +21,6 @@ export const HEADER = [
   },
   {
     label: 'Login Area',
-    href: '/login'
+    href: '/login-area'
   }
 ];
