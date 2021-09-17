@@ -5,22 +5,31 @@ import { generateFactionBackground } from '../../utils';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    margin: theme.spacing(10),
-    padding: theme.spacing(6, 8),
-    borderRadius: 35,
+    margin: theme.spacing(2),
+    padding: theme.spacing(4),
+    borderRadius: '15px',
+    position: 'relative',
+  },
+  title: {
+    color: 'white',
+    padding: '2rem',
+    border: 'solid 15px white',
   },
   hash: {
     fontFamily: 'Fira Sans',
     fontWeight: 900,
     textTransform: 'uppercase',
-    fontSize: '6em',
+    fontSize: 'clamp(1.3rem, -2.7500rem + 16.6667vw, 6rem)',
     textAlign: 'left',
+    overflowWrap: 'break-word',
   },
   type: {
     fontFamily: 'Fira Sans',
     fontWeight: 400,
+    fontSize: 'clamp(1.3rem, -2.7500rem + 16.6667vw, 4rem)',
     textTransform: 'uppercase',
     textAlign: 'left',
+    overflowWrap: 'break-word',
   },
   divider: {
     background: theme.palette.primary.main
@@ -64,40 +73,47 @@ const HashTitle: FC<hashTitle> = ({ id }) => {
   return (
     <Fragment>
       <div className={classes.root} style={background}>
-        <Typography
-          onClick={(e) => handleClick(id, e)}
-          onMouseLeave={handlePopoverClose}
-          variant="h3"
-          component="h3"
-          color="textPrimary"
-          className={classes.hash}
-        >
-          {hash}
-        </Typography>
-        <Popover
-          id={pid}
-          className={classes.popover}
-          classes={{
-            paper: classes.paper,
-          }}
-          open={open}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
-          }}
-          onClose={handlePopoverClose}
-          disableRestoreFocus
-        >
-          <Typography>{copyStatus}</Typography>
-        </Popover>
-        <Divider className={classes.divider}/>
-        <Typography variant="h4" component="h4" color="textPrimary" className={classes.type}>
-          Type: {type}
-        </Typography>
+        <div className={classes.title} style={background}>
+          <Typography
+            onClick={(e) => handleClick(id, e)}
+            onMouseLeave={handlePopoverClose}
+            variant="h1"
+            component="h1"
+            color="textPrimary"
+            className={classes.hash}
+          >
+            {hash}
+          </Typography>
+          <Popover
+            id={pid}
+            className={classes.popover}
+            classes={{
+              paper: classes.paper,
+            }}
+            open={open}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'left',
+            }}
+            onClose={handlePopoverClose}
+            disableRestoreFocus
+          >
+            <Typography>{copyStatus}</Typography>
+          </Popover>
+          <Divider className={classes.divider}/>
+          <Typography
+            variant="h2"
+            component="h2"
+            color="textPrimary"
+            className={classes.type}
+          >
+            Type: {type}
+          </Typography>
+        </div>
       </div>
     </Fragment>
   )

@@ -76,7 +76,7 @@ export const SearchForm: FC = () => {
     >
       {({ values, touched, errors}) => (
         <Form>
-          <Grid container spacing={5} alignItems={'center'} justify={"center"}>
+          <Grid container spacing={5} alignItems={'center'} justifyContent={"center"}>
             <Grid item xs={12} md={3}>
               <div className={classes.item}>
                 <Field
@@ -155,8 +155,8 @@ export const SearchForm: FC = () => {
                   <div className={classes.item}>
                     <Field
                       name="realm"
-                      fullWidth
                       component={Autocomplete}
+                      fullWidth
                       options={REALMS}
                       getOptionLabel={(option) => option.label}
                       renderInput={(params) => (
