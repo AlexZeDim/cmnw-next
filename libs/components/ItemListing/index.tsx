@@ -1,10 +1,23 @@
-import React, { FC } from 'react';
+import React, { FC, Fragment } from 'react';
 import MUIDataTable from 'mui-datatables';
 import useSWR from 'swr';
 import { domain } from '../../constants';
-import { LinearProgress } from '@material-ui/core';
+import { LinearProgress, makeStyles } from '@material-ui/core';
 import { AuctionsResponse, itemQuery } from '../../types/components';
 import Link from '../Link';
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    padding: theme.spacing(2),
+    borderRadius: '15px',
+    position: 'relative',
+  },
+  table: {
+    color: 'white',
+    padding: '1rem',
+    border: 'solid 15px white',
+  },
+}));
 
 const options = {
   selectableRows: 'none',
@@ -15,6 +28,7 @@ const options = {
 }
 
 const ItemListing: FC<itemQuery & { name: string }> = ({ id, name, is_gold, is_commdty }) => {
+  const classes = useStyles();
 
   if (is_commdty || is_gold) return <></>
 
@@ -93,11 +107,17 @@ const ItemListing: FC<itemQuery & { name: string }> = ({ id, name, is_gold, is_c
   ];
 
   return (
-    <MUIDataTable
-      data={data.feed}
-      columns={columns}
-      options={options}
-    />
+    <Fragment>
+      <div className={classes.root}>
+        <div className={classes.table}>
+          <MUIDataTable
+            data={data.feed}
+            columns={columns}
+            options={options}
+          />
+        </div>
+      </div>
+    </Fragment>
   )
 }
 

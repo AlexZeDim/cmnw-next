@@ -91,7 +91,7 @@ const Character = ({ character }) => {
           </Grid>
         </Grid>
         {(logs && logs.length) ? (
-          <Grid container alignItems="center" justify="center">
+          <Grid container alignItems="center" justifyContent="center">
             <Grid item xs={12} className={classes.paper}>
               <LogTable logs={logs}/>
             </Grid>

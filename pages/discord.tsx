@@ -34,7 +34,7 @@ const Discord = () => {
         wowhead={false}
       />
       <Container maxWidth={false} className={classes.root}>
-        <Grid container justify="center" alignItems="center">
+        <Grid container justifyContent="center" alignItems="center">
           <Grid item xs={12} sm={12} md={12}>
             <Typography variant="h1" component="h5" align="center" gutterBottom>
               REVEAL SHADOWS IN SHADOWLANDS
