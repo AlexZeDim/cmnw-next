@@ -1,4 +1,7 @@
 import React from 'react';
+import '../i18n';
+import { initReactI18next } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import MetaHead from '../libs/components/MetaHead';
 import { WHO_WE_ARE, CONTRIBUTORS } from '../libs/constants';
 import { Container, Divider, Grid, makeStyles, Typography } from '@material-ui/core';
@@ -20,6 +23,8 @@ const useStyles = makeStyles(theme => ({
 
 const WhoWeAre = () => {
   const classes = useStyles();
+  const { t, i18n } = useTranslation();
+
   return (
     <main className={classes.main}>
       <MetaHead
@@ -29,7 +34,7 @@ const WhoWeAre = () => {
       <Container maxWidth={false} className={classes.divider}>
         <Divider/>
         <Typography variant="h2" component="h1" align="center" className={classes.memory} gutterBottom>
-          Great Many Thanks
+        {t('WhoWeArePage.GreatManyThanks')}
         </Typography>
         <Divider/>
         <Grid container>

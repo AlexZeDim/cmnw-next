@@ -43,32 +43,32 @@ export const CONTRIBUTORS = [
   },
   {
     value: 9,
-    name: "Wander",
-    character: "вандерплз@gordunni"
-  },
-  {
-    value: 10,
     name: 'Askar',
     character: 'Йондадх@gordunni',
   },
   {
-    value: 11,
+    value: 10,
     name: 'Йозельда',
     character: 'Докторйозя@gordunni',
   },
   {
-    value: 12,
+    value: 11,
     name: 'Акула',
     character: 'Акулов@howling-fjord',
   },
   {
-    value: 13,
+    value: 12,
     name: 'Uchur',
     discord: 'Uchur#0001',
   },
   {
-    value: 14,
+    value: 13,
     name: 'Reds',
     character: 'Редизтрибут@howling-fjord',
   },
+  {
+    value: 14,
+    name: 'Medok',
+    discord: 'Medok#8185',
+  }
 ];

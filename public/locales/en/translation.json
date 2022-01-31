@@ -1,0 +1,146 @@
+{
+    "DiscordPage": {
+        "MainText": "REVEAL SHADOWS IN SHADOWLANDS",
+        "InviteLink": "Invite Link"
+    },
+    "WhoWeArePage": {
+        "GreatManyThanks": "Great Many Thanks"
+    },
+    "LoginAreaPage": 
+     {
+        "NextThing": "THE NEXT BIG THING"
+    },
+    "Components": {
+        "CharTable":{
+            "Name": "Name",
+            "HashA": "Hash A",
+            "HashB": "Hash B",
+            "Guild": "Guild",
+            "Rank": "Rank",
+            "ItemLevel": "Item Level",
+            "Class": "Class",
+            "Spec": "Specialization",
+            "AchPoints": "Achievement Points",
+            "Level": "Level",
+            "Faction": "Faction",
+            "Race": "Race",
+            "Gender": "Gender",
+            "Covenant": "Covenant",
+            "Renown": "Renown",
+            "LastMod": "Last Modified"
+        },
+        "ClusterChart":{
+            "LoadFailed": "failed to load"
+        },
+        "Footer":{
+            "Cookies": "We don't use cookies or track your behavior"
+        },
+        "GuildTitle":{
+            "Created": "Created",
+            "Members": "Members",
+            "Ach": "Achievements"
+        },
+        "HashTitle":{
+            "CopySuccess": "Hash ${id} has been coped!",
+            "CopyFailed": "Failed to copy!"
+        },
+        "ItemDetailsTable":{
+            "Name": "Name",
+            "Ticker": "Ticker",
+            "Price": "Price",
+            "Quantity": "Quantity",
+            "Value": "Value",
+            "Rank": "Rank",
+            "QueCost": "Queue Cost",
+            "QueQuantity": "Queue Quantity",
+            "MinPrice": "Minimal Price",
+            "OpenInterest": "Open Interest",
+            "Orders": "Orders"
+        },
+        "ItemListing":{
+            "SHORT": "30m",
+            "MEDIUM": "30m - 2h",
+            "LONG": "2h - 12h",
+            "VERY_LONG": "1D - 2D",
+            "Item": "Item",
+            "Realm": "Realm",
+            "Price": "Price",
+            "Expiration": "Expiration",
+            "LastUpdate": "Last Update"
+        },
+        "ItemQuotes":{
+            "Price": "Price",
+            "Quantity": "Quantity",
+            "OpenInterest": "Open Interest",
+            "Sellers": "Sellers",
+            "Orders": "Orders"
+        },
+        "ItemValuations":{
+            "Name": "Name",
+            "Flag": "Flag",
+            "Type": "Type",
+            "Value": "Value",
+            "Realm": "Realm",
+            "LastMod": "Last Modified"
+        },
+        "LogTable":{
+            "Event": "Event",
+            "Action": "Action",
+            "Original": "Original",
+            "Updated": "Updated",
+            "After": "After",
+            "Before": "Before"
+        },
+        "SearchForm":{
+            "Command": "Command",
+            "Item": "Item",
+            "Realm": "Realm",
+            "Realms": "Realms",
+            "Character": "Character",
+            "Guild": "Guild",
+            "Type": "Type",
+            "Hash": "Hash"
+        }
+    },
+    "Constants": {
+        "Commands":{
+            "CHARACTER": "CHARACTER",
+            "GUILD": "GUILD",
+            "HASH": "HASH",
+            "ITEM": "ITEM"
+        },
+        "Expantions":{
+            "Classic": "VANILLA",
+            "TBC": "TBC",
+            "WotLK": "WOTLK",
+            "Cataclysm": "CATA",
+            "MOP": "MOP",
+            "WOD": "WOD",
+            "Legion": "LEGION",
+            "BFA": "BFA",
+            "SL": "SHDW"
+        },
+        "Header":{
+            "DiscordBot": "Discord Bot",
+            "Characters": "Characters",
+            "Guilds": "Guilds",
+            "ItemsValuetions": "Items & Valuations",
+            "WhoWeAre": "Who we are",
+            "LoginArea": "Login Area"
+        },
+        "Professions": {
+            "Inscription": "Inscription",
+            "Alchemy": "Alchemy",
+            "Letherworking": "Letherworking",
+            "Tailoring": "Tailoring",
+            "Enchanting": "Enchanting",
+            "Blacksmithing": "Blacksmithing",
+            "Engineering": "Engineering",
+            "Jewelcraft": "Jewelcraft",
+            "Cooking": "Cooking",
+            "Mining": "Mining",
+            "Herbalism": "Herbalism",
+            "Vendor": "Vendor"
+        }
+    }
+}
