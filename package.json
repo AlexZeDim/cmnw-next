@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "docker:build": "docker build -t cmnw .",
-    "docker:run": "docker run -d -p 3000:3000 cmnw"
+    "docker:run": "docker run -d -p 3000:3000 cmnw",
+    "i18n": "sync-i18n --files ./public/locales/*.json --primary en --languages ru --space 2",
+    "check-i18n": "npm run i18n -- --check"
   },
   "dependencies": {
     "@material-ui/core": "4.12.3",
@@ -20,12 +22,16 @@
     "highcharts": "9.2.2",
     "highcharts-react-official": "3.0.0",
     "humanize-string": "2.1.0",
+    "i18next": "^21.6.10",
+    "i18next-browser-languagedetector": "^6.1.3",
+    "i18next-http-backend": "^1.3.2",
     "lodash": "4.17.21",
     "mui-datatables": "3.7.8",
     "next": "11.1.2",
     "prop-types": "latest",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-i18next": "^11.15.3",
     "reselect": "4.0.0",
     "styled-components": "5.3.1",
     "swr": "1.0.1",
@@ -36,6 +42,7 @@
     "@types/lodash": "4.14.168",
     "@types/react": "17.0.5",
     "formik-material-ui-lab": "0.0.8",
+    "i18next-json-sync": "^2.3.1",
     "typescript": "4.4.3"
   }
 }

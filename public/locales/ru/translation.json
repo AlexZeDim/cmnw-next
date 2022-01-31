@@ -1,0 +1,147 @@
+{
+    "DiscordPage": {
+        "MainText": "РАЗВЕЙТЕ ТЕНИ В ТЕМНЫХ ЗЕМЛЯХ",
+        "InviteLink": "Ссылка-приглашение"
+    },
+    "WhoWeArePage": {
+        "GreatManyThanks": "Огромное спасибо"
+    },
+    "LoginAreaPage": 
+     {
+        "NextThing": "СЛЕДУЮЩЕ БОЛЬШОЕ НЕЧТО"
+    },
+    "Components": {
+        "CharTable":{
+            "Name": "Имя",
+            "HashA": "Хэш A",
+            "HashB": "Хэш B",
+            "Guild": "Гильдия",
+            "Rank": "Ранг",
+            "ItemLevel": "Уровень предметов",
+            "Class": "Класс",
+            "Spec": "Специализация",
+            "AchPoints": "Очки достижений",
+            "Level": "Уровень",
+            "Faction": "Фракция",
+            "Race": "Раса",
+            "Gender": "Пол",
+            "Covenant": "Ковенант",
+            "Renown": "Известность",
+            "LastMod": "Последнее изменение"
+        },
+        "ClusterChart":{
+            "LoadFailed": "не удалось загрузить"
+        },
+        "Footer":{
+            "Cookies": "Мы не используем cookies и не отслеживаем ваши действия"
+        },
+        "GuildTitle":{
+            "Created": "Создана",
+            "Members": "Участников",
+            "Ach": "Достижений"
+        },
+        "HashTitle":{
+            "CopySuccess": "Хэш ${id} был скопирован!",
+            "CopyFailed": "Не удалось скопировать!"
+        },
+        "ItemDetailsTable":{
+            "Name": "Название",
+            "Ticker": "Ticker",
+            "Price": "Цена",
+            "Quantity": "Кол-во",
+            "Value": "Значение",
+            "Rank": "Ранг",
+            "QueCost": "Queue Cost",
+            "QueQuantity": "Queue Quantity",
+            "MinPrice": "Минимальная цена",
+            "OpenInterest": "Open Interest",
+            "Orders": "Заказов"
+        },
+        "ItemListing":{
+            "SHORT": "30м",
+            "MEDIUM": "30м - 2ч",
+            "LONG": "2ч - 12ч",
+            "VERY_LONG": "1Д - 2Д",
+            "Item": "Предмет",
+            "Realm": "Мир",
+            "Price": "Цена",
+            "Expiration": "Срок",
+            "LastUpdate": "Последнее обновление"
+        },
+        "ItemQuotes":{
+            "Price": "Цена",
+            "Quantity": "Кол-во",
+            "OpenInterest": "Open Interest",
+            "Sellers": "Продавцов",
+            "Orders": "Заказов"
+        },
+        "ItemValuations":{
+            "Name": "Название",
+            "Flag": "Метка",
+            "Type": "Тип",
+            "Value": "Значение",
+            "Realm": "Мир",
+            "LastMod": "Последнее обновление"
+        },
+        "LogTable":{
+            "Event": "Событие",
+            "Action": "Действие",
+            "Original": "Original",
+            "Updated": "Обновлено",
+            "After": "После",
+            "Before": "До"
+        },
+        "SearchForm":{
+            "Command": "Команда",
+            "Item": "Предмет",
+            "Realm": "Мир",
+            "Realms": "Миры",
+            "Character": "Персонаж",
+            "Guild": "Гильдия",
+            "Type": "Тип",
+            "Hash": "Хэш"
+        }
+    },
+    "Constants": {
+        "Commands":{
+            "CHARACTER": "ПЕРСОНАЖ",
+            "GUILD": "ГИЛЬДИЯ",
+            "HASH": "ХЭШ",
+            "ITEM": "ПРЕДМЕТ"
+        },
+        "Expantions":{
+            "Classic": "ВАНИЛЛА",
+            "TBC": "БК",
+            "WotLK": "ЛК",
+            "Cataclysm": "КАТА",
+            "MOP": "ПАНДАРИЯ",
+            "WOD": "ДРЕНОР",
+            "Legion": "ЛЕГИОН",
+            "BFA": "БзА",
+            "SL": "ШЛ"
+        },
+        "Header":{
+            "DiscordBot": "Discord-бот",
+            "Characters": "Персонажи",
+            "Guilds": "Гильдии",
+            "ItemsValuetions": "Предметы и стоимость",
+            "WhoWeAre": "Кто же мы",
+            "LoginArea": "Область входа"
+
+        },
+        "Professions": {
+            "Inscription": "Начертание",
+            "Alchemy": "Алхимия",
+            "Letherworking": "Кожевничество",
+            "Tailoring": "Портяжное дело",
+            "Enchanting": "Наложение чар",
+            "Blacksmithing": "Кузнечное дело",
+            "Engineering": "Инженерное дело",
+            "Jewelcraft": "Ювелирное дело",
+            "Cooking": "Кулинария",
+            "Mining": "Горное дело",
+            "Herbalism": "Травничество",
+            "Vendor": "Продавец"
+        }
+    }
+}

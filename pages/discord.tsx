@@ -1,4 +1,6 @@
 import React from 'react';
+import { initReactI18next } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import MetaHead from '../libs/components/MetaHead';
 import { Button, Container, Grid, makeStyles, Typography } from '@material-ui/core';
 import { DISCORD } from '../libs/constants';
@@ -26,6 +28,7 @@ const useStyles = makeStyles(() => ({
 
 const Discord = () => {
   const classes = useStyles();
+  const { t, i18n } = useTranslation();
   return (
     <main className={classes.main}>
       <MetaHead
@@ -37,7 +40,7 @@ const Discord = () => {
         <Grid container justifyContent="center" alignItems="center">
           <Grid item xs={12} sm={12} md={12}>
             <Typography variant="h1" component="h5" align="center" gutterBottom>
-              REVEAL SHADOWS IN SHADOWLANDS
+              {t('DiscordPage.MainText')}
             </Typography>
           </Grid>
           <Button
@@ -47,7 +50,7 @@ const Discord = () => {
             variant="outlined"
             color="secondary"
           >
-            {'>'} Invite Link
+            {'>'} {t('DiscordPage.InviteLink')}
           </Button>
         </Grid>
       </Container>

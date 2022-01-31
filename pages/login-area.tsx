@@ -1,7 +1,11 @@
 import React from 'react';
+import '../i18n';
+import { initReactI18next } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import Image from 'next/image'
 import MetaHead from '../libs/components/MetaHead';
 import { Container, Grid, makeStyles, Typography } from '@material-ui/core';
+import { func } from 'prop-types';
 
 const useStyles = makeStyles(() => ({
   main: {
@@ -24,6 +28,7 @@ const useStyles = makeStyles(() => ({
 
 const LoginArea = () => {
   const classes = useStyles();
+  const { t, i18n } = useTranslation();
   return (
     <main className={classes.main}>
       <MetaHead
@@ -35,7 +40,7 @@ const LoginArea = () => {
         <Grid container direction="column" justifyContent="center" alignItems="center">
           <Grid item xs={12} sm={12} md={12}>
             <Typography variant="h1" component="h5" align="center" gutterBottom>
-              THE NEXT BIG THING
+              {t('LoginAreaPage.NextThing')}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={12} md={12}>

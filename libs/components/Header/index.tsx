@@ -17,6 +17,7 @@ const useStyles = makeStyles(() => ({
   },
   appBar: {
     alignItems: 'center',
+    position: 'relative'
   }
 }));
 
