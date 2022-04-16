@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: jonasal/nginx-certbot:latest-alpine
+    restart: unless-stopped
+    environment:
+      - CERTBOT_EMAIL
+      - DHPARAM_SIZE=2048
+      - ELLIPTIC_CURVE=secp256r1
+      - RENEWAL_INTERVAL=8d
+      - RSA_KEY_SIZE=2048
+      - STAGING=1
+      - USE_ECDSA=1
+      - DEBUG=1
+      - USE_LOCAL_CA=0
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - nginx_secrets:/etc/letsencrypt
+      - ./user_conf.d:/etc/nginx/user_conf.d
+
+  commonwealth:
+    image: ghcr.io/alexzedim/commonwealth:latest
+    container_name: commonwealth
+    restart: always
+    command: [ 'node','dist/apps/conglomerat/main.js' ]
+    ports:
+      - '5000:8000'
+    environment:
+      - NODE_ENV=${NODE_ENV}
+
+volumes:
+  nginx_secrets:
