@@ -31,5 +31,15 @@ services:
     environment:
       - NODE_ENV=${NODE_ENV}
 
+  cmnw:
+    image: ghcr.io/alexzedim/cmnw:latest
+    container_name: cmnw
+    restart: always
+    command: [ 'npm','start' ]
+    ports:
+      - '5000:8000'
+    environment:
+      - NODE_ENV=${NODE_ENV}
+
 volumes:
   nginx_secrets:
