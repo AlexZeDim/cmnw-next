@@ -1,5 +1,5 @@
 import React, { FC, Fragment } from 'react';
-import { Avatar, Box, Divider, makeStyles, Typography } from '@material-ui/core';
+import { Avatar, Box, Divider, Grid, makeStyles, Typography } from '@material-ui/core';
 import { itemTitle } from '../../types/components';
 import { generateItemBackground } from '../../utils';
 
@@ -51,12 +51,12 @@ const ItemTitle: FC<itemTitle> = ({ itemTitle, realmTitle, quality, asset_class,
     <Fragment>
       <div className={classes.root} style={backgroundRoot}>
         <div className={classes.title} style={{ ...backgroundRoot, ...borderColor}}>
-          <Box alignItems="center" display="flex" justifyContent="left">
+          <Grid alignItems="center" justifyContent="flex-start">
             <Avatar alt="Item Icon" variant="rounded" src={icon} className={classes.large}/>
             <Typography variant="h1" component="h1" color="textPrimary" className={classes.item}>
               {itemTitle}
             </Typography>
-          </Box>
+          </Grid>
           <Divider className={classes.divider} style={{ background: backgroundTitle.backgroundColor }}/>
           <Typography variant="h4" component="h3" color="textPrimary" className={classes.realm}>
             {realmTitle}
