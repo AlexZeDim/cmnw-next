@@ -1,5 +1,5 @@
 # Install dependencies only when needed
-FROM node:14-alpine AS deps
+FROM node:16.14-alpine AS deps
 
 WORKDIR /opt/app
 COPY package.json ./
@@ -10,7 +10,7 @@ RUN yarn install --frozen-lockfile
 # to build the app based on some `X_TAG` in my case (Git commit hash)
 # but the code hasn't changed.
 
-FROM node:14-alpine AS builder
+FROM node:16.14-alpine AS builder
 
 ENV NODE_ENV=production
 WORKDIR /opt/app
