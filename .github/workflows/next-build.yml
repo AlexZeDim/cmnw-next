@@ -25,7 +25,7 @@ jobs:
         with:
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/alexzedim/commonwealth:latest
+          tags: ghcr.io/alexzedim/cmnw:latest
           build-args: |
             CR_PAT=${{ secrets.CR_PAT }}
 
