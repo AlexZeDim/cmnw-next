@@ -1,7 +1,7 @@
 import React, { FC, Fragment } from 'react';
 import MUIDataTable from 'mui-datatables';
 import useSWR from 'swr';
-import { domain } from '../../constants';
+import { DOMAINS } from '../../constants';
 import { LinearProgress, makeStyles } from '@material-ui/core';
 import { AuctionsResponse, itemQuery } from '../../types/components';
 import Link from '../Link';
@@ -32,7 +32,7 @@ const ItemListing: FC<itemQuery & { name: string }> = ({ id, name, is_gold, is_c
 
   if (is_commdty || is_gold) return <></>
 
-  const { data, error } = useSWR<AuctionsResponse>(`${domain}/api/dma/item/feed?_id=${id}`, (url) => fetch(url).then(r => r.json()));
+  const { data, error } = useSWR<AuctionsResponse>(`${DOMAINS.domain}/api/dma/item/feed?_id=${id}`, (url) => fetch(url).then(r => r.json()));
   if (!data) return <LinearProgress />
 
   if (error) return <></>

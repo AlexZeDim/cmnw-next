@@ -3,7 +3,7 @@ import React, { FC, Fragment } from 'react';
 import { itemValuations, itemValuationsResponse } from '../../types/components';
 import useSWR from 'swr';
 import MUIDataTable from 'mui-datatables';
-import { domain } from '../../constants';
+import { DOMAINS } from '../../constants';
 import { convertDate } from '../../utils';
 import ItemDetailsTable from '../ItemDetailsTable';
 
@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 const ItemValuations: FC<itemValuations> = ({ id }) => {
   const classes = useStyles();
 
-  const { data, error } = useSWR<itemValuationsResponse>(`${domain}/api/dma/item/valuations?_id=${id}`, (url) => fetch(url).then(r => r.json()));
+  const { data, error } = useSWR<itemValuationsResponse>(`${DOMAINS.domain}/api/dma/item/valuations?_id=${id}`, (url) => fetch(url).then(r => r.json()));
 
   if (error) return <></>
   if (!data) return <LinearProgress />

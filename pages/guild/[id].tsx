@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Divider, makeStyles } from '@material-ui/core';
 import MetaHead from '../../libs/components/MetaHead';
 import { GUILD_PAGE } from '../../libs/constants';
-import { domain } from '../../libs/constants';
+import { DOMAINS } from '../../libs/constants';
 import { guildResponse, logResponse } from '../../libs/types/components';
 import { LogTable } from '../../libs/components/LogTable';
 import GuildTitle from '../../libs/components/GuildTitle';
@@ -76,8 +76,8 @@ const Guild = ({ guild }) => {
 export async function getServerSideProps({ query }) {
   const { id } = query;
   const [ g, l ] = await Promise.all([
-    fetch(encodeURI(`${domain}/api/osint/guild?_id=${id}`)),
-    fetch(encodeURI(`${domain}/api/osint/guild/logs?_id=${id}`))
+    fetch(encodeURI(`${DOMAINS.domain}/api/osint/guild?_id=${id}`)),
+    fetch(encodeURI(`${DOMAINS.domain}/api/osint/guild/logs?_id=${id}`))
   ]);
   const guild = await g.json() as guildResponse;
   const logs = await l.json() as logResponse[];

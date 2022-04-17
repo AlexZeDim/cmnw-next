@@ -1,13 +1,9 @@
-export const domain: string = 'https://cmnw.me';
-
-export const localhost: string = 'http://localhost:8000';
-
-export const warcraftlogs: string = 'https://www.warcraftlogs.com';
-
-export const wowprogress: string = 'https://www.wowprogress.com';
-
-export const raiderio: string = 'https://raider.io';
-
-export const battlenet: string = 'https://worldofwarcraft.com';
-
-export const check_pvp: string = 'https://check-pvp.fr';
+export const DOMAINS = {
+    domain: 'https://cmnw.me',
+    localhost: 'http://localhost:5000',
+    warcraftLogs: 'https://www.warcraftlogs.com',
+    wowProgress: 'https://www.wowprogress.com',
+    raiderIo: 'https://raider.io',
+    battleNet: 'https://worldofwarcraft.com',
+    checkPvp: 'https://check-pvp.fr'
+};

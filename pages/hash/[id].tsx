@@ -1,7 +1,7 @@
 import React from 'react';
 import MetaHead from '../../libs/components/MetaHead';
 import { Container, makeStyles } from '@material-ui/core';
-import { domain, HASH_PAGE } from '../../libs/constants';
+import { DOMAINS, HASH_PAGE } from '../../libs/constants';
 import { characterResponse } from '../../libs/types/components';
 import HashTitle from '../../libs/components/HashTitle';
 import CharacterTable from '../../libs/components/CharacterTable';
@@ -34,7 +34,7 @@ const Hash = ({ hash, id }) => {
 
 export async function getServerSideProps({ query }) {
   const { id } = query;
-  const res = await fetch(encodeURI(`${domain}/api/osint/character/hash?hash=${id}`));
+  const res = await fetch(encodeURI(`${DOMAINS.domain}/api/osint/character/hash?hash=${id}`));
   const hash = await res.json() as characterResponse[];
   if (!hash || !hash.length) {
     return {

@@ -6,7 +6,7 @@ import MetaHead from '../../libs/components/MetaHead';
 import CharacterButtons from '../../libs/components/CharacterButtons';
 import CharacterProfile from '../../libs/components/CharacterProfile';
 import { characterResponse, logResponse } from '../../libs/types/components';
-import { domain } from '../../libs/constants';
+import { DOMAINS } from '../../libs/constants';
 import { LogTable } from '../../libs/components/LogTable';
 import CharacterTitle from '../../libs/components/CharacterTitle';
 
@@ -105,8 +105,8 @@ const Character = ({ character }) => {
 export async function getServerSideProps({ query }) {
   const { id } = query;
   const [ c, l ] = await Promise.all([
-    fetch(encodeURI(`${domain}/api/osint/character?_id=${id}`)),
-    fetch(encodeURI(`${domain}/api/osint/character/logs?_id=${id}`))
+    fetch(encodeURI(`${DOMAINS.domain}/api/osint/character?_id=${id}`)),
+    fetch(encodeURI(`${DOMAINS.domain}/api/osint/character/logs?_id=${id}`))
   ]);
   const character = await c.json() as characterResponse;
   const logs = await l.json() as logResponse[];

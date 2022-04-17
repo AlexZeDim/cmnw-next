@@ -2,7 +2,7 @@ import React, { FC, Fragment } from 'react';
 import { itemQuery } from '../../types/components';
 import useSWR from 'swr';
 import MUIDataTable from 'mui-datatables';
-import { domain } from '../../constants';
+import { DOMAINS } from '../../constants';
 import { quotesResponse } from '../../types/components';
 import { LinearProgress, makeStyles } from '@material-ui/core';
 
@@ -37,7 +37,7 @@ const ItemQuotes: FC<itemQuery> = ({ id, is_gold, is_xrs }) => {
 
   if (is_xrs) return <></>
 
-  const { data, error } = useSWR<quotesResponse>(`${domain}/api/dma/item/quotes?_id=${id}`, (url) => fetch(url).then(r => r.json()));
+  const { data, error } = useSWR<quotesResponse>(`${DOMAINS.domain}/api/dma/item/quotes?_id=${id}`, (url) => fetch(url).then(r => r.json()));
 
   if (error) return <></>
   if (!data) return <LinearProgress />

@@ -1,4 +1,4 @@
-import { domain } from '../../libs/constants';
+import { DOMAINS } from '../../libs/constants';
 import { Container, Divider, Grid, makeStyles } from '@material-ui/core';
 import React from 'react';
 import MetaHead from '../../libs/components/MetaHead';
@@ -95,7 +95,7 @@ const Item = ({ id, item, realm }) => {
 
 export async function getServerSideProps({ query }) {
   const { id } = query;
-  const res = await fetch(encodeURI(`${domain}/api/dma/item?_id=${id}`));
+  const res = await fetch(encodeURI(`${DOMAINS.domain}/api/dma/item?_id=${id}`));
   const { item, realm } = await res.json();
   if (!item) {
     return {

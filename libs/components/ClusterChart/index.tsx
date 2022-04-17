@@ -7,7 +7,7 @@ import Heatmap from 'highcharts/modules/heatmap';
 import { itemQuery } from '../../types/components';
 import { LinearProgress, makeStyles } from '@material-ui/core';
 import { chartResponse } from '../../types/components/chartResponse';
-import { domain } from '../../constants';
+import { DOMAINS } from '../../constants';
 
 if (typeof Highcharts === 'object') {
   Heatmap(Highcharts);
@@ -32,7 +32,7 @@ const ClusterChart: FC<itemQuery> = ({ id, is_commdty }) => {
 
   if (!is_commdty) return <></>
 
-  const { data, error } = useSWR<chartResponse>(`${domain}/api/dma/item/chart?_id=${id}`, (url) => fetch(url).then(r => r.json()));
+  const { data, error } = useSWR<chartResponse>(`${DOMAINS.domain}/api/dma/item/chart?_id=${id}`, (url) => fetch(url).then(r => r.json()));
 
   if (error) return <div>failed to load</div>
   if (!data) return <LinearProgress />
